@@ -88,11 +88,15 @@ public class Robot extends IterativeRobot{
 	 */
 	@Override
 	public void teleopPeriodic() {
+		while(button1.get()) {
+			victorOne.set(1);
+		}
 		
-//		button1.whenPressed(motorControl(1, victorOne));
-/**		button2.whenPressed(motorControl(1, victorOne));
-		button3.whenPressed(motorControl(1, victorTwo));
-		button4.whenPressed(motorControl(1, victorThree));**/
+		if (!button1.get()) {
+			victorOne.set(0);
+		}
+	
+
 		victorZero.set(leftJoy.getY() + leftJoy.getX());
 		victorOne.set(leftJoy.getY() + leftJoy.getX());
 		victorTwo.set(-leftJoy.getY() + leftJoy.getX());
