@@ -66,7 +66,18 @@ public class Robot extends IterativeRobot{
 	 */
 	@Override
 	public void autonomousPeriodic() {
-
+		while(m_timer.get() < 2) {
+			victorZero.set(1);
+			victorOne.set(1);
+			victorTwo.set(1);
+			victorThree.set(1);
+		}
+		while(m_time.get() < 2) {
+			victorZero.set(1);
+			victorOne.set(1);
+			victorTwo.set(-1);
+			victorThree.set(-1);
+		}
 	}
 
 	/**
