@@ -16,7 +16,11 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.networktables.*;
+import java.util.concurrent.TimeUnit;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -27,6 +31,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
 public class Robot extends IterativeRobot{
+	boolean turbotoggle = true;
 	Joystick leftJoy = new Joystick(0);
 	Button 	button1 = new JoystickButton(leftJoy, 1), 
 			button2 = new JoystickButton(leftJoy, 2),
@@ -40,8 +45,9 @@ public class Robot extends IterativeRobot{
 	Victor victorOne = new Victor(1);
 	Victor victorTwo = new Victor(2);
 	Victor victorThree = new Victor(3);
+	public Gyro gyro = new AnalogGyro(0);
+	NetworkTable table;
 	
-
 	private Timer m_timer = new Timer();
 
 	/**
@@ -50,6 +56,8 @@ public class Robot extends IterativeRobot{
 	 */
 	@Override
 	public void robotInit() {
+		gyro.reset();
+		gyro.calibrate();
 	}
 
 	/**
@@ -66,6 +74,7 @@ public class Robot extends IterativeRobot{
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		/**
 		while(m_timer.get() < 2) {
 			victorZero.set(1);
 			victorOne.set(1);
@@ -77,7 +86,7 @@ public class Robot extends IterativeRobot{
 			victorOne.set(1);
 			victorTwo.set(-1);
 			victorThree.set(-1);
-		}
+		}**/
 	}
 
 	/**
@@ -89,25 +98,41 @@ public class Robot extends IterativeRobot{
 		victorOne.set(0);
 		victorTwo.set(0);
 		victorThree.set(0);
-	}
-	public Command motorControl(int value, Victor motor) {
-		motor.set(value);
-		return null;
+		gyro.reset();
+		gyro.calibrate();
 	}
 	/**
 	 * This function is called periodically during teleoperated mode.
 	 */
 	@Override
 	public void teleopPeriodic() {
-		while(button1.get()) {
-			victorOne.set(1);
-		}
+		Thread toggle= new Thread(() -> {
+		    while (!Thread.interrupted()) {
+		    	//Button Press Code
+				if (button1.get()) {
+					if (turbotoggle == true) {
+						turbotoggle = false;
+						try {
+							TimeUnit.MILLISECONDS.sleep(150);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} else {
+						turbotoggle = true;
+						try {
+							TimeUnit.MILLISECONDS.sleep(150);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+		    }});
 		
-		if (!button1.get()) {
-			victorOne.set(0);
-		}
-	
-
+		toggle.start();
+		
+		SmartDashboard.putNumber("GyroValue", gyro.getAngle());
 		victorZero.set(leftJoy.getY() + leftJoy.getX());
 		victorOne.set(leftJoy.getY() + leftJoy.getX());
 		victorTwo.set(-leftJoy.getY() + leftJoy.getX());
@@ -121,4 +146,3 @@ public class Robot extends IterativeRobot{
 	public void testPeriodic() {
 	}
 }
-
