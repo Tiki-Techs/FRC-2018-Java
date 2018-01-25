@@ -23,7 +23,7 @@ hs_err_pid*
 
 # sys files
 .DS_Store*
-.idea*
+.idea/*
 
 # build
-src*
+*.iml
