@@ -27,3 +27,7 @@ hs_err_pid*
 
 # build
 *.iml
+src/.idea/misc.xml
+src/.idea/workspace.xml
+src/.idea/misc.xml
+src/.idea/workspace.xml
