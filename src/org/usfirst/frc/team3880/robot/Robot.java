@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import org.usfirst.frc.team3880.robot.commands.*;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -29,7 +30,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends IterativeRobot {
-	Command toggle;
+	public static OI oi;
+	Command tog;
+
 	
 	private static final String kDefaultAuto = "Default";
 	private static final String kCustomAuto = "My Auto";
@@ -41,15 +44,24 @@ public class Robot extends IterativeRobot {
 	TalonSRX frontLeftDrive = new TalonSRX(4);
 	TalonSRX middleLeftDrive = new TalonSRX(5);
 	TalonSRX backLeftDrive = new TalonSRX(6);
-	DoubleSolenoid shift = new DoubleSolenoid(0, 1);
+	DoubleSolenoid shift = new DoubleSolenoid(7, 0, 1);
+	public static DoubleSolenoid gearIntake = new DoubleSolenoid(7, 4, 5);
+	DoubleSolenoid passiveGear = new DoubleSolenoid(7, 2, 3);
+	// 7 is PCM ID number
 	NetworkTable table;
 	public static boolean turbo = false;
+	boolean toggleTest = false;
+	Compressor c = new Compressor(7);
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
+		oi = new OI();
+		tog = new toggle();
+
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
@@ -95,22 +107,41 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-
 		//toggle shift solenoid
-		frontRightDrive.set(ControlMode.PercentOutput, -(OI.joy1.getY() - OI.joy1.getX()));
-		middleRightDrive.set(ControlMode.PercentOutput, OI.joy1.getY() - OI.joy1.getX());
-		backRightDrive.set(ControlMode.PercentOutput, -(OI.joy1.getY() - OI.joy1.getX()));
+		frontRightDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
+		middleRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() - oi.joy1.getX());
+		backRightDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
 		// configure driver control for right side Y
-		frontLeftDrive.set(ControlMode.PercentOutput, -(OI.joy1.getY() + OI.joy1.getX()));
-		middleLeftDrive.set(ControlMode.PercentOutput, OI.joy1.getY() + OI.joy1.getX());
-		backLeftDrive.set(ControlMode.PercentOutput, OI.joy1.getY() + OI.joy1.getX());
+		frontLeftDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() + oi.joy1.getX()));
+		middleLeftDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
+		backLeftDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
 		// configure driver control for left side
-		if (OI.button5.get()) {
+		if (oi.button3.get()) {
 			shift.set(DoubleSolenoid.Value.kForward);
 		}
-		if (OI.button6.get()) {
+		else if (oi.button4.get()) {
 			shift.set(DoubleSolenoid.Value.kReverse);		
 		}
+		if	(oi.joy1.getRawButtonPressed(5)){
+			toggleTest = !toggleTest;
+			if(toggleTest) {
+				gearIntake.set(DoubleSolenoid.Value.kForward);
+			}
+			else {
+				gearIntake.set(DoubleSolenoid.Value.kReverse);
+			}
+		}
+		if	(oi.joy1.getRawButtonPressed(6)){
+			toggleTest = !toggleTest;
+			if(toggleTest) {
+				passiveGear.set(DoubleSolenoid.Value.kForward);
+			}
+			else {
+				passiveGear.set(DoubleSolenoid.Value.kReverse);
+			}
+		}
+		// toggle code
+
 	}
 
 	/**

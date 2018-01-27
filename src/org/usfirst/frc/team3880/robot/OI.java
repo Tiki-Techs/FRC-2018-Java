@@ -28,11 +28,11 @@ public class OI {
 //					button7 = new JoystickButton(xbox, 7), 
 //					button8 = new JoystickButton(xbox, 8);
 	
-	static Joystick joy1 = new Joystick(0);
-	static Button 	trigger = new JoystickButton(joy1, 1), 
-					circleButton = new JoystickButton(joy1, 2),
-					xButton = new JoystickButton(joy1, 3), 
-					squareButton = new JoystickButton(joy1, 4),
+	public Joystick joy1 = new Joystick(0);
+	public Button 	button1 = new JoystickButton(joy1, 1), 
+					button2 = new JoystickButton(joy1, 2),
+					button3 = new JoystickButton(joy1, 3), 
+					button4 = new JoystickButton(joy1, 4),
 					button5 = new JoystickButton(joy1, 5), 
 					button6 = new JoystickButton(joy1, 6),
 					button7 = new JoystickButton(joy1, 7), 
@@ -40,7 +40,7 @@ public class OI {
 	
 	public OI () {
 		System.out.println("test");
-		trigger.whenPressed(new toggle());
+		button1.whenActive(new toggle());
 	}
 	
 	//// CREATING BUTTONS
