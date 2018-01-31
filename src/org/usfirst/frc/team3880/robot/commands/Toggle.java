@@ -6,14 +6,14 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class toggle extends Command {
+public class Toggle extends Command {
 	
 	private boolean finished = false;
 	
-	public toggle() {
+	public Toggle() {
 		// Use requires() here to declare subsystem dependencies
 //		requires(Robot.o);
-		super("toggle");
+		super("Toggle");
 	}
 
 	// Called just before this Command runs the first time
