@@ -178,13 +178,18 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+	    teleopPeriodicJoystick();
+        teleopPeriodicForwardBack();
+        teleopPeriodicGearIntake();
+    }
 
-	    // Joystick direction
-	    double[] joystickInput = getJoystickDrive(oi.joy1);
-        double joystickDrive = joystickInput[1] - joystickInput[0];
-        setDriveForward(joystickDrive);
+    private void teleopPeriodicGearIntake() {
+        // Gear intake
+        boolean toggleGearIntakeRequested = oi.joy1.getRawButtonPressed(5);
+        DoubleSolenoid.Value newToggleGearDirection = toggleGearIntake(passiveGear, toggleGearIntakeRequested);
+    }
 
-
+    private void teleopPeriodicForwardBack() {
         // Forward-back
         DoubleSolenoid.Value currentDirection = shift.get();
         DoubleSolenoid.Value requestedDirection = getDirection(oi.button3.get(), oi.button4.get(), currentDirection);
@@ -193,13 +198,16 @@ public class Robot extends IterativeRobot {
         {
             shift.set(requestedDirection);
         }
+    }
 
-        // Gear intake
-        boolean toggleGearIntakeRequested = oi.joy1.getRawButtonPressed(5);
-        DoubleSolenoid.Value newToggleGearDirection = toggleGearIntake(passiveGear, toggleGearIntakeRequested);
-	}
+    private void teleopPeriodicJoystick() {
+        // Joystick direction
+        double[] joystickInput = getJoystickDrive(oi.joy1);
+        double joystickDrive = joystickInput[1] - joystickInput[0];
+        setDriveForward(joystickDrive);
+    }
 
-	/**
+    /**
 	 * This function is called periodically during test mode.
 	 */
 	@Override
