@@ -10,17 +10,19 @@ package org.usfirst.frc.team3880.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.buttons.Button;
 import org.usfirst.frc.team3880.robot.commands.*;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Relay.Value.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -41,16 +43,20 @@ public class Robot extends IterativeRobot {
 	TalonSRX frontRightDrive = new TalonSRX(1);
 	TalonSRX middleRightDrive = new TalonSRX(2);
 	TalonSRX backRightDrive = new TalonSRX(3);
+	Stream<TalonSRX> rightWheels = Arrays.stream(new TalonSRX[] { frontRightDrive, middleRightDrive, backRightDrive });
+
+
 	TalonSRX frontLeftDrive = new TalonSRX(4);
 	TalonSRX middleLeftDrive = new TalonSRX(5);
 	TalonSRX backLeftDrive = new TalonSRX(6);
-	DoubleSolenoid shift = new DoubleSolenoid(7, 0, 1);
+    Stream<TalonSRX> leftWheels = Arrays.stream(new TalonSRX[] { frontLeftDrive, middleLeftDrive, backLeftDrive });
+
+    DoubleSolenoid shift = new DoubleSolenoid(7, 0, 1);
 	public static DoubleSolenoid gearIntake = new DoubleSolenoid(7, 4, 5);
 	DoubleSolenoid passiveGear = new DoubleSolenoid(7, 2, 3);
 	// 7 is PCM ID number
 	NetworkTable table;
 	public static boolean turbo = false;
-	boolean toggleTest = false;
 	Compressor c = new Compressor(7);
 	
 	/**
@@ -102,46 +108,95 @@ public class Robot extends IterativeRobot {
 		}
 	}
 
+    /**
+     * Gets the X & Y values of the joystick
+     * @param joy The joystick to read
+     * @return An array whose first element is the X value of the joystick and whose second element is the Y value
+     */
+	protected double[] getJoystickDrive(Joystick joy)
+    {
+        return new double[] {joy.getX(), joy.getY() };
+    }
+
+    /**
+     * Sets the duty-cycle % of the `rightWheels` to `drive` and that of the `leftWheels` to `-drive`
+     * @param drive Must be in the range [0..1]
+     */
+    protected void setDriveForward(double drive)
+    {
+        rightWheels.forEach(d -> d.set(ControlMode.PercentOutput, drive));
+        leftWheels.forEach(d -> d.set(ControlMode.PercentOutput, -drive));
+    }
+
+    /**
+     * Returns the desired driving direction. Note that if both `forwardToggle` and `backwardToggle` are `true`,
+     * `backwardToggle` "wins" because it is evaluated second
+     * @param forwardToggle
+     * @param backwardToggle
+     * @param currentState
+     * @return
+     */
+    protected DoubleSolenoid.Value getDirection(boolean forwardToggle, boolean backwardToggle, DoubleSolenoid.Value currentState)
+    {
+        if (forwardToggle && currentState.equals(DoubleSolenoid.Value.kReverse))
+        {
+            return DoubleSolenoid.Value.kForward;
+        }
+
+        if (backwardToggle && currentState.equals(DoubleSolenoid.Value.kForward))
+        {
+            return  DoubleSolenoid.Value.kReverse;
+        }
+
+        // No request has been made or the request is for the current direction
+        return currentState;
+    }
+
+    /**
+     * Modifies the state of the `solenoid` if `toggleRequested` is true
+     * @param solenoid
+     * @param toggleRequested
+     * @return
+     */
+    protected DoubleSolenoid.Value toggleGearIntake(DoubleSolenoid solenoid, boolean toggleRequested)
+    {
+        DoubleSolenoid.Value currentDirection = solenoid.get();
+        if (toggleRequested)
+        {
+            DoubleSolenoid.Value newDirection = currentDirection == DoubleSolenoid.Value.kForward ? DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward;
+            solenoid.set(newDirection);
+            return newDirection;
+        }
+        else
+        {
+            return currentDirection;
+        }
+    }
+
 	/**
 	 * This function is called periodically during operator control.
 	 */
 	@Override
 	public void teleopPeriodic() {
-		//toggle shift solenoid
-		frontRightDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
-		middleRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() - oi.joy1.getX());
-		backRightDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
-		// configure driver control for right side Y
-		frontLeftDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() + oi.joy1.getX()));
-		middleLeftDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
-		backLeftDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
-		// configure driver control for left side
-		if (oi.button3.get()) {
-			shift.set(DoubleSolenoid.Value.kForward);
-		}
-		else if (oi.button4.get()) {
-			shift.set(DoubleSolenoid.Value.kReverse);		
-		}
-		if	(oi.joy1.getRawButtonPressed(5)){
-			toggleTest = !toggleTest;
-			if(toggleTest) {
-				gearIntake.set(DoubleSolenoid.Value.kForward);
-			}
-			else {
-				gearIntake.set(DoubleSolenoid.Value.kReverse);
-			}
-		}
-		if	(oi.joy1.getRawButtonPressed(6)){
-			toggleTest = !toggleTest;
-			if(toggleTest) {
-				passiveGear.set(DoubleSolenoid.Value.kForward);
-			}
-			else {
-				passiveGear.set(DoubleSolenoid.Value.kReverse);
-			}
-		}
-		// toggle code
 
+	    // Joystick direction
+	    double[] joystickInput = getJoystickDrive(oi.joy1);
+        double joystickDrive = joystickInput[1] - joystickInput[0];
+        setDriveForward(joystickDrive);
+
+
+        // Forward-back
+        DoubleSolenoid.Value currentDirection = shift.get();
+        DoubleSolenoid.Value requestedDirection = getDirection(oi.button3.get(), oi.button4.get(), currentDirection);
+
+        if (requestedDirection.equals(currentDirection) == false)
+        {
+            shift.set(requestedDirection);
+        }
+
+        // Gear intake
+        boolean toggleGearIntakeRequested = oi.joy1.getRawButtonPressed(5);
+        DoubleSolenoid.Value newToggleGearDirection = toggleGearIntake(passiveGear, toggleGearIntakeRequested);
 	}
 
 	/**
