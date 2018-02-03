@@ -38,10 +38,10 @@ public class OI {
 					button7 = new JoystickButton(joy1, 7), 
 					button8 = new JoystickButton(joy1, 8);
 	
-	public OI () {
-		System.out.println("test");
-		button1.whenActive(new toggle());
-	}
+//	public OI () {
+//		System.out.println("test");
+//		button1.whenActive(new toggle());
+//	}
 	
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
