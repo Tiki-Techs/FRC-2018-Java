@@ -8,19 +8,23 @@
 package org.usfirst.frc.team3880.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.buttons.Button;
 import org.usfirst.frc.team3880.robot.commands.*;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Victor;
+
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -51,6 +55,16 @@ public class Robot extends IterativeRobot {
 	TalonSRX backLeftDrive = new TalonSRX(6);
     Stream<TalonSRX> leftWheels = Arrays.stream(new TalonSRX[] { frontLeftDrive, middleLeftDrive, backLeftDrive });
 
+    
+	TalonSRX turret = new TalonSRX(10);
+	TalonSRX index = new TalonSRX(0);
+	TalonSRX shooterMaster = new TalonSRX(8);
+	TalonSRX shooterSlave = new TalonSRX(9);
+	Victor intakeMotor = new Victor(1);
+	Victor climb = new Victor(0);
+	
+	AnalogGyro gyro;
+	
     DoubleSolenoid shift = new DoubleSolenoid(7, 0, 1);
 	public static DoubleSolenoid gearIntake = new DoubleSolenoid(7, 4, 5);
 	DoubleSolenoid passiveGear = new DoubleSolenoid(7, 2, 3);
@@ -67,6 +81,34 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		oi = new OI();
 		tog = new Toggle();
+		robotInitGyroReset();
+		
+		
+//		leftDriveEncoder = new Encoder(6, 7, false, Encoder.EncodingType.k4X);
+//		rightDriveEncoder = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
+		
+		
+		shooterMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		shooterSlave.follow(shooterMaster);
+		shooterMaster.setInverted(true);
+		
+        shooterMaster.config_kF(0, 0.0049, 0);        
+        shooterMaster.config_kP(0, 0.015, 0); 
+        shooterMaster.config_kI(0, 0, 0);        
+        shooterMaster.config_kD(0, 0.15, 0); 
+        
+        shooterMaster.setSensorPhase(true);
+        //config PID values for shooter
+		
+		index.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		index.setInverted(true);
+		
+        index.config_kF(0, 0.078, 0);        
+        index.config_kP(0, 0.03, 0); 
+        index.config_kI(0, 0, 0);        
+        index.config_kD(0, 1.1, 0); 
+        
+        
 
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
 		m_chooser.addObject("My Auto", kCustomAuto);
@@ -182,6 +224,10 @@ public class Robot extends IterativeRobot {
         teleopPeriodicForwardBack();
         teleopPeriodicGearIntake();
     }
+	private void robotInitGyroReset() {
+		gyro.reset();
+		gyro.calibrate();
+	}
 
     private void teleopPeriodicGearIntake() {
         // Gear intake
