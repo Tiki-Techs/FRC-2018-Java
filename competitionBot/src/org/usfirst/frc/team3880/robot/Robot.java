@@ -32,12 +32,12 @@ public class Robot extends IterativeRobot {
 	
 	TalonSRX frontRightDrive = new TalonSRX(1);
 	TalonSRX backRightDrive = new TalonSRX(2);
-	Stream<TalonSRX> rightWheels = Arrays.stream(new TalonSRX[] { frontRightDrive, backRightDrive });
 
 
 	TalonSRX frontLeftDrive = new TalonSRX(3);
 	TalonSRX backLeftDrive = new TalonSRX(4);
-    Stream<TalonSRX> leftWheels = Arrays.stream(new TalonSRX[] { frontLeftDrive, backLeftDrive });
+	
+	public static OI oi;
     
     
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -97,29 +97,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		protected double[] getJoystickDrive(Joystick joy)
-	    {
-	        return new double[] {joy1.getX(), joy1.getY() };
-	    }
 
-	    /**
-	     * Sets the duty-cycle % of the `rightWheels` to `drive` and that of the `leftWheels` to `-drive`
-	     * @param drive Must be in the range [0..1]
-	     */
-	    protected void setDriveForward(double drive)
-	    {
-	        rightWheels.forEach(d -> d.set(ControlMode.PercentOutput, drive));
-	        leftWheels.forEach(d -> d.set(ControlMode.PercentOutput, -drive));
-	    }
-
-	    /**
-	     * Returns the desired driving direction. Note that if both `forwardToggle` and `backwardToggle` are `true`,
-	     * `backwardToggle` "wins" because it is evaluated second
-	     * @param forwardToggle
-	     * @param backwardToggle
-	     * @param currentState
-	     * @return
-	     */
 	}
 
 	/**
@@ -127,5 +105,43 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		if(oi.joy1.getRawButton(9)) 
+		{
+			backLeftDrive.set(ControlMode.PercentOutput, 1);
+		}
+		else
+		{
+			backLeftDrive.set(ControlMode.PercentOutput, 0);
+		}
+		if(oi.joy1.getRawButton(10)) 
+		{
+			frontLeftDrive.set(ControlMode.PercentOutput, 1);
+		}
+		else
+		{
+			frontLeftDrive.set(ControlMode.PercentOutput, 0);
+		}		
+		if(oi.joy1.getRawButton(11)) 
+		{
+			backRightDrive.set(ControlMode.PercentOutput, 1);
+		}
+		else
+		{
+			backRightDrive.set(ControlMode.PercentOutput, 0);
+		}		
+		if(oi.joy1.getRawButton(12)) 
+		{
+			frontRightDrive.set(ControlMode.PercentOutput, 1);
+		}
+		else
+		{
+			frontRightDrive.set(ControlMode.PercentOutput, 0);
+		}
+		
+//		backLeftDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
+//		frontLeftDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
+//		backRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() - oi.joy1.getX());
+//		frontRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() - oi.joy1.getX());
+	
 	}
 }

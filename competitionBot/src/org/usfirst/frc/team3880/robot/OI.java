@@ -7,8 +7,6 @@
 
 package org.usfirst.frc.team3880.robot;
 
-import org.usfirst.frc.team3880.robot.commands.*;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
