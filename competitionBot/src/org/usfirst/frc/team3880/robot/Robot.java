@@ -30,12 +30,12 @@ public class Robot extends IterativeRobot {
 	private static final String kCustomAuto = "My Auto";
 	private String m_autoSelected;
 	
-	TalonSRX frontRightDrive = new TalonSRX(1);
-	TalonSRX backRightDrive = new TalonSRX(2);
+	TalonSRX frontRightDrive = new TalonSRX(0);
+	TalonSRX backRightDrive = new TalonSRX(1);
 
 
-	TalonSRX frontLeftDrive = new TalonSRX(3);
-	TalonSRX backLeftDrive = new TalonSRX(4);
+	TalonSRX frontLeftDrive = new TalonSRX(2);
+	TalonSRX backLeftDrive = new TalonSRX(3);
 	
 	public static OI oi;
     
@@ -97,6 +97,44 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+//		if(oi.joy1.getRawButton(1)) 
+//		{
+//			backLeftDrive.set(ControlMode.PercentOutput, 1);
+//		}
+//		else
+//		{
+//			backLeftDrive.set(ControlMode.PercentOutput, 0);
+//		}
+//		if(oi.joy1.getRawButton(2)) 
+//		{
+//			frontLeftDrive.set(ControlMode.PercentOutput, 1);
+//		}
+//		else
+//		{
+//			frontLeftDrive.set(ControlMode.PercentOutput, 0);
+//		}		
+//		if(oi.joy1.getRawButton(3)) 
+//		{
+//			backRightDrive.set(ControlMode.PercentOutput, 1);
+//		}
+//		else
+//		{
+//			backRightDrive.set(ControlMode.PercentOutput, 0);
+//		}		
+//		if(oi.joy1.getRawButton(4)) 
+//		{
+//			frontRightDrive.set(ControlMode.PercentOutput, 1);
+//		}
+//		else
+//		{
+//			frontRightDrive.set(ControlMode.PercentOutput, 0);
+//		}
+		
+		backLeftDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
+		frontLeftDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
+		backRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
+		frontRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
+	
 
 	}
 
@@ -105,43 +143,5 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		if(oi.joy1.getRawButton(9)) 
-		{
-			backLeftDrive.set(ControlMode.PercentOutput, 1);
-		}
-		else
-		{
-			backLeftDrive.set(ControlMode.PercentOutput, 0);
-		}
-		if(oi.joy1.getRawButton(10)) 
-		{
-			frontLeftDrive.set(ControlMode.PercentOutput, 1);
-		}
-		else
-		{
-			frontLeftDrive.set(ControlMode.PercentOutput, 0);
-		}		
-		if(oi.joy1.getRawButton(11)) 
-		{
-			backRightDrive.set(ControlMode.PercentOutput, 1);
-		}
-		else
-		{
-			backRightDrive.set(ControlMode.PercentOutput, 0);
-		}		
-		if(oi.joy1.getRawButton(12)) 
-		{
-			frontRightDrive.set(ControlMode.PercentOutput, 1);
-		}
-		else
-		{
-			frontRightDrive.set(ControlMode.PercentOutput, 0);
-		}
-		
-//		backLeftDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
-//		frontLeftDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
-//		backRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() - oi.joy1.getX());
-//		frontRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() - oi.joy1.getX());
-	
 	}
 }

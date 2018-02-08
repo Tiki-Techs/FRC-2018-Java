@@ -34,7 +34,12 @@ public class OI {
 					button5 = new JoystickButton(joy1, 5), 
 					button6 = new JoystickButton(joy1, 6),
 					button7 = new JoystickButton(joy1, 7), 
-					button8 = new JoystickButton(joy1, 8);
+					button8 = new JoystickButton(joy1, 8),
+					button9 = new JoystickButton(joy1, 9),
+					button10 = new JoystickButton(joy1, 10),
+					button11 = new JoystickButton(joy1, 11),
+					button12 = new JoystickButton(joy1, 12);
+					
 	
 //	public OI () {
 //		System.out.println("test");
