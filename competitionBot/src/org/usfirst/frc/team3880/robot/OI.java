@@ -7,45 +7,11 @@
 
 package org.usfirst.frc.team3880.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-//	static Joystick xbox = new Joystick(0);
-//	Button 	triangleButton = new JoystickButton(xbox, 1), 
-//					circleButton = new JoystickButton(xbox, 2),
-//					xButton = new JoystickButton(xbox, 3), 
-//					squareButton = new JoystickButton(xbox, 4),
-//					button5 = new JoystickButton(xbox, 5), 
-//					button6 = new JoystickButton(xbox, 6),
-//					button7 = new JoystickButton(xbox, 7), 
-//					button8 = new JoystickButton(xbox, 8);
-	
-	public Joystick joy1 = new Joystick(0);
-	public Button 	button1 = new JoystickButton(joy1, 1), 
-					button2 = new JoystickButton(joy1, 2),
-					button3 = new JoystickButton(joy1, 3), 
-					button4 = new JoystickButton(joy1, 4),
-					button5 = new JoystickButton(joy1, 5), 
-					button6 = new JoystickButton(joy1, 6),
-					button7 = new JoystickButton(joy1, 7), 
-					button8 = new JoystickButton(joy1, 8),
-					button9 = new JoystickButton(joy1, 9),
-					button10 = new JoystickButton(joy1, 10),
-					button11 = new JoystickButton(joy1, 11),
-					button12 = new JoystickButton(joy1, 12);
-					
-	
-//	public OI () {
-//		System.out.println("test");
-//		button1.whenActive(new toggle());
-//	}
-	
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
 	//// joystick.

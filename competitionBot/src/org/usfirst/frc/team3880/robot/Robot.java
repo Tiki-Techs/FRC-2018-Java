@@ -7,40 +7,28 @@
 
 package org.usfirst.frc.team3880.robot;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team3880.robot.commands.ExampleCommand;
+import org.usfirst.frc.team3880.robot.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
+ * functions corresponding to each mode, as described in the TimedRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the build.properties file in the
  * project.
  */
-public class Robot extends IterativeRobot {
-	private static final String kDefaultAuto = "Default";
-	private static final String kCustomAuto = "My Auto";
-	private String m_autoSelected;
-	
-	TalonSRX frontRightDrive = new TalonSRX(0);
-	TalonSRX backRightDrive = new TalonSRX(1);
+public class Robot extends TimedRobot {
+	public static final ExampleSubsystem kExampleSubsystem
+			= new ExampleSubsystem();
+	public static OI m_oi;
 
-
-	TalonSRX frontLeftDrive = new TalonSRX(2);
-	TalonSRX backLeftDrive = new TalonSRX(3);
-	
-	public static OI oi;
-    
-    
-	private SendableChooser<String> m_chooser = new SendableChooser<>();
+	Command m_autonomousCommand;
+	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -48,13 +36,25 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		
-		oi = new OI();
-		
-		
-		m_chooser.addDefault("Default Auto", kDefaultAuto);
-		m_chooser.addObject("My Auto", kCustomAuto);
-		SmartDashboard.putData("Auto choices", m_chooser);
+		m_oi = new OI();
+		m_chooser.addDefault("Default Auto", new ExampleCommand());
+		// chooser.addObject("My Auto", new MyAutoCommand());
+		SmartDashboard.putData("Auto mode", m_chooser);
+	}
+
+	/**
+	 * This function is called once each time the robot enters Disabled mode.
+	 * You can use it to reset any subsystem information you want to clear when
+	 * the robot is disabled.
+	 */
+	@Override
+	public void disabledInit() {
+
+	}
+
+	@Override
+	public void disabledPeriodic() {
+		Scheduler.getInstance().run();
 	}
 
 	/**
@@ -62,18 +62,27 @@ public class Robot extends IterativeRobot {
 	 * between different autonomous modes using the dashboard. The sendable
 	 * chooser code works with the Java SmartDashboard. If you prefer the
 	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString line to get the auto name from the text box below the Gyro
+	 * getString code to get the auto name from the text box below the Gyro
 	 *
-	 * <p>You can add additional auto modes by adding additional comparisons to
-	 * the switch structure below with additional strings. If using the
-	 * SendableChooser make sure to add them to the chooser code above as well.
+	 * <p>You can add additional auto modes by adding additional commands to the
+	 * chooser code above (like the commented example) or additional comparisons
+	 * to the switch structure below with additional strings & commands.
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autoSelected = m_chooser.getSelected();
-		// autoSelected = SmartDashboard.getString("Auto Selector",
-		// defaultAuto);
-		System.out.println("Auto selected: " + m_autoSelected);
+		m_autonomousCommand = m_chooser.getSelected();
+
+		/*
+		 * String autoSelected = SmartDashboard.getString("Auto Selector",
+		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+		 * = new MyAutoCommand(); break; case "Default Auto": default:
+		 * autonomousCommand = new ExampleCommand(); break; }
+		 */
+
+		// schedule the autonomous command (example)
+		if (m_autonomousCommand != null) {
+			m_autonomousCommand.start();
+		}
 	}
 
 	/**
@@ -81,14 +90,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		switch (m_autoSelected) {
-			case kCustomAuto:
-				// Put custom auto code here
-				break;
-			case kDefaultAuto:
-			default:
-				// Put default auto code here
-				break;
+		Scheduler.getInstance().run();
+	}
+
+	@Override
+	public void teleopInit() {
+		// This makes sure that the autonomous stops running when
+		// teleop starts running. If you want the autonomous to
+		// continue until interrupted by another command, remove
+		// this line or comment it out.
+		if (m_autonomousCommand != null) {
+			m_autonomousCommand.cancel();
 		}
 	}
 
@@ -97,45 +109,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-//		if(oi.joy1.getRawButton(1)) 
-//		{
-//			backLeftDrive.set(ControlMode.PercentOutput, 1);
-//		}
-//		else
-//		{
-//			backLeftDrive.set(ControlMode.PercentOutput, 0);
-//		}
-//		if(oi.joy1.getRawButton(2)) 
-//		{
-//			frontLeftDrive.set(ControlMode.PercentOutput, 1);
-//		}
-//		else
-//		{
-//			frontLeftDrive.set(ControlMode.PercentOutput, 0);
-//		}		
-//		if(oi.joy1.getRawButton(3)) 
-//		{
-//			backRightDrive.set(ControlMode.PercentOutput, 1);
-//		}
-//		else
-//		{
-//			backRightDrive.set(ControlMode.PercentOutput, 0);
-//		}		
-//		if(oi.joy1.getRawButton(4)) 
-//		{
-//			frontRightDrive.set(ControlMode.PercentOutput, 1);
-//		}
-//		else
-//		{
-//			frontRightDrive.set(ControlMode.PercentOutput, 0);
-//		}
-		
-		backLeftDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
-		frontLeftDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
-		backRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
-		frontRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
-	
-
+		Scheduler.getInstance().run();
 	}
 
 	/**
