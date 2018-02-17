@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -49,10 +50,10 @@ public class Robot extends IterativeRobot {
 	Victor climbOne = new Victor(0);
 	Victor climbTwo = new Victor(1);
 	
-	Victor intakeOne = new Victor(2);
-	Victor intakeTwo = new Victor(3);
-	Victor intakeThree = new Victor(4);
-	Victor intakeFour = new Victor(5);
+	Victor leftIntake30A = new Victor(2);
+	Victor leftIntake20A = new Victor(3);
+	Victor rightIntake30A = new Victor(4);
+	Victor rightIntake20A = new Victor(5);
 	
 	
 	Compressor c = new Compressor(0);
@@ -64,6 +65,9 @@ public class Robot extends IterativeRobot {
 	
 	NetworkTable table;
 	AnalogGyro gyro;
+	
+	
+	DigitalInput liftLowerLimit;
 	
 	
 	public static OI oi;
@@ -108,28 +112,46 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void drive(double forward, double turn) {
-		backLeftDrive.set(ControlMode.PercentOutput, - (forward - turn));
-		frontLeftDrive.set(ControlMode.PercentOutput, -(forward - turn));
-		backRightDrive.set(ControlMode.PercentOutput, forward + turn);
-		frontRightDrive.set(ControlMode.PercentOutput, forward + turn);
+		if(Math.abs(oi.joy1.getY()) >= .1 || Math.abs(oi.joy1.getX()) >=.1) {
+			backLeftDrive.set(ControlMode.PercentOutput, - (forward - turn));
+			frontLeftDrive.set(ControlMode.PercentOutput, -(forward - turn));
+			backRightDrive.set(ControlMode.PercentOutput, forward + turn);
+			frontRightDrive.set(ControlMode.PercentOutput, forward + turn);
+		}
+		else {
+			backLeftDrive.set(ControlMode.PercentOutput, 0);
+			frontLeftDrive.set(ControlMode.PercentOutput, 0);
+			backRightDrive.set(ControlMode.PercentOutput, 0);
+			frontRightDrive.set(ControlMode.PercentOutput, 0);
+		}
 	}
-	public void testVictor(double motorValue, int button, Victor victorName) {
-		if(oi.joy1.getRawButton(button)) 
-		{
+	public void runVictorOneButton(double motorValue, int button, Victor victorName) {
+		if(oi.joy1.getRawButton(button)) {
 			victorName.set(motorValue);
 		}
-		else
-		{
+		else {
 			victorName.set(0);
 		}
 	}
-	public void testTalon(double motorValue, int button, TalonSRX talonName) {
-		if(oi.joy1.getRawButton(button)) 
-		{
-			talonName.set(ControlMode.PercentOutput, motorValue);
+	public void runVictorTwoButton(double motorValue1, double motorValue2, int button1, int button2, Victor victorName) {
+		if(oi.joy1.getRawButton(button1)) {
+			victorName.set(motorValue1);
 		}
-		else
-		{
+		else if(oi.joy1.getRawButton(button2)) {
+			victorName.set(motorValue2);
+		}
+		else {
+			victorName.set(0);
+		}
+	}
+	public void runTalonTwoButton(double motorValue1,double motorValue2, int button1, int button2, TalonSRX talonName) {
+		if(oi.joy1.getRawButton(button1)) {
+			talonName.set(ControlMode.PercentOutput, motorValue1);
+		}
+		else if(oi.joy1.getRawButton(button2)){
+			talonName.set(ControlMode.PercentOutput, motorValue2);
+		}
+		else {
 			talonName.set(ControlMode.PercentOutput, 0);
 		}
 	}
@@ -167,10 +189,14 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-		testVictor(1, 9, intakeOne);
-		testVictor(1, 10, intakeTwo);
-		testVictor(1, 11, intakeThree);
-		testVictor(1, 12, intakeFour);
+
+		runVictorTwoButton(-.5, .5, 11, 12, leftIntake20A);
+		runVictorTwoButton(-.5, .5, 11, 12, rightIntake20A);
+		
+		runVictorTwoButton(-.5, .5, 9, 12, leftIntake30A);
+		runVictorTwoButton(-.5, .5, 9, 12, rightIntake30A);
+
+		
 		//test intake
 		
 		drive(oi.joy1.getY(), oi.joy1.getX());
@@ -178,43 +204,17 @@ public class Robot extends IterativeRobot {
 		runSolenoid(1, 3, shift);
 		runSolenoid(-1, 4, shift);
 		//solenoid code
+		if(liftLowerLimit.get()) {
+			runTalonTwoButton(.3, -.3, 1, 2, lift);
+		}
+		else {
+			lift.set(ControlMode.PercentOutput, 0);
+		}
+		//lift code 
 		
-		testTalon(.3, 1, lift);
-		testTalon(-.3, 2, lift);
-		//lift code
-		
-		testVictor(1, 7, climbOne);
-		testVictor(-1, 7, climbTwo);
+		runVictorOneButton(1, 7, climbOne);
+		runVictorOneButton(-1, 7, climbTwo);
 		//climb code
-		
-		
-//		if(oi.joy1.getRawButton(3)) {
-//			shift.set(DoubleSolenoid.Value.kForward);
-//		}
-//		else if(oi.joy1.getRawButton(4)) {
-//			shift.set(DoubleSolenoid.Value.kReverse);
-//		}
-		
-		
-//		if(oi.joy1.getRawButton(1)) {
-//			lift.set(ControlMode.PercentOutput, .3);
-//		}
-//		else if(oi.joy1.getRawButton(2)) {
-//			lift.set(ControlMode.PercentOutput, -.3);
-//		}
-//		else {
-//			lift.set(ControlMode.PercentOutput, 0);
-//		}
-		
-		
-//		if(oi.joy1.getRawButton(7)) {
-//			climbOne.set(-1);
-//			climbTwo.set(1);
-//		}
-//		else {
-//			climbOne.set(0);
-//			climbTwo.set(0);
-//		}
 		
 		SmartDashboard.putNumber("driveEncoderOne", driveEncoderOne.getDistance());
 		SmartDashboard.putNumber("driveEncoderTwo", driveEncoderTwo.getDistance());
