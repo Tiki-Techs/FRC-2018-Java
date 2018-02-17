@@ -107,17 +107,42 @@ public class Robot extends IterativeRobot {
 		System.out.println("Auto selected: " + m_autoSelected);
 	}
 
-	public void drive(double forward, double turn, int time) {
+	public void drive(double forward, double turn) {
 		backLeftDrive.set(ControlMode.PercentOutput, - (forward - turn));
 		frontLeftDrive.set(ControlMode.PercentOutput, -(forward - turn));
 		backRightDrive.set(ControlMode.PercentOutput, forward + turn);
 		frontRightDrive.set(ControlMode.PercentOutput, forward + turn);
-		try {
-			Thread.sleep(time);
+	}
+	public void testVictor(double motorValue, int button, Victor victorName) {
+		if(oi.joy1.getRawButton(button)) 
+		{
+			victorName.set(motorValue);
 		}
-		catch(InterruptedException e) {
-			System.out.println("guess i'll die");
+		else
+		{
+			victorName.set(0);
 		}
+	}
+	public void testTalon(double motorValue, int button, TalonSRX talonName) {
+		if(oi.joy1.getRawButton(button)) 
+		{
+			talonName.set(ControlMode.PercentOutput, motorValue);
+		}
+		else
+		{
+			talonName.set(ControlMode.PercentOutput, 0);
+		}
+	}
+	public void runSolenoid(int controlMode, int button, DoubleSolenoid solenoid) {
+		if(oi.joy1.getRawButton(button)) {
+			if(controlMode == 1) {
+				solenoid.set(DoubleSolenoid.Value.kForward);
+			}
+			else if(controlMode == -1) {
+				solenoid.set(DoubleSolenoid.Value.kReverse);
+			}
+		}
+		
 	}
 	
 	/**
@@ -141,70 +166,55 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		if(oi.joy1.getRawButton(9)) 
-		{
-			intakeOne.set(1);
-		}
-		else
-		{
-			intakeOne.set(0);
-		}
-		if(oi.joy1.getRawButton(10)) 
-		{
-			intakeTwo.set(1);
-		}
-		else
-		{
-			intakeTwo.set(0);
-		}		
-		if(oi.joy1.getRawButton(11)) 
-		{
-			intakeThree.set(1);
-		}
-		else
-		{
-			intakeThree.set(0);
-		}		
-		if(oi.joy1.getRawButton(12)) 
-		{
-			intakeFour.set(1);
-		}
-		else
-		{
-			intakeFour.set(0);
-		}
 		
-		backLeftDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
-		frontLeftDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
-		backRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
-		frontRightDrive.set(ControlMode.PercentOutput, oi.joy1.getY() + oi.joy1.getX());
+		testVictor(1, 9, intakeOne);
+		testVictor(1, 10, intakeTwo);
+		testVictor(1, 11, intakeThree);
+		testVictor(1, 12, intakeFour);
+		//test intake
 		
-		if(oi.joy1.getRawButton(3)) {
-			shift.set(DoubleSolenoid.Value.kForward);
-		}
-		else if(oi.joy1.getRawButton(4)) {
-			shift.set(DoubleSolenoid.Value.kReverse);
-		}
+		drive(oi.joy1.getY(), oi.joy1.getX());
+		//drive code
+		runSolenoid(1, 3, shift);
+		runSolenoid(-1, 4, shift);
+		//solenoid code
 		
-		if(oi.joy1.getRawButton(1)) {
-			lift.set(ControlMode.PercentOutput, .3);
-		}
-		else if(oi.joy1.getRawButton(2)) {
-			lift.set(ControlMode.PercentOutput, -.3);
-		}
-		else {
-			lift.set(ControlMode.PercentOutput, 0);
-		}
+		testTalon(.3, 1, lift);
+		testTalon(-.3, 2, lift);
+		//lift code
+		
+		testVictor(1, 7, climbOne);
+		testVictor(-1, 7, climbTwo);
+		//climb code
 		
 		
-		if(oi.joy1.getRawButton(7)) {
-			climbOne.set(-1);
-			climbTwo.set(1);
-		}
-		else {
-			climbOne.set(0);
-			climbTwo.set(0);
-		}
+//		if(oi.joy1.getRawButton(3)) {
+//			shift.set(DoubleSolenoid.Value.kForward);
+//		}
+//		else if(oi.joy1.getRawButton(4)) {
+//			shift.set(DoubleSolenoid.Value.kReverse);
+//		}
+		
+		
+//		if(oi.joy1.getRawButton(1)) {
+//			lift.set(ControlMode.PercentOutput, .3);
+//		}
+//		else if(oi.joy1.getRawButton(2)) {
+//			lift.set(ControlMode.PercentOutput, -.3);
+//		}
+//		else {
+//			lift.set(ControlMode.PercentOutput, 0);
+//		}
+		
+		
+//		if(oi.joy1.getRawButton(7)) {
+//			climbOne.set(-1);
+//			climbTwo.set(1);
+//		}
+//		else {
+//			climbOne.set(0);
+//			climbTwo.set(0);
+//		}
 		
 		SmartDashboard.putNumber("driveEncoderOne", driveEncoderOne.getDistance());
 		SmartDashboard.putNumber("driveEncoderTwo", driveEncoderTwo.getDistance());
