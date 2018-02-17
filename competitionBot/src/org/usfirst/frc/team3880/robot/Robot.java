@@ -49,6 +49,11 @@ public class Robot extends IterativeRobot {
 	Victor climbOne = new Victor(0);
 	Victor climbTwo = new Victor(1);
 	
+	Victor intakeOne = new Victor(2);
+	Victor intakeTwo = new Victor(3);
+	Victor intakeThree = new Victor(4);
+	Victor intakeFour = new Victor(5);
+	
 	
 	Compressor c = new Compressor(0);
 	DoubleSolenoid shift = new DoubleSolenoid(0, 6, 7);
@@ -58,7 +63,7 @@ public class Robot extends IterativeRobot {
 	Encoder driveEncoderTwo = new Encoder(2, 3, false, Encoder.EncodingType.k4X);
 	
 	NetworkTable table;
-//	AnalogGyro gyro;
+	AnalogGyro gyro;
 	
 	
 	public static OI oi;
@@ -102,6 +107,19 @@ public class Robot extends IterativeRobot {
 		System.out.println("Auto selected: " + m_autoSelected);
 	}
 
+	public void drive(double forward, double turn, int time) {
+		backLeftDrive.set(ControlMode.PercentOutput, - (forward - turn));
+		frontLeftDrive.set(ControlMode.PercentOutput, -(forward - turn));
+		backRightDrive.set(ControlMode.PercentOutput, forward + turn);
+		frontRightDrive.set(ControlMode.PercentOutput, forward + turn);
+		try {
+			Thread.sleep(time);
+		}
+		catch(InterruptedException e) {
+			System.out.println("guess i'll die");
+		}
+	}
+	
 	/**
 	 * This function is called periodically during autonomous.
 	 */
@@ -123,38 +141,38 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-//		if(oi.joy1.getRawButton(1)) 
-//		{
-//			backLeftDrive.set(ControlMode.PercentOutput, 1);
-//		}
-//		else
-//		{
-//			backLeftDrive.set(ControlMode.PercentOutput, 0);
-//		}
-//		if(oi.joy1.getRawButton(2)) 
-//		{
-//			frontLeftDrive.set(ControlMode.PercentOutput, 1);
-//		}
-//		else
-//		{
-//			frontLeftDrive.set(ControlMode.PercentOutput, 0);
-//		}		
-//		if(oi.joy1.getRawButton(3)) 
-//		{
-//			backRightDrive.set(ControlMode.PercentOutput, 1);
-//		}
-//		else
-//		{
-//			backRightDrive.set(ControlMode.PercentOutput, 0);
-//		}		
-//		if(oi.joy1.getRawButton(4)) 
-//		{
-//			frontRightDrive.set(ControlMode.PercentOutput, 1);
-//		}
-//		else
-//		{
-//			frontRightDrive.set(ControlMode.PercentOutput, 0);
-//		}
+		if(oi.joy1.getRawButton(9)) 
+		{
+			intakeOne.set(1);
+		}
+		else
+		{
+			intakeOne.set(0);
+		}
+		if(oi.joy1.getRawButton(10)) 
+		{
+			intakeTwo.set(1);
+		}
+		else
+		{
+			intakeTwo.set(0);
+		}		
+		if(oi.joy1.getRawButton(11)) 
+		{
+			intakeThree.set(1);
+		}
+		else
+		{
+			intakeThree.set(0);
+		}		
+		if(oi.joy1.getRawButton(12)) 
+		{
+			intakeFour.set(1);
+		}
+		else
+		{
+			intakeFour.set(0);
+		}
 		
 		backLeftDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
 		frontLeftDrive.set(ControlMode.PercentOutput, -(oi.joy1.getY() - oi.joy1.getX()));
@@ -179,7 +197,7 @@ public class Robot extends IterativeRobot {
 		}
 		
 		
-		if(oi.joy1.getRawButton(9)) {
+		if(oi.joy1.getRawButton(7)) {
 			climbOne.set(-1);
 			climbTwo.set(1);
 		}
