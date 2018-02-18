@@ -8,6 +8,8 @@
 package org.usfirst.frc.team3880.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+
+import org.usfirst.frc.team3880.robot.commands.*;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -40,11 +42,40 @@ public class OI {
 					button11 = new JoystickButton(joy1, 11),
 					button12 = new JoystickButton(joy1, 12);
 					
+	double DEAD_ZONE_Y = 0.1;
+	double DEAD_ZONE_X = 0.1;
 	
-//	public OI () {
-//		System.out.println("test");
-//		button1.whenActive(new toggle());
-//	}
+	public double getY() {
+		if(Math.abs(joy1.getY()) >= DEAD_ZONE_Y ) {
+			return joy1.getY();
+		}
+		else {
+			return 0;
+		}
+	}
+	
+	public double getX() {
+		if(Math.abs(joy1.getX()) >= DEAD_ZONE_X ) {
+			return joy1.getX();
+		}
+		else {
+			return 0;
+		}
+	}
+	
+	
+	public OI () {
+		button1.whileHeld(new LiftUp());
+		button2.whileHeld(new LiftDown());
+		
+		button3.whenPressed(new ShiftUp());
+		button4.whenPressed(new ShiftDown());
+		
+		//button7.whileHeld(new ClimbUp());
+		
+		button9.whileHeld(new CubeIntake());
+		button10.whileHeld(new CubeOuttake());
+	}
 	
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a

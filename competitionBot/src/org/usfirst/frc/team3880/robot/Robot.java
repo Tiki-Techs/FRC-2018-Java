@@ -6,9 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 package org.usfirst.frc.team3880.robot;
+import edu.wpi.first.wpilibj.GyroBase;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
+
+import org.usfirst.frc.team3880.robot.commands.CommandBase;
+import org.usfirst.frc.team3880.robot.commands.autonomous.Autonomous_DriveStraight;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -18,12 +22,17 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team3880.robot.commands.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,48 +41,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the build.properties file in the
  * project.
  */
+@SuppressWarnings("unused")
 public class Robot extends IterativeRobot {
-	private static final String kDefaultAuto = "Default";
-	private static final String kCustomAuto = "My Auto";
-	private String m_autoSelected;
 	
-	TalonSRX frontRightDrive = new TalonSRX(4);
-	TalonSRX backRightDrive = new TalonSRX(1);
-
-
-	TalonSRX frontLeftDrive = new TalonSRX(2);
-	TalonSRX backLeftDrive = new TalonSRX(3);
+	Command autonomousCommand;
 	
-	
-	TalonSRX lift = new TalonSRX(0);
-	
-	Victor climbOne = new Victor(0);
-	Victor climbTwo = new Victor(1);
-	
-	Victor leftIntake30A = new Victor(2);
-	Victor leftIntake20A = new Victor(3);
-	Victor rightIntake30A = new Victor(4);
-	Victor rightIntake20A = new Victor(5);
-	
-	
-	Compressor c = new Compressor(0);
-	DoubleSolenoid shift = new DoubleSolenoid(0, 6, 7);
-	
-	
-	Encoder driveEncoderOne = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
-	Encoder driveEncoderTwo = new Encoder(2, 3, false, Encoder.EncodingType.k4X);
 	
 	NetworkTable table;
-	AnalogGyro gyro;
+	AnalogGyro gyro = new AnalogGyro(1);
 	
-	
-	DigitalInput liftLowerLimit;
-	
-	
-	public static OI oi;
-    
-    
-	private SendableChooser<String> m_chooser = new SendableChooser<>();
+	char robotPosition;
+		
+
+	private SendableChooser<String> m_chooser;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -82,14 +62,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		
-		oi = new OI();
+		CommandBase.init();
 		
-		driveEncoderOne.setDistancePerPulse(0.0092);
-		driveEncoderTwo.setDistancePerPulse(0.0092);
+		m_chooser = new SendableChooser<>();
 		
-		m_chooser.addDefault("Default Auto", kDefaultAuto);
-		m_chooser.addObject("My Auto", kCustomAuto);
-		SmartDashboard.putData("Auto choices", m_chooser);
+//		m_chooser.addDefault("Default Auto", "");
+//		m_chooser.addObject("My Auto", kCustomAuto);
+//		SmartDashboard.putData("Auto choices", m_chooser);
 	}
 
 	/**
@@ -105,66 +84,69 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autoSelected = m_chooser.getSelected();
-		// autoSelected = SmartDashboard.getString("Auto Selector",
-		// defaultAuto);
-		System.out.println("Auto selected: " + m_autoSelected);
-	}
+//		m_autoSelected = m_chooser.getSelected() = SmartDashboard.getString("Auto Selector",
+		// defaultAuto);;
+		// autoSelected
+//		System.out.println("Auto selected: " + m_autoSelected);
+		String gameData;
 
-	public void drive(double forward, double turn) {
-		if(Math.abs(oi.joy1.getY()) >= .1 || Math.abs(oi.joy1.getX()) >=.1) {
-			backLeftDrive.set(ControlMode.PercentOutput, - (forward - turn));
-			frontLeftDrive.set(ControlMode.PercentOutput, -(forward - turn));
-			backRightDrive.set(ControlMode.PercentOutput, forward + turn);
-			frontRightDrive.set(ControlMode.PercentOutput, forward + turn);
-		}
-		else {
-			backLeftDrive.set(ControlMode.PercentOutput, 0);
-			frontLeftDrive.set(ControlMode.PercentOutput, 0);
-			backRightDrive.set(ControlMode.PercentOutput, 0);
-			frontRightDrive.set(ControlMode.PercentOutput, 0);
-		}
-	}
-	public void runVictorOneButton(double motorValue, int button, Victor victorName) {
-		if(oi.joy1.getRawButton(button)) {
-			victorName.set(motorValue);
-		}
-		else {
-			victorName.set(0);
-		}
-	}
-	public void runVictorTwoButton(double motorValue1, double motorValue2, int button1, int button2, Victor victorName) {
-		if(oi.joy1.getRawButton(button1)) {
-			victorName.set(motorValue1);
-		}
-		else if(oi.joy1.getRawButton(button2)) {
-			victorName.set(motorValue2);
-		}
-		else {
-			victorName.set(0);
-		}
-	}
-	public void runTalonTwoButton(double motorValue1,double motorValue2, int button1, int button2, TalonSRX talonName) {
-		if(oi.joy1.getRawButton(button1)) {
-			talonName.set(ControlMode.PercentOutput, motorValue1);
-		}
-		else if(oi.joy1.getRawButton(button2)){
-			talonName.set(ControlMode.PercentOutput, motorValue2);
-		}
-		else {
-			talonName.set(ControlMode.PercentOutput, 0);
-		}
-	}
-	public void runSolenoid(int controlMode, int button, DoubleSolenoid solenoid) {
-		if(oi.joy1.getRawButton(button)) {
-			if(controlMode == 1) {
-				solenoid.set(DoubleSolenoid.Value.kForward);
+		char closeSwitchPosition;
+		char scalePosition;
+		
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		
+		if (gameData.length() > 0) {
+			closeSwitchPosition = gameData.charAt(0);
+			scalePosition = gameData.charAt(1);
+			
+			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_LeftLeftLeft();
 			}
-			else if(controlMode == -1) {
-				solenoid.set(DoubleSolenoid.Value.kReverse);
+			if (robotPosition == 'C' && closeSwitchPosition == 'L' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_CenterLeftLeft();
 			}
+			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_RightLeftLeft();
+			}
+			
+			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_LeftRightLeft();
+			}
+			if (robotPosition == 'C' && closeSwitchPosition == 'R' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_CenterLeftLeft();
+			}
+			if (robotPosition == 'R' && closeSwitchPosition == 'R' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_RightRightLeft();
+			}
+			
+			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_LeftLeftRight();
+			}
+			if (robotPosition == 'C' && closeSwitchPosition == 'L' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_CenterLeftRight();
+			}
+			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_RightLeftRight();
+			}
+			
+			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_LeftRightRight();
+			}
+			if (robotPosition == 'C' && closeSwitchPosition == 'R' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_CenterRightRight();
+			}
+			if (robotPosition == 'R' && closeSwitchPosition == 'R' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_RightRightRight();
+			}
+				
 		}
 		
+		else {
+			autonomousCommand = new Autonomous_DriveStraight();   
+		}
+		
+        SmartDashboard.putData(autonomousCommand);
+
 	}
 	
 	/**
@@ -172,54 +154,26 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		switch (m_autoSelected) {
-			case kCustomAuto:
-				// Put custom auto code here
-				break;
-			case kDefaultAuto:
-			default:
-				// Put default auto code here
-				break;
-		}
+        Scheduler.getInstance().run();
 	}
-
+	
+	public void teleopInit()
+    {
+	// This makes sure that the autonomous stops running when
+	// teleop starts running. If you want the autonomous to 
+	// continue until interrupted by another command, remove
+	// this line or comment it out.
+        Scheduler.getInstance().add(new DriveStandard());
+    }
+	
 	/**
-	 * This function is called periodically during operator control.
-	 */
+     * This function is called periodically during operator control
+     */
 	@Override
-	public void teleopPeriodic() {
-		
-
-		runVictorTwoButton(-.5, .5, 11, 12, leftIntake20A);
-		runVictorTwoButton(-.5, .5, 11, 12, rightIntake20A);
-		
-		runVictorTwoButton(-.5, .5, 9, 12, leftIntake30A);
-		runVictorTwoButton(-.5, .5, 9, 12, rightIntake30A);
-
-		
-		//test intake
-		
-		drive(oi.joy1.getY(), oi.joy1.getX());
-		//drive code
-		runSolenoid(1, 3, shift);
-		runSolenoid(-1, 4, shift);
-		//solenoid code
-		if(liftLowerLimit.get()) {
-			runTalonTwoButton(.3, -.3, 1, 2, lift);
-		}
-		else {
-			lift.set(ControlMode.PercentOutput, 0);
-		}
-		//lift code 
-		
-		runVictorOneButton(1, 7, climbOne);
-		runVictorOneButton(-1, 7, climbTwo);
-		//climb code
-		
-		SmartDashboard.putNumber("driveEncoderOne", driveEncoderOne.getDistance());
-		SmartDashboard.putNumber("driveEncoderTwo", driveEncoderTwo.getDistance());
-
-	}
+    public void teleopPeriodic() 
+    {
+        Scheduler.getInstance().run();
+    }
 
 	/**
 	 * This function is called periodically during test mode.
@@ -227,4 +181,19 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 	}
+	
+	
+	public void log() {
+		SmartDashboard.putNumber("driveEncoderOne", CommandBase.drive.getEncoderOne());
+		SmartDashboard.putNumber("driveEncoderTwo", CommandBase.drive.getEncoderTwo());
+
+		SmartDashboard.putBoolean("lift lower limit", CommandBase.lift.getLowerLimit());
+		SmartDashboard.putBoolean("lift upper limit", CommandBase.lift.getUpperLimit());
+
+		SmartDashboard.putBoolean("intake left limit", CommandBase.intake.getLeftLimit());
+		SmartDashboard.putBoolean("intake right limit", CommandBase.intake.getRightLimit());
+
+	}
+	
+	
 }
