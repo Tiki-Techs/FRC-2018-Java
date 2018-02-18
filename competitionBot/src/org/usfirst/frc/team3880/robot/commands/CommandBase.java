@@ -18,6 +18,7 @@ public abstract class CommandBase extends Command {
     public static Intake intake;
     public static Lift lift;
     public static Pneumatics pneumatics;
+    public static Gyro gyro;
     
     public static void init() {      
         drive = Drive.getInstance();
@@ -25,6 +26,7 @@ public abstract class CommandBase extends Command {
         intake = Intake.getInstance();
         lift = Lift.getInstance();
         pneumatics = Pneumatics.getInstance();
+        gyro = Gyro.getInstance();
 
         //  ^^^ EVERY SUBSYSTEM MUST be init'd here.  don't move it
         

@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.usfirst.frc.team3880.robot.commands.CommandBase;
+import org.usfirst.frc.team3880.robot.commands.autonomous.Autonomous_DriveStraight;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -47,9 +49,11 @@ public class Robot extends IterativeRobot {
 	
 	NetworkTable table;
 	AnalogGyro gyro = new AnalogGyro(1);
+	
+	char robotPosition;
 		
 
-	private SendableChooser<String> m_chooser = new SendableChooser<>();
+	private SendableChooser<String> m_chooser;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -60,11 +64,9 @@ public class Robot extends IterativeRobot {
 		
 		CommandBase.init();
 		
-		// choose here what auto, i guess?
-		autonomousCommand = new Autonomous_DriveStraight();
-        SmartDashboard.putData(autonomousCommand);
-        
-//		m_chooser.addDefault("Default Auto", kDefaultAuto);
+		m_chooser = new SendableChooser<>();
+		
+//		m_chooser.addDefault("Default Auto", "");
 //		m_chooser.addObject("My Auto", kCustomAuto);
 //		SmartDashboard.putData("Auto choices", m_chooser);
 	}
@@ -86,6 +88,65 @@ public class Robot extends IterativeRobot {
 		// defaultAuto);;
 		// autoSelected
 //		System.out.println("Auto selected: " + m_autoSelected);
+		String gameData;
+
+		char closeSwitchPosition;
+		char scalePosition;
+		
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		
+		if (gameData.length() > 0) {
+			closeSwitchPosition = gameData.charAt(0);
+			scalePosition = gameData.charAt(1);
+			
+			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_LeftLeftLeft();
+			}
+			if (robotPosition == 'C' && closeSwitchPosition == 'L' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_CenterLeftLeft();
+			}
+			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_RightLeftLeft();
+			}
+			
+			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_LeftRightLeft();
+			}
+			if (robotPosition == 'C' && closeSwitchPosition == 'R' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_CenterLeftLeft();
+			}
+			if (robotPosition == 'R' && closeSwitchPosition == 'R' && scalePosition == 'L') {
+				autonomousCommand = new Autonomous_RightRightLeft();
+			}
+			
+			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_LeftLeftRight();
+			}
+			if (robotPosition == 'C' && closeSwitchPosition == 'L' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_CenterLeftRight();
+			}
+			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_RightLeftRight();
+			}
+			
+			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_LeftRightRight();
+			}
+			if (robotPosition == 'C' && closeSwitchPosition == 'R' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_CenterRightRight();
+			}
+			if (robotPosition == 'R' && closeSwitchPosition == 'R' && scalePosition == 'R') {
+				autonomousCommand = new Autonomous_RightRightRight();
+			}
+				
+		}
+		
+		else {
+			autonomousCommand = new Autonomous_DriveStraight();   
+		}
+		
+        SmartDashboard.putData(autonomousCommand);
+
 	}
 	
 	/**
