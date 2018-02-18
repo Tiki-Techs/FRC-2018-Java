@@ -19,6 +19,11 @@ public class RobotMap {
 	
 	public int COMPRESSOR = 0;
 	
+<<<<<<< HEAD
+=======
+	public int GYRO = 1;
+	
+>>>>>>> c51b9ebd4d058e6b8851e7122ec18eb67adfb5a7
 	public int SHIFT_MODULE_NUMBER = 0;
 	public int SHIFT_FORWARD = 6;
 	public int SHIFT_BACKWARD = 7;
