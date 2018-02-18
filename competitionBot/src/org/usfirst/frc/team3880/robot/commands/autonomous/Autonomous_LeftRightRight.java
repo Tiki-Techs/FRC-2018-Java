@@ -2,9 +2,9 @@ package org.usfirst.frc.team3880.robot.commands.autonomous;
 
 import org.usfirst.frc.team3880.robot.commands.CommandBase;
 
-public class Autonomous_DriveStraight extends CommandBase {
+public class Autonomous_LeftRightRight extends CommandBase {
 
-	public Autonomous_DriveStraight() {
+	public Autonomous_LeftRightRight() {
 		requires(drive);
 		requires(lift);
 		requires(gyro);

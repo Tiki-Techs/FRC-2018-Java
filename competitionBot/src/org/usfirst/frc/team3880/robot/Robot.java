@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.usfirst.frc.team3880.robot.commands.CommandBase;
-import org.usfirst.frc.team3880.robot.commands.autonomous.Autonomous_DriveStraight;
+import org.usfirst.frc.team3880.robot.commands.autonomous.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
