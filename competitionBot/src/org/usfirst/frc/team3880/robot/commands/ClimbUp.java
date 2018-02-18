@@ -20,7 +20,7 @@ public class ClimbUp extends CommandBase {
      */
     @Override
     protected void execute() {
-    	//climb.climbUp(1);
+    	climb.climbUp(1);
     }
 
     @Override

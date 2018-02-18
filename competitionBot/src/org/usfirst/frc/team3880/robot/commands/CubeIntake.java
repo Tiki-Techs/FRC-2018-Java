@@ -23,14 +23,14 @@ public class CubeIntake extends CommandBase {
     protected void execute() {
     	intake.spin(INTAKE_VALUE);
     	
-    	if (!intake.getLeftLimit()) {
+    	if (!intake.getLeftInnerLimit()) {
     		intake.leftArm(INTAKE_VALUE);
     	}
     	else {
     		intake.leftArm(0);
     	}
     	
-    	if (!intake.getRightLimit()) {
+    	if (!intake.getRightInnerLimit()) {
     		intake.rightArm(-INTAKE_VALUE);
     	}
     	else {

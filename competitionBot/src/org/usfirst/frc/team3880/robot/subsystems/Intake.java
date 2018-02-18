@@ -13,8 +13,10 @@ public class Intake extends Subsystem {
 	Victor rightIntake30A;
 	Victor rightIntake20A;
 	
-	DigitalInput leftLimit;
-	DigitalInput rightLimit;
+	DigitalInput leftInnerLimit;
+	DigitalInput rightInnerLimit;
+	DigitalInput leftOuterLimit;
+	DigitalInput rightOuterLimit;
 	
 	RobotMap hardware;
 	
@@ -40,8 +42,11 @@ public class Intake extends Subsystem {
 			rightIntake30A = new Victor(hardware.RIGHT_INTAKE_30);
 			rightIntake20A = new Victor(hardware.RIGHT_INTAKE_20);
 		
-			leftLimit = new DigitalInput(hardware.LEFT_INTAKE_LIMIT);
-			rightLimit = new DigitalInput(hardware.RIGHT_INTAKE_LIMIT);
+			leftInnerLimit = new DigitalInput(hardware.LEFT_INTAKE_INNER_LIMIT);
+			leftOuterLimit = new DigitalInput(hardware.LEFT_INTAKE_OUTER_LIMIT);
+			rightInnerLimit = new DigitalInput(hardware.RIGHT_INTAKE_INNER_LIMIT);
+			rightOuterLimit = new DigitalInput(hardware.RIGHT_INTAKE_OUTER_LIMIT);
+			
 		}
 		
 		catch (Exception e) 
@@ -64,14 +69,22 @@ public class Intake extends Subsystem {
 		rightIntake20A.set(value);
 	}
 	
-	public boolean getLeftLimit() {
-		return leftLimit.get();
+	public boolean getLeftInnerLimit() {
+		return leftInnerLimit.get();
+	}
+
+	public boolean getLeftOuterLimit() {
+		return leftOuterLimit.get();
 	}
 	
-	public boolean getRightLimit() {
-		return rightLimit.get();
+	public boolean getRightInnerLimit() {
+		return rightInnerLimit.get();
 	}
-		
+	
+	public boolean getRightOuterLimit() {
+		return rightOuterLimit.get();
+	}
+	
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

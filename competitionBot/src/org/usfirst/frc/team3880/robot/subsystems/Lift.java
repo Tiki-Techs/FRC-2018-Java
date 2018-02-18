@@ -6,13 +6,20 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+<<<<<<< HEAD
+=======
 import edu.wpi.first.wpilibj.Encoder;
+>>>>>>> c51b9ebd4d058e6b8851e7122ec18eb67adfb5a7
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Lift extends Subsystem {
 
 	TalonSRX lift;
+<<<<<<< HEAD
+	// isn't there an encoder here?
+=======
 	Encoder liftEncoder;
+>>>>>>> c51b9ebd4d058e6b8851e7122ec18eb67adfb5a7
 	
 	DigitalInput liftLowerLimit;
 	DigitalInput liftUpperLimit;
@@ -35,12 +42,18 @@ public class Lift extends Subsystem {
 		
 		try {
 			lift = new TalonSRX(hardware.LIFT_TALON);
+<<<<<<< HEAD
+			
+			liftLowerLimit = new DigitalInput(hardware.LOWER_LIFT_LIMIT);
+			liftUpperLimit = new DigitalInput(hardware.UPPER_LIFT_LIMIT);
+=======
 
         	liftEncoder = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
 
 			liftLowerLimit = new DigitalInput(hardware.LOWER_LIFT_LIMIT);
 			liftUpperLimit = new DigitalInput(hardware.UPPER_LIFT_LIMIT);
 			
+>>>>>>> c51b9ebd4d058e6b8851e7122ec18eb67adfb5a7
 		}
 		
 		catch (Exception e) {
@@ -61,10 +74,13 @@ public class Lift extends Subsystem {
 		return liftLowerLimit.get();
 	}
 	
+<<<<<<< HEAD
+=======
 	public double getEncoder() {
 		return liftEncoder.get();
 	}
 	
+>>>>>>> c51b9ebd4d058e6b8851e7122ec18eb67adfb5a7
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
