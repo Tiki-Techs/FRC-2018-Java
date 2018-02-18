@@ -46,6 +46,7 @@ public class Robot extends IterativeRobot {
 	
 	
 	NetworkTable table;
+	AnalogGyro gyro = new AnalogGyro(1);
 		
 
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
