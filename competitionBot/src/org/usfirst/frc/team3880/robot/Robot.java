@@ -46,9 +46,7 @@ public class Robot extends IterativeRobot {
 	
 	Command autonomousCommand;
 	
-	
 	NetworkTable table;
-	AnalogGyro gyro = new AnalogGyro(1);
 	
 	char robotPosition;
 		
@@ -65,6 +63,10 @@ public class Robot extends IterativeRobot {
 		CommandBase.init();
 		
 		m_chooser = new SendableChooser<>();
+		
+		// robotPosition = (L/C/R)
+		
+		CommandBase.gyro.gyro.calibrate();
 		
 //		m_chooser.addDefault("Default Auto", "");
 //		m_chooser.addObject("My Auto", kCustomAuto);
@@ -186,6 +188,8 @@ public class Robot extends IterativeRobot {
 	public void log() {
 		SmartDashboard.putNumber("driveEncoderOne", CommandBase.drive.getEncoderOne());
 		SmartDashboard.putNumber("driveEncoderTwo", CommandBase.drive.getEncoderTwo());
+		
+		SmartDashboard.putNumber("liftEncoder", CommandBase.lift.getEncoder());
 
 		SmartDashboard.putBoolean("lift lower limit", CommandBase.lift.getLowerLimit());
 		SmartDashboard.putBoolean("lift upper limit", CommandBase.lift.getUpperLimit());

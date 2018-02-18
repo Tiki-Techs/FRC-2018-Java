@@ -6,12 +6,13 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Lift extends Subsystem {
 
 	TalonSRX lift;
-	// isn't there an encoder here?
+	Encoder liftEncoder;
 	
 	DigitalInput liftLowerLimit;
 	DigitalInput liftUpperLimit;
@@ -34,9 +35,12 @@ public class Lift extends Subsystem {
 		
 		try {
 			lift = new TalonSRX(hardware.LIFT_TALON);
-			
+
+        	liftEncoder = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
+
 			liftLowerLimit = new DigitalInput(hardware.LOWER_LIFT_LIMIT);
 			liftUpperLimit = new DigitalInput(hardware.UPPER_LIFT_LIMIT);
+			
 		}
 		
 		catch (Exception e) {
@@ -55,6 +59,10 @@ public class Lift extends Subsystem {
 	
 	public boolean getLowerLimit() {
 		return liftLowerLimit.get();
+	}
+	
+	public double getEncoder() {
+		return liftEncoder.get();
 	}
 	
 	@Override

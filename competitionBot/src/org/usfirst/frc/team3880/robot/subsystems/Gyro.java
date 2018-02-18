@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Gyro extends Subsystem {
 	
-	AnalogGyro gyro;
+	public AnalogGyro gyro;
 	RobotMap hardware;
 	
 	public static Gyro instance;
@@ -26,6 +26,7 @@ public class Gyro extends Subsystem {
     	hardware = new RobotMap();
     	
     	gyro = new AnalogGyro(hardware.GYRO);
+    	
     }
     
     
