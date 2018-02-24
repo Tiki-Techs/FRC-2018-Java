@@ -12,11 +12,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.usfirst.frc.team3880.robot.commands.CommandBase;
-<<<<<<< HEAD
-import org.usfirst.frc.team3880.robot.commands.autonomous.Autonomous_DriveStraight;
-=======
 import org.usfirst.frc.team3880.robot.commands.autonomous.*;
->>>>>>> c51b9ebd4d058e6b8851e7122ec18eb67adfb5a7
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -47,19 +43,10 @@ import org.usfirst.frc.team3880.robot.commands.*;
  */
 @SuppressWarnings("unused")
 public class Robot extends IterativeRobot {
-<<<<<<< HEAD
-	
-	Command autonomousCommand;
-	
-	
-	NetworkTable table;
-	AnalogGyro gyro = new AnalogGyro(1);
-=======
 	
 	Command autonomousCommand;
 	
 	NetworkTable table;
->>>>>>> c51b9ebd4d058e6b8851e7122ec18eb67adfb5a7
 	
 	char robotPosition;
 		
@@ -74,17 +61,11 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		
 		CommandBase.init();
-<<<<<<< HEAD
-		
-		m_chooser = new SendableChooser<>();
-=======
-		
 		m_chooser = new SendableChooser<>();
 		
 		// robotPosition = (L/C/R)
 		
 		CommandBase.gyro.gyro.calibrate();
->>>>>>> c51b9ebd4d058e6b8851e7122ec18eb67adfb5a7
 		
 //		m_chooser.addDefault("Default Auto", "");
 //		m_chooser.addObject("My Auto", kCustomAuto);
@@ -124,7 +105,6 @@ public class Robot extends IterativeRobot {
 			}
 			if (robotPosition == 'C' && closeSwitchPosition == 'L' && scalePosition == 'L') {
 				autonomousCommand = new Autonomous_CenterLeftLeft();
-<<<<<<< HEAD
 			}
 			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'L') {
 				autonomousCommand = new Autonomous_RightLeftLeft();
@@ -133,16 +113,6 @@ public class Robot extends IterativeRobot {
 			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'L') {
 				autonomousCommand = new Autonomous_LeftRightLeft();
 			}
-=======
-			}
-			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'L') {
-				autonomousCommand = new Autonomous_RightLeftLeft();
-			}
-			
-			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'L') {
-				autonomousCommand = new Autonomous_LeftRightLeft();
-			}
->>>>>>> c51b9ebd4d058e6b8851e7122ec18eb67adfb5a7
 			if (robotPosition == 'C' && closeSwitchPosition == 'R' && scalePosition == 'L') {
 				autonomousCommand = new Autonomous_CenterLeftLeft();
 			}
@@ -170,21 +140,12 @@ public class Robot extends IterativeRobot {
 				autonomousCommand = new Autonomous_RightRightRight();
 			}
 				
-<<<<<<< HEAD
 		}
 		
 		else {
 			autonomousCommand = new Autonomous_DriveStraight();   
 		}
 		
-=======
-		}
-		
-		else {
-			autonomousCommand = new Autonomous_DriveStraight();   
-		}
-		
->>>>>>> c51b9ebd4d058e6b8851e7122ec18eb67adfb5a7
         SmartDashboard.putData(autonomousCommand);
 
 	}
@@ -229,16 +190,8 @@ public class Robot extends IterativeRobot {
 	public void log() {
 		SmartDashboard.putNumber("driveEncoderOne", CommandBase.drive.getEncoderOne());
 		SmartDashboard.putNumber("driveEncoderTwo", CommandBase.drive.getEncoderTwo());
-<<<<<<< HEAD
-=======
 		
 		SmartDashboard.putNumber("liftEncoder", CommandBase.lift.getEncoder());
-<<<<<<< HEAD
-		
-		SmartDashboard.putNumber("gyro angle", CommandBase.gyro.gyro.getAngle());
-=======
->>>>>>> c51b9ebd4d058e6b8851e7122ec18eb67adfb5a7
->>>>>>> 90509228cb5bd8d2dc46fe90e8bc5da9a811cced
 
 		SmartDashboard.putBoolean("lift lower limit", CommandBase.lift.getLowerLimit());
 		SmartDashboard.putBoolean("lift upper limit", CommandBase.lift.getUpperLimit());
