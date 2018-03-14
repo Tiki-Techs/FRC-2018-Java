@@ -18,16 +18,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-//	static Joystick xbox = new Joystick(0);
-//	Button 	triangleButton = new JoystickButton(xbox, 1), 
-//					circleButton = new JoystickButton(xbox, 2),
-//					xButton = new JoystickButton(xbox, 3), 
-//					squareButton = new JoystickButton(xbox, 4),
-//					button5 = new JoystickButton(xbox, 5), 
-//					button6 = new JoystickButton(xbox, 6),
-//					button7 = new JoystickButton(xbox, 7), 
-//					button8 = new JoystickButton(xbox, 8);
-	
+
 	public Joystick joy1 = new Joystick(0);
 	public Button 	button1 = new JoystickButton(joy1, 1), 
 					button2 = new JoystickButton(joy1, 2),
@@ -41,7 +32,19 @@ public class OI {
 					button10 = new JoystickButton(joy1, 10),
 					button11 = new JoystickButton(joy1, 11),
 					button12 = new JoystickButton(joy1, 12);
-					
+		
+	public Joystick xbox = new Joystick(1);
+	public Button 	AButton = new JoystickButton(xbox, 0), 
+					BButton = new JoystickButton(xbox, 1),
+					XButton = new JoystickButton(xbox, 2), 
+					YButton = new JoystickButton(xbox, 3),
+					leftButton = new JoystickButton(xbox, 4),
+					rightButton = new JoystickButton(xbox, 5),
+					leftStickButton = new JoystickButton(xbox, 8),
+					rightStickButton = new JoystickButton(xbox, 9);			
+	
+//	public Trigger 
+	
 	double DEAD_ZONE_Y = 0.1;
 	double DEAD_ZONE_X = 0.1;
 	
@@ -63,18 +66,71 @@ public class OI {
 		}
 	}
 	
+	public int getPOV() {
+		return joy1.getPOV();
+	}
+	
+	public double getThrottle() {
+		return joy1.getThrottle();
+	}
+	
+	
+	public double getXboxLeftX() {
+		return xbox.getRawAxis(0);
+	}
+	
+	public double getXboxLeftY() {
+		return xbox.getRawAxis(1);
+	}
+	
+	public double getXboxRightX() {
+		return xbox.getRawAxis(4);
+	}
+	
+	public double getXboxRightY() {
+		return xbox.getRawAxis(5);
+	}
+	
+	public double getXboxLeftTrigger() {
+		return xbox.getRawAxis(2);
+	}
+	
+	public double getXboxRightTrigger() {
+		return xbox.getRawAxis(3);
+	}
+	
+	public int getXboxPOV() {
+		return xbox.getPOV();
+	}
+	
 	
 	public OI () {
+		
+		
 		button1.whileHeld(new LiftUp());
 		button2.whileHeld(new LiftDown());
 		
-		button3.whenPressed(new ShiftUp());
-		button4.whenPressed(new ShiftDown());
+		button3.whenPressed(new ShiftSpeed());
+		button4.whenPressed(new ShiftTorque());
 		
-		//button7.whileHeld(new ClimbUp());
+		button5.whileHeld(new CubeIntakeWheels());
+		button6.whileHeld(new CubeOuttakeWheels());
+
+		//button8
 		
-		button9.whileHeld(new CubeIntake());
-		button10.whileHeld(new CubeOuttake());
+		button7.whileHeld(new ClimbUp());
+		
+		button9.whileHeld(new LeftArmIn());
+		button10.whileHeld(new RightArmIn());
+		button11.whileHeld(new LeftArmOut());
+		button12.whileHeld(new RightArmOut());
+		
+		leftStickButton.whenPressed(new LeftArmJoystickControl());
+		rightStickButton.whenPressed(new RightArmJoystickControl());
+
+		
+		// POV
+		// Throttle
 	}
 	
 	//// CREATING BUTTONS

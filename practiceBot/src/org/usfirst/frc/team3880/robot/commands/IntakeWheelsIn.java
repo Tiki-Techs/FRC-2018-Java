@@ -2,9 +2,11 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class CubeOuttake extends CommandBase {
-	double OUTTAKE_VALUE = -.1;
-	public CubeOuttake() {
+public class IntakeWheelsIn extends CommandBase {
+	
+	
+	double INTAKE_VALUE = 1;
+	public IntakeWheelsIn() {
     	requires(intake);
     }
 
@@ -12,7 +14,6 @@ public class CubeOuttake extends CommandBase {
     protected void initialize() {
     	
     }
-
     /*
      * execute() - In our execute method we call a tankDrive method we have created in our subsystem. This method takes two speeds as a parameter which we get from methods in the OI class.
      * These methods abstract the joystick objects so that if we want to change how we get the speed later we can do so without modifying our commands
@@ -20,41 +21,26 @@ public class CubeOuttake extends CommandBase {
      */
     @Override
     protected void execute() {
-    	intake.spin(OUTTAKE_VALUE);
-    	
-    	
-    	if (!intake.getLeftOuterLimit()) {
-    		intake.leftArm(OUTTAKE_VALUE);
-    	}
-    	else {
-    		intake.leftArm(0);
-    	}
-    	
-    	if (!intake.getRightOuterLimit()) {
-    		intake.rightArm(-OUTTAKE_VALUE);
-    	}
-    	else {
-    		intake.rightArm(0);
-    	}
+    	intake.setWheelRight(INTAKE_VALUE);
+    	intake.setWheelLeft(-INTAKE_VALUE);
     }
 
     @Override
     protected void end() {
-    	intake.spin(0);
-    	intake.leftArm(0);
-    	intake.rightArm(0);
+    	intake.setWheelRight(0);
+    	intake.setWheelLeft(0);
     }
 
     @Override
     protected void interrupted() {
-    	end();
+    	//end();
     }
     
 	
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

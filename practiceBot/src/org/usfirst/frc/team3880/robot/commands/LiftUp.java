@@ -22,7 +22,9 @@ public class LiftUp extends CommandBase {
      */
     @Override
     protected void execute() {
-    	lift.set(POWER);
+    	if (!lift.getUpperLimit()) {
+    		lift.set(POWER);
+    	}    
     }
 
     @Override

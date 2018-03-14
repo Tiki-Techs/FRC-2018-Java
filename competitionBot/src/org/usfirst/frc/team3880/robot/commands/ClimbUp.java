@@ -4,6 +4,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class ClimbUp extends CommandBase {
 
+	
+	double WINCH_STRENGTH = 1;
+	
 	public ClimbUp() {
     	requires(climb);
     }
@@ -20,11 +23,12 @@ public class ClimbUp extends CommandBase {
      */
     @Override
     protected void execute() {
-    	climb.climbUp(1);
+    	climb.climbUp(WINCH_STRENGTH);
     }
 
     @Override
     protected void end() {
+    	climb.climbUp(0);
     }
 
     @Override

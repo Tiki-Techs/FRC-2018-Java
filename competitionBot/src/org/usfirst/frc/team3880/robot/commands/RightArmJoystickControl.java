@@ -2,12 +2,10 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class LiftUp extends CommandBase {
-	
-	double POWER = 0.8;
-
-	public LiftUp() {
-    	requires(lift);
+public class RightArmJoystickControl extends CommandBase {
+		
+	public RightArmJoystickControl() {
+    	requires(rightArm);
     }
 
     @Override
@@ -22,12 +20,24 @@ public class LiftUp extends CommandBase {
      */
     @Override
     protected void execute() {
-    	lift.set(POWER);
+      	
+    	double val = -oi.getXboxRightX();
+    	
+    	if (val < 0 && !rightArm.getOuterLimit()) {
+    		rightArm.set(val);
+    	}
+    	else if (val > 0 && !rightArm.getInnerLimit()) {
+    		rightArm.set(val);
+    	}
+    	else {
+    		rightArm.set(0);
+    	}
+
     }
 
     @Override
     protected void end() {
-    	lift.set(0);
+    	rightArm.set(0);
     }
 
     @Override
@@ -39,7 +49,7 @@ public class LiftUp extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return lift.getUpperLimit();
+		return false;
 	}
 
 }

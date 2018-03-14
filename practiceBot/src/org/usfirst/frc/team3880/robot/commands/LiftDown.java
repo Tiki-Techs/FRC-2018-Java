@@ -2,11 +2,11 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class LiftUp extends CommandBase {
+public class LiftDown extends CommandBase {
 	
-	double POWER = 0.8;
+	double POWER = -0.3; // down: negative
 
-	public LiftUp() {
+	public LiftDown() {
     	requires(lift);
     }
 
@@ -22,7 +22,9 @@ public class LiftUp extends CommandBase {
      */
     @Override
     protected void execute() {
-    	lift.set(POWER);
+    	if (!lift.getLowerLimit()) {
+    		lift.set(POWER);
+    	}
     }
 
     @Override
@@ -39,7 +41,7 @@ public class LiftUp extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return lift.getUpperLimit();
+		return lift.getLowerLimit();
 	}
 
 }

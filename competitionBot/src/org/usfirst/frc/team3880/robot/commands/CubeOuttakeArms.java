@@ -2,12 +2,11 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class LiftUp extends CommandBase {
-	
-	double POWER = 0.8;
-
-	public LiftUp() {
-    	requires(lift);
+public class CubeOuttakeArms extends CommandBase {
+	double OUTTAKE_VALUE = -.5;
+	public CubeOuttakeArms() {
+    	requires(leftArm);
+    	requires(rightArm);
     }
 
     @Override
@@ -22,12 +21,26 @@ public class LiftUp extends CommandBase {
      */
     @Override
     protected void execute() {
-    	lift.set(POWER);
+    	
+     	if (!leftArm.getOuterLimit()) {
+    		leftArm.set(-OUTTAKE_VALUE);
+    	}
+    	else {
+    		leftArm.set(0);
+    	}
+    
+    	if (!rightArm.getOuterLimit()) {
+    		rightArm.set(OUTTAKE_VALUE);
+    	}
+    	else {
+    		rightArm.set(0);
+    	}
     }
 
     @Override
     protected void end() {
-    	lift.set(0);
+    	leftArm.set(0);
+    	rightArm.set(0);
     }
 
     @Override
@@ -39,7 +52,7 @@ public class LiftUp extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return lift.getUpperLimit();
+		return false;
 	}
 
 }

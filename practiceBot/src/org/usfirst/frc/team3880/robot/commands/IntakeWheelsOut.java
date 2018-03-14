@@ -2,12 +2,12 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class LiftUp extends CommandBase {
+public class IntakeWheelsOut extends CommandBase {
 	
-	double POWER = 0.8;
-
-	public LiftUp() {
-    	requires(lift);
+	
+	double OUTTAKE_VALUE = -1;
+	public IntakeWheelsOut() {
+    	requires(intake);
     }
 
     @Override
@@ -22,12 +22,14 @@ public class LiftUp extends CommandBase {
      */
     @Override
     protected void execute() {
-    	lift.set(POWER);
+    	intake.setWheelRight(OUTTAKE_VALUE);
+    	intake.setWheelLeft(-OUTTAKE_VALUE);
     }
 
     @Override
     protected void end() {
-    	lift.set(0);
+    	intake.setWheelRight(0);
+    	intake.setWheelLeft(0);
     }
 
     @Override
@@ -39,7 +41,7 @@ public class LiftUp extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return lift.getUpperLimit();
+		return true;
 	}
 
 }

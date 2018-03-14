@@ -2,26 +2,25 @@ package org.usfirst.frc.team3880.robot.commands.autonomous;
 
 import org.usfirst.frc.team3880.robot.commands.CommandBase;
 
-public class Autonomous_RightLeftLeft extends CommandBase {
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
-	public Autonomous_RightLeftLeft() {
-		requires(drive);
+public class Autonomous_DriveStraight extends CommandBase {
+
+	double DRIVE_VALUE = 0.1;
+	public Autonomous_DriveStraight() {
 		requires(lift);
-		requires(gyro);
-		requires(leftIntakeWheel);
-		requires(rightIntakeWheel);
-		requires(leftArm);
-		requires(rightArm);
-		}
+		requires(intake);
+	}
 	
 	 @Override
 	 protected void initialize() {
 	    	
 	 }
 
+
 	 @Override
 	 protected void execute() {
-	 
+	    	
 	 }
 
 	 @Override

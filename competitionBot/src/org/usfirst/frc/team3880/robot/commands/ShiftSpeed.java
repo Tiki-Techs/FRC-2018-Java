@@ -2,11 +2,11 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
-public class ShiftDown extends CommandBase {
+public class ShiftSpeed extends CommandBase {
 
 	boolean shifted = false;
 	
-    public ShiftDown() {
+    public ShiftSpeed() {
     	requires(pneumatics);
     }
 
@@ -20,7 +20,7 @@ public class ShiftDown extends CommandBase {
      * (for example, if we want the joysticks to be less sensitive, we can multiply them by .5 in the getLeftSpeed method and leave our command the same).
      */
     protected void execute() {
-    	pneumatics.Shift(DoubleSolenoid.Value.kReverse);
+    	pneumatics.Shift(DoubleSolenoid.Value.kForward);
     	shifted = true;
     }
 

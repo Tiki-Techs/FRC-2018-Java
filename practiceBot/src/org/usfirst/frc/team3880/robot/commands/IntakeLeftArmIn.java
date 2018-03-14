@@ -2,10 +2,10 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class CubeIntake extends CommandBase {
+public class IntakeLeftArmIn extends CommandBase {
 	
-	double INTAKE_VALUE = .1;
-	public CubeIntake() {
+	
+	public IntakeLeftArmIn() {
     	requires(intake);
     }
 
@@ -21,28 +21,11 @@ public class CubeIntake extends CommandBase {
      */
     @Override
     protected void execute() {
-    	intake.spin(INTAKE_VALUE);
-    	
-    	if (!intake.getLeftInnerLimit()) {
-    		intake.leftArm(INTAKE_VALUE);
-    	}
-    	else {
-    		intake.leftArm(0);
-    	}
-    	
-    	if (!intake.getRightInnerLimit()) {
-    		intake.rightArm(-INTAKE_VALUE);
-    	}
-    	else {
-    		intake.rightArm(0);
-    	}
+//    	intake.leftArmIn();
     }
 
     @Override
     protected void end() {
-    	intake.spin(0);
-    	intake.leftArm(0);
-    	intake.rightArm(0);
     }
 
     @Override
@@ -54,7 +37,7 @@ public class CubeIntake extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }
