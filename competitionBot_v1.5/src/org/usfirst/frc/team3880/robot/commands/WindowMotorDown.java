@@ -2,12 +2,12 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class LiftDown extends CommandBase {
+public class WindowMotorDown extends CommandBase {
 	
-	double POWER = -0.3; // down: negative
+	double POWER = -0.8;
 
-	public LiftDown() {
-    	requires(lift);
+	public WindowMotorDown() {
+    	requires(windowMotor);
     }
 
     @Override
@@ -22,18 +22,12 @@ public class LiftDown extends CommandBase {
      */
     @Override
     protected void execute() {
-//    	if (lift.getEncoderPosition > 100) {
-    		lift.set(POWER);
-//    	}
-    		
-//    	else {
-//    		lift.set(0);
-//    	}
+    	windowMotor.set(POWER);
     }
 
     @Override
     protected void end() {
-    	lift.set(0);
+    	windowMotor.set(0);
     }
 
     @Override

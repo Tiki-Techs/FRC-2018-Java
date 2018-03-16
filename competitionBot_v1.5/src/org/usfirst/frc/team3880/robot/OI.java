@@ -9,6 +9,8 @@ package org.usfirst.frc.team3880.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 
+import org.usfirst.frc.team3880.robot.triggers.*;
+
 import org.usfirst.frc.team3880.robot.commands.*;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -48,7 +50,7 @@ public class OI {
 					buttonL11 = new JoystickButton(joy2, 11),
 					buttonL12 = new JoystickButton(joy2, 12);
 		
-	public Joystick xbox = new Joystick(2);
+	public static Joystick xbox = new Joystick(2);
 	public Button 	AButton = new JoystickButton(xbox, 1), 
 					BButton = new JoystickButton(xbox, 2),
 					XButton = new JoystickButton(xbox, 3), 
@@ -60,7 +62,8 @@ public class OI {
 					leftStickButton = new JoystickButton(xbox, 9),
 					rightStickButton = new JoystickButton(xbox, 10);
 	
-//	public Trigger 
+	private Trigger xboxLeftTrigger = new XboxLeftTrigger();
+	private Trigger xboxRightTrigger = new XboxRightTrigger();
 	
 	public OI (int mode) {
 		
@@ -93,7 +96,7 @@ public class OI {
 			
 	
 			/* XBOX */
-	
+		
 			
 			leftButton.whileHeld(new LeftWheelOut());
 			rightButton.whileHeld(new RightWheelOut());
@@ -139,8 +142,8 @@ public class OI {
 			
 			rightStickButton.whileHeld(new ClimbUp());
 			
-//			leftTrigger.whileActive(new WindowMotorDown());
-//			rightTrigger.whileActive(new WindowMotorUp());
+			xboxRightTrigger.whileActive(new WindowMotorUp());
+			xboxLeftTrigger.whileActive(new WindowMotorDown());
 			
 			
 			// controller 2- intake and lift
@@ -253,11 +256,11 @@ public class OI {
 		return xbox.getRawAxis(5);
 	}
 	
-	public double getXboxLeftTrigger() {
+	public static double getXboxLeftTrigger() {
 		return xbox.getRawAxis(2);
 	}
 	
-	public double getXboxRightTrigger() {
+	public static double getXboxRightTrigger() {
 		return xbox.getRawAxis(3);
 	}
 	
