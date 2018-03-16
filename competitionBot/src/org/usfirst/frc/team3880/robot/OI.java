@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import org.usfirst.frc.team3880.robot.commands.*;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -56,7 +57,10 @@ public class OI {
 					rightButton = new JoystickButton(xbox, 6),
 					selectButton = new JoystickButton(xbox, 7),
 					startButton = new JoystickButton(xbox, 8),
-					rightStickButton = new JoystickButton(xbox, 10);			
+					leftStickButton = new JoystickButton(xbox, 9),
+					rightStickButton = new JoystickButton(xbox, 10);
+	public Trigger  leftTrigger = new JoystickTrigger(xbox, 1),
+					rightTrigger = new JoystickTrigger(xbox, 2);
 	
 //	public Trigger 
 	
@@ -132,9 +136,30 @@ public class OI {
 			XButton.whenPressed(new ShiftTorque());
 			BButton.whenPressed(new ShiftSpeed());
 			
-			LeftButton.whileHeld(new CubeIntakeWheelsOut);
-			RightButton.whileHeld(new CubeIntakeWheelsIn);
+			leftButton.whileHeld(new CubeIntakeWheelsOut());
+			rightButton.whileHeld(new CubeIntakeWheelsIn());
 			
+			selectButton.whenPressed(new CubeIntakeArms());
+			startButton.whenPressed(new CubeOuttakeArms());
+			
+			rightStickButton.whileHeld(new ClimbUp());
+			
+			leftTrigger.whileActive(new WindowMotorDown());
+			rightTrigger.whileActive(new WindowMotorUp());
+			
+			
+			// controller 2- intake and lift
+			buttonR3.whileHeld(new CubeIntakeWheels());
+			buttonR4.whilelHeld(new CubeOuttakeWheels());
+			
+			buttonR5.whenPressed(new CubeIntakeArms());
+			buttonR6.whenPressed(new CubeOuttakeArms());
+			
+			buttonR1.whileHeld(new LiftUp());
+			buttonR2.whileHeld(new liftDown());
+			
+			buttonR9.whileHeld(new ClimbUp());
+			buttonR10.whileHeld(new ClimbDown());
 			
 		}
 

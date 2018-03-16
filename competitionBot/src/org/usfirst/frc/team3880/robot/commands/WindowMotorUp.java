@@ -22,12 +22,12 @@ public class WindowMotorUp extends CommandBase {
      */
     @Override
     protected void execute() {
-//    	if (!windowMotor.windowLimit()) {
+    	if (!windowMotor.windowLimit()) {
     		windowMotor.set(POWER);
-//    	}    
-//    	else {
-//    		windowMotor.set(0);
-//    	}
+    	}    
+    	else {
+    		windowMotor.set(0);
+    	}
     }
 
     @Override

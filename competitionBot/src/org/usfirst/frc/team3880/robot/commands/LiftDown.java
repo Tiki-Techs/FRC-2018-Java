@@ -25,6 +25,10 @@ public class LiftDown extends CommandBase {
 //    	if (lift.getEncoderPosition > 100) {
     		lift.set(POWER);
 //    	}
+    		
+//    	else {
+//    		lift.set(0);
+//    	}
     }
 
     @Override

@@ -81,7 +81,7 @@ public class Drive extends Subsystem {
 			backRightDrive.set(ControlMode.PercentOutput, right);
 			frontRightDrive.set(ControlMode.PercentOutput, right);
 		}
-		else if(CommandBase.OI_MODE == 1) {
+		else if(CommandBase.OI_MODE == 1 || CommandBase.OI_MODE == 3) {
 			backLeftDrive.set(ControlMode.PercentOutput, -(left - right));
 			frontLeftDrive.set(ControlMode.PercentOutput, -(left - right));
 			backRightDrive.set(ControlMode.PercentOutput, left + right);

@@ -51,9 +51,9 @@ public class WindowMotor extends Subsystem {
 	public void set(double value) {
 		windowMotor.set(value);
 	}
-//	public double getLimit() {
-//		return windowLimit.get();
-//	}
+	public double getLimit() {
+		return windowLimit.get();
+	}
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

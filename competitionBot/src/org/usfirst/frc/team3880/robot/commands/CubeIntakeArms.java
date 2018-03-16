@@ -2,6 +2,8 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 public class CubeIntakeArms extends CommandBase {
 	
 	double INTAKE_VALUE = .5;
@@ -25,25 +27,12 @@ public class CubeIntakeArms extends CommandBase {
     protected void execute() {
       	
     	
-    	if (!leftArm.getInnerLimit()) {
-    		leftArm.set(-INTAKE_VALUE);
-    	}
-    	else {
-    		leftArm.set(0);
-    	}
-    
-    	if (!rightArm.getInnerLimit()) {
-    		rightArm.set(INTAKE_VALUE);
-    	}
-    	else {
-    		rightArm.set(0);
-    	}
+    	leftArm.set(DoubleSolenoid.Value.kForward);
+    	rightArm.set(DoubleSolenoid.Value.kForward);
     }
 
     @Override
     protected void end() {
-    	leftArm.set(0);
-    	rightArm.set(0);
     }
 
     @Override
