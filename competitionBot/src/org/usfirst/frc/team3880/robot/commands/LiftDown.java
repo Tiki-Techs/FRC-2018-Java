@@ -45,7 +45,7 @@ public class LiftDown extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return lift.getLowerLimit();
+		return false;
 	}
 
 }

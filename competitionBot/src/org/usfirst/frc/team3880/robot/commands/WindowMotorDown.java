@@ -2,12 +2,12 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class LiftUp extends CommandBase {
+public class WindowMotorDown extends CommandBase {
 	
 	double POWER = -0.8;
 
-	public LiftUp() {
-    	requires(lift);
+	public WindowMotorDown() {
+    	requires(windowMotor);
     }
 
     @Override

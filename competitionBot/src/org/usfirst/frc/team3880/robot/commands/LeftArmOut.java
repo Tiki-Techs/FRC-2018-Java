@@ -30,7 +30,7 @@ public class LeftArmOut extends CommandBase {
 
     @Override
     protected void end() {
-    	leftArm.set(0);
+    	
     }
 
     @Override

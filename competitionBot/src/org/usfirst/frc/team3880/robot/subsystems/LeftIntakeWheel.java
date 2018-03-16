@@ -1,7 +1,6 @@
 package org.usfirst.frc.team3880.robot.subsystems;
 
 import org.usfirst.frc.team3880.robot.RobotMap;
-import org.usfirst.frc.team3880.robot.commands.LeftWheelJoystickControl;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Victor;

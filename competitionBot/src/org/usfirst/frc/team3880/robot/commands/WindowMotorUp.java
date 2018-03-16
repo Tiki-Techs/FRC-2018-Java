@@ -7,7 +7,7 @@ public class WindowMotorUp extends CommandBase {
 	double POWER = 0.8;
 
 	public WindowMotorUp() {
-    	requires(WindowMotor);
+    	requires(windowMotor);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class WindowMotorUp extends CommandBase {
      */
     @Override
     protected void execute() {
-    	if (!windowMotor.windowLimit()) {
+    	if (!windowMotor.getLimit()) {
     		windowMotor.set(POWER);
     	}    
     	else {

@@ -1,8 +1,6 @@
 package org.usfirst.frc.team3880.robot.subsystems;
 
 import org.usfirst.frc.team3880.robot.RobotMap;
-import org.usfirst.frc.team3880.robot.commands.LeftArmJoystickControl;
-import org.usfirst.frc.team3880.robot.commands.RightArmJoystickControl;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;

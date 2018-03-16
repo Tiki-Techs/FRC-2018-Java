@@ -15,7 +15,6 @@ public class Lift extends Subsystem {
 
 	TalonSRX lift;
 	
-	DigitalInput liftLowerLimit;
 	DigitalInput liftUpperLimit;
 	
 	RobotMap hardware;
@@ -38,7 +37,6 @@ public class Lift extends Subsystem {
 			lift = new TalonSRX(hardware.LIFT_TALON);
 
 			lift.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,0); /* PIDLoop=0, timeoutMs=0 */
-			liftLowerLimit = new DigitalInput(hardware.LOWER_LIFT_LIMIT);
 			liftUpperLimit = new DigitalInput(hardware.UPPER_LIFT_LIMIT);
 			
 		}

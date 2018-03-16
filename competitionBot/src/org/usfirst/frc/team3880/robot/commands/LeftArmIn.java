@@ -31,7 +31,6 @@ public class LeftArmIn extends CommandBase {
 
     @Override
     protected void end() {
-    	leftArm.set(0);
     }
 
     @Override

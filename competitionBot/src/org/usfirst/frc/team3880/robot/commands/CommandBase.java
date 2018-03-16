@@ -22,9 +22,10 @@ public abstract class CommandBase extends Command {
     public static Lift lift;
     public static Pneumatics pneumatics;
     public static Gyro gyro;
+    public static WindowMotor windowMotor;
     
     
-    public static int OI_MODE = 1;
+    public static int OI_MODE = 3;
     
     public static void init() {      
         drive = Drive.getInstance();
@@ -36,6 +37,7 @@ public abstract class CommandBase extends Command {
         lift = Lift.getInstance();
         pneumatics = Pneumatics.getInstance();
         gyro = Gyro.getInstance();
+        windowMotor = WindowMotor.getInstance();
 
         //  ^^^ EVERY SUBSYSTEM MUST be init'd here.  don't move it
         

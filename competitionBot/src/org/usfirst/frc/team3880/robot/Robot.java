@@ -235,16 +235,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("gyroAngleY", CommandBase.gyro.gyro.getAngleY());
 		SmartDashboard.putNumber("gyroAngleZ", CommandBase.gyro.gyro.getAngleZ());
 		
-		SmartDashboard.putBoolean("lift lower limit", CommandBase.lift.getLowerLimit());
 		SmartDashboard.putBoolean("lift upper limit", CommandBase.lift.getUpperLimit());
 
-		SmartDashboard.putBoolean("intake left inner limit", CommandBase.leftArm.getInnerLimit());
-		SmartDashboard.putBoolean("intake right inner limit", CommandBase.rightArm.getInnerLimit());
+
 		
-		SmartDashboard.putNumber("IntakeLeftEncoderVel", CommandBase.leftArm.getEncoderVel());
-		SmartDashboard.putNumber("InatakeRightEncoderVel", CommandBase.rightArm.getEncoderVel());
-		SmartDashboard.putNumber("IntakeLeftEncoderPos", CommandBase.leftArm.getEncoderPos());
-		SmartDashboard.putNumber("IntakeRightEncoderPos", CommandBase.rightArm.getEncoderPos());
 
 	}
 	

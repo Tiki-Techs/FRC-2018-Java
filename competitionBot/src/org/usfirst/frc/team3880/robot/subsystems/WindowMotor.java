@@ -1,8 +1,7 @@
 package org.usfirst.frc.team3880.robot.subsystems;
 
 import org.usfirst.frc.team3880.robot.RobotMap;
-import org.usfirst.frc.team3880.robot.commands.LeftArmJoystickControl;
-import org.usfirst.frc.team3880.robot.commands.RightArmJoystickControl;
+
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -15,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class WindowMotor extends Subsystem {
 //window motor refers to tilt control on intake
-	VictorSP windowMotor;
+	Victor windowMotor;
 	DigitalInput windowLimit;
 	
 	RobotMap hardware;
@@ -36,8 +35,8 @@ public class WindowMotor extends Subsystem {
 		hardware = new RobotMap(); 
 		
 		try {
-//			windowLimit = new DigitalInput(hardware.WINDOW_UPPER_LIMIT);
-			windowMotor = new VictorSP(hardware.WINDOW_MOTOR_VICTOR);
+			windowLimit = new DigitalInput(hardware.WINDOW_UPPER_LIMIT);
+			windowMotor = new Victor(hardware.WINDOW_MOTOR_VICTOR);
 			
 		}
 		
@@ -51,7 +50,7 @@ public class WindowMotor extends Subsystem {
 	public void set(double value) {
 		windowMotor.set(value);
 	}
-	public double getLimit() {
+	public boolean getLimit() {
 		return windowLimit.get();
 	}
 	@Override

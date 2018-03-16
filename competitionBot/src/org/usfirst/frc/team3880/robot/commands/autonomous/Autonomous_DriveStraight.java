@@ -28,18 +28,33 @@ public class Autonomous_DriveStraight extends CommandBase {
 
 	 @Override
 	 protected void execute() {
-//	    	double LEFT_ENC_RATE = CommandBase.drive.getEncoderLeftRate();
-//	    	double RIGHT_ENC_RATE = CommandBase.drive.getEncoderLeftRate();
-		 while(timer < 2) {
-			 drive.backLeftDrive.set(ControlMode.PercentOutput, .4);
-			 drive.frontLeftDrive.set(ControlMode.PercentOutput, .4);
-			 drive.backRightDrive.set(ControlMode.PercentOutput, .4);
-			 drive.frontRightDrive.set(ControlMode.PercentOutput, .4);
-		 }
-//	    	drive.backLeftDrive.set(ControlMode.PercentOutput, DRIVE_VALUE * (RIGHT_ENC_RATE / LEFT_ENC_RATE));
-//	    	drive.frontLeftDrive.set(ControlMode.PercentOutput, DRIVE_VALUE * (RIGHT_ENC_RATE / LEFT_ENC_RATE));
-//	    	drive.backRightDrive.set(ControlMode.PercentOutput, DRIVE_VALUE * -(LEFT_ENC_RATE / RIGHT_ENC_RATE));
-//	    	drive.frontRightDrive.set(ControlMode.PercentOutput, DRIVE_VALUE * -(LEFT_ENC_RATE / RIGHT_ENC_RATE));
+	   	 double LEFT_ENC_DISTANCE = CommandBase.drive.getEncoderLeftDist();
+	     double RIGHT_ENC_DISTANCE = CommandBase.drive.getEncoderLeftDist();
+		 while(timer.get() < 2) {
+//			 drive.backLeftDrive.set(ControlMode.PercentOutput, .4);
+//			 drive.frontLeftDrive.set(ControlMode.PercentOutput, .4);
+//			 drive.backRightDrive.set(ControlMode.PercentOutput, .4);
+//			 drive.frontRightDrive.set(ControlMode.PercentOutput, .4);
+
+			 if(LEFT_ENC_DISTANCE > RIGHT_ENC_DISTANCE) {
+				 drive.backLeftDrive.set(ControlMode.PercentOutput, .35);
+				 drive.frontLeftDrive.set(ControlMode.PercentOutput, .35);
+				 drive.backRightDrive.set(ControlMode.PercentOutput, .45);
+				 drive.frontRightDrive.set(ControlMode.PercentOutput, .45);
+			 }
+			 else if(LEFT_ENC_DISTANCE < RIGHT_ENC_DISTANCE) {
+				 drive.backLeftDrive.set(ControlMode.PercentOutput, .45);
+				 drive.frontLeftDrive.set(ControlMode.PercentOutput, .45);
+				 drive.backRightDrive.set(ControlMode.PercentOutput, .35);
+				 drive.frontRightDrive.set(ControlMode.PercentOutput, .35);
+			 }
+			 else {
+				 drive.backLeftDrive.set(ControlMode.PercentOutput, .4);
+				 drive.frontLeftDrive.set(ControlMode.PercentOutput, .4);
+				 drive.backRightDrive.set(ControlMode.PercentOutput, .4);
+				 drive.frontRightDrive.set(ControlMode.PercentOutput, .4);
+			 }
+	 	}
 	 }
 
 	 @Override

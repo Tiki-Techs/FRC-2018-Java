@@ -59,8 +59,6 @@ public class OI {
 					startButton = new JoystickButton(xbox, 8),
 					leftStickButton = new JoystickButton(xbox, 9),
 					rightStickButton = new JoystickButton(xbox, 10);
-	public Trigger  leftTrigger = new JoystickTrigger(xbox, 1),
-					rightTrigger = new JoystickTrigger(xbox, 2);
 	
 //	public Trigger 
 	
@@ -95,8 +93,7 @@ public class OI {
 			
 	
 			/* XBOX */
-			leftStickButton.whenPressed(new LeftArmJoystickControl());
-			rightStickButton.whenPressed(new RightArmJoystickControl());
+	
 			
 			leftButton.whileHeld(new LeftWheelOut());
 			rightButton.whileHeld(new RightWheelOut());
@@ -123,8 +120,6 @@ public class OI {
 			buttonL4.whileHeld(new LeftArmOut());
 			buttonL5.whileHeld(new LeftArmIn());
 
-			leftStickButton.whenPressed(new LeftArmJoystickControl());
-			rightStickButton.whenPressed(new RightArmJoystickControl());
 			
 			leftButton.whileHeld(new LeftWheelOut());
 			rightButton.whileHeld(new RightWheelOut());
@@ -136,27 +131,27 @@ public class OI {
 			XButton.whenPressed(new ShiftTorque());
 			BButton.whenPressed(new ShiftSpeed());
 			
-			leftButton.whileHeld(new CubeIntakeWheelsOut());
-			rightButton.whileHeld(new CubeIntakeWheelsIn());
+			leftButton.whileHeld(new CubeIntakeWheels());
+			rightButton.whileHeld(new CubeIntakeWheels());
 			
 			selectButton.whenPressed(new CubeIntakeArms());
 			startButton.whenPressed(new CubeOuttakeArms());
 			
 			rightStickButton.whileHeld(new ClimbUp());
 			
-			leftTrigger.whileActive(new WindowMotorDown());
-			rightTrigger.whileActive(new WindowMotorUp());
+//			leftTrigger.whileActive(new WindowMotorDown());
+//			rightTrigger.whileActive(new WindowMotorUp());
 			
 			
 			// controller 2- intake and lift
 			buttonR3.whileHeld(new CubeIntakeWheels());
-			buttonR4.whilelHeld(new CubeOuttakeWheels());
+			buttonR4.whileHeld(new CubeOuttakeWheels());
 			
 			buttonR5.whenPressed(new CubeIntakeArms());
 			buttonR6.whenPressed(new CubeOuttakeArms());
 			
 			buttonR1.whileHeld(new LiftUp());
-			buttonR2.whileHeld(new liftDown());
+			buttonR2.whileHeld(new LiftDown());
 			
 			buttonR9.whileHeld(new ClimbUp());
 			buttonR10.whileHeld(new ClimbDown());

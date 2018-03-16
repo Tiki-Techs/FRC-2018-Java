@@ -32,7 +32,7 @@ public class RobotMap {
 	public int UPPER_LIFT_LIMIT = 4;
 	
 	public int WINDOW_MOTOR_VICTOR = 3;
-//	public int WINDOW_UPPER_LIMIT = 5;
+	public int WINDOW_UPPER_LIMIT = 5;
 	
 	
 	public int DRIVE_ENCODER_LEFT_ONE = 0;

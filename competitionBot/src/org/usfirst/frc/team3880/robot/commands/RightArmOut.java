@@ -31,7 +31,6 @@ public class RightArmOut extends CommandBase {
 
     @Override
     protected void end() {
-    	rightArm.set(0);
     }
 
     @Override
