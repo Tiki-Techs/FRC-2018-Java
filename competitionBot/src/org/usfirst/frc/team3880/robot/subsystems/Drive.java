@@ -18,8 +18,8 @@ public class Drive extends Subsystem {
 	public TalonSRX frontLeftDrive;
 	public TalonSRX backLeftDrive;
 	
-	Encoder driveEncoderOne;
-	Encoder driveEncoderTwo;
+	Encoder driveEncoderLeft;
+	Encoder driveEncoderRight;
 	
 	RobotMap hardware;
 	
@@ -43,11 +43,15 @@ public class Drive extends Subsystem {
         try {
         	
         	// TODO: add encoders to robotmap
-        	driveEncoderOne = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
-        	driveEncoderTwo = new Encoder(2, 3, false, Encoder.EncodingType.k4X);
+        	driveEncoderLeft = new Encoder(hardware.DRIVE_ENCODER_LEFT_ONE, 
+        								   hardware.DRIVE_ENCODER_LEFT_TWO, 
+        								   false, Encoder.EncodingType.k4X);
+        	driveEncoderRight = new Encoder(hardware.DRIVE_ENCODER_RIGHT_ONE, 
+        									hardware.DRIVE_ENCODER_RIGHT_TWO, 
+        									false, Encoder.EncodingType.k4X);
 
-    		driveEncoderOne.setDistancePerPulse(0.0092);
-    		driveEncoderTwo.setDistancePerPulse(0.0092);
+    		driveEncoderLeft.setDistancePerPulse(0.0092);
+    		driveEncoderRight.setDistancePerPulse(0.0092);
     		
 			frontRightDrive = new TalonSRX(hardware.FRONT_RIGHT_DRIVE_TALON);
 			backRightDrive = new TalonSRX(hardware.BACK_RIGHT_DRIVE_TALON);
@@ -63,19 +67,42 @@ public class Drive extends Subsystem {
 		
 	}
 	
-	public void set(double forward, double turn) {
-		backLeftDrive.set(ControlMode.PercentOutput, - (forward - turn));
-		frontLeftDrive.set(ControlMode.PercentOutput, -(forward - turn));
-		backRightDrive.set(ControlMode.PercentOutput, forward + turn);
-		frontRightDrive.set(ControlMode.PercentOutput, forward + turn);
+//	public void set(double forward, double turn) {
+//		backLeftDrive.set(ControlMode.PercentOutput, - (forward - turn));
+//		frontLeftDrive.set(ControlMode.PercentOutput, -(forward - turn));
+//		backRightDrive.set(ControlMode.PercentOutput, forward + turn);
+//		frontRightDrive.set(ControlMode.PercentOutput, forward + turn);
+//    }
+	
+	public void set(double left, double right) {
+		if(CommandBase.OI_MODE == 2) {
+			backLeftDrive.set(ControlMode.PercentOutput, -left);
+			frontLeftDrive.set(ControlMode.PercentOutput, -left);
+			backRightDrive.set(ControlMode.PercentOutput, right);
+			frontRightDrive.set(ControlMode.PercentOutput, right);
+		}
+		else if(CommandBase.OI_MODE == 1) {
+			backLeftDrive.set(ControlMode.PercentOutput, -(left - right));
+			frontLeftDrive.set(ControlMode.PercentOutput, -(left - right));
+			backRightDrive.set(ControlMode.PercentOutput, left + right);
+			frontRightDrive.set(ControlMode.PercentOutput, left + right);
+		}
     }
 	
-	public double getEncoderOne() {
-		return driveEncoderOne.getDistance();
+	public double getEncoderLeftRate() {
+		return driveEncoderLeft.getRate();
 	}
 	
-	public double getEncoderTwo() {
-		return driveEncoderTwo.getDistance();
+	public double getEncoderLeftDist() {
+		return driveEncoderLeft.getDistance();
+	}
+	
+	public double getEncoderRightRate() {
+		return driveEncoderRight.getRate();
+	}
+	
+	public double getEncoderRightDist() {
+		return driveEncoderRight.getDistance();
 	}
 
 	

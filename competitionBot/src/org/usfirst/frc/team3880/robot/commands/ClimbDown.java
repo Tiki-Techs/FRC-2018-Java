@@ -2,15 +2,16 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class LiftUp extends CommandBase {
-	
-	double POWER = 0.8;
+public class ClimbDown extends CommandBase {
 
-	public LiftUp() {
-    	requires(lift);
+	
+	double WINCH_STRENGTH = 1;
+	
+	public ClimbDown() {
+    	requires(climb);
     }
 
-    @Override
+	@Override
     protected void initialize() {
     	
     }
@@ -22,14 +23,12 @@ public class LiftUp extends CommandBase {
      */
     @Override
     protected void execute() {
-//    	if (!lift.getUpperLimit()) {
-    		lift.set(POWER);
-//    	}    
+    	climb.climbUp(-WINCH_STRENGTH);
     }
 
     @Override
     protected void end() {
-    	lift.set(0);
+    	climb.climbUp(0);
     }
 
     @Override
@@ -41,7 +40,8 @@ public class LiftUp extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return lift.getUpperLimit();
+		return false;
 	}
+
 
 }

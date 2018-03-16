@@ -45,7 +45,7 @@ public class Climb extends Subsystem {
 	
 	public void climbUp(double motorValue) {
 		climbOne.set(motorValue);
-		climbTwo.set(-motorValue);
+//		climbTwo.set(-motorValue);
 	}
 	
 	@Override

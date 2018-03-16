@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.usfirst.frc.team3880.robot.commands.CommandBase;
+import org.usfirst.frc.team3880.robot.commands.autonomous.Autonomous_DriveStraight;
+import org.usfirst.frc.team3880.robot.subsystems.Lift;
 import org.usfirst.frc.team3880.robot.commands.autonomous.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -31,6 +33,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.CameraServer;
 
 import org.usfirst.frc.team3880.robot.commands.*;
 
@@ -43,6 +46,8 @@ import org.usfirst.frc.team3880.robot.commands.*;
  */
 @SuppressWarnings("unused")
 public class Robot extends IterativeRobot {
+	//if false runs driveforward
+	
 	
 	Command autonomousCommand;
 	
@@ -61,11 +66,21 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		
 		CommandBase.init();
+		
+		CameraServer.getInstance().startAutomaticCapture(0);
+//		CameraServer.getInstance().startAutomaticCapture(1);
+		
 		m_chooser = new SendableChooser<>();
+		
+		
+		CommandBase.gyro.gyro.calibrate();
+		
+		
+		log();
 		
 		// robotPosition = (L/C/R)
 		
-		CommandBase.gyro.gyro.calibrate();
+//		CommandBase.gyro.gyro.calibrate();
 		
 //		m_chooser.addDefault("Default Auto", "");
 //		m_chooser.addObject("My Auto", kCustomAuto);
@@ -89,63 +104,82 @@ public class Robot extends IterativeRobot {
 		// defaultAuto);;
 		// autoSelected
 //		System.out.println("Auto selected: " + m_autoSelected);
+		
 		String gameData;
 
-		char closeSwitchPosition;
+		char switchPosition;
 		char scalePosition;
 		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
+		//Defaulting to "LLL" to prevent null pointer
+		if(gameData == null) {
+			gameData = "LLL";
+		}
+		
 		if (gameData.length() > 0) {
-			closeSwitchPosition = gameData.charAt(0);
+			switchPosition = gameData.charAt(0);
 			scalePosition = gameData.charAt(1);
-			
-			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'L') {
-				autonomousCommand = new Autonomous_LeftLeftLeft();
-			}
-			if (robotPosition == 'C' && closeSwitchPosition == 'L' && scalePosition == 'L') {
-				autonomousCommand = new Autonomous_CenterLeftLeft();
-			}
-			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'L') {
-				autonomousCommand = new Autonomous_RightLeftLeft();
-			}
-			
-			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'L') {
-				autonomousCommand = new Autonomous_LeftRightLeft();
-			}
-			if (robotPosition == 'C' && closeSwitchPosition == 'R' && scalePosition == 'L') {
-				autonomousCommand = new Autonomous_CenterLeftLeft();
-			}
-			if (robotPosition == 'R' && closeSwitchPosition == 'R' && scalePosition == 'L') {
-				autonomousCommand = new Autonomous_RightRightLeft();
-			}
-			
-			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'R') {
-				autonomousCommand = new Autonomous_LeftLeftRight();
-			}
-			if (robotPosition == 'C' && closeSwitchPosition == 'L' && scalePosition == 'R') {
-				autonomousCommand = new Autonomous_CenterLeftRight();
-			}
-			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'R') {
-				autonomousCommand = new Autonomous_RightLeftRight();
-			}
-			
-			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'R') {
-				autonomousCommand = new Autonomous_LeftRightRight();
-			}
-			if (robotPosition == 'C' && closeSwitchPosition == 'R' && scalePosition == 'R') {
-				autonomousCommand = new Autonomous_CenterRightRight();
-			}
-			if (robotPosition == 'R' && closeSwitchPosition == 'R' && scalePosition == 'R') {
-				autonomousCommand = new Autonomous_RightRightRight();
-			}
 				
+			autonomousCommand = new Autonomous_DriveStraight();
+			
+//			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'L') {
+//				autonomousCommand = new Autonomous_LeftLeftLeft();
+//			}
+//			if (robotPosition == 'C' && closeSwitchPosition == 'L' && scalePosition == 'L') {
+//				autonomousCommand = new Autonomous_CenterLeftLeft();
+//			}
+//			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'L') {
+//				autonomousCommand = new Autonomous_RightLeftLeft();
+//			}
+//			
+//			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'L') {
+//				autonomousCommand = new Autonomous_LeftRightLeft();
+//			}
+//			
+//			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'L') {
+//				autonomousCommand = new Autonomous_RightLeftLeft();
+//			}
+//			
+//			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'L') {
+//				autonomousCommand = new Autonomous_LeftRightLeft();
+//			}
+//			if (robotPosition == 'C' && closeSwitchPosition == 'R' && scalePosition == 'L') {
+//				autonomousCommand = new Autonomous_CenterLeftLeft();
+//			}
+//			if (robotPosition == 'R' && closeSwitchPosition == 'R' && scalePosition == 'L') {
+//				autonomousCommand = new Autonomous_RightRightLeft();
+//			}
+//			
+//			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'R') {
+//				autonomousCommand = new Autonomous_LeftLeftRight();
+//			}
+//			if (robotPosition == 'C' && closeSwitchPosition == 'L' && scalePosition == 'R') {
+//				autonomousCommand = new Autonomous_CenterLeftRight();
+//			}
+//			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'R') {
+//				autonomousCommand = new Autonomous_RightLeftRight();
+//			}
+//			
+//			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'R') {
+//				autonomousCommand = new Autonomous_LeftRightRight();
+//			}
+//			if (robotPosition == 'C' && closeSwitchPosition == 'R' && scalePosition == 'R') {
+//				autonomousCommand = new Autonomous_CenterRightRight();
+//			}
+//			if (robotPosition == 'R' && closeSwitchPosition == 'R' && scalePosition == 'R') {
+//				autonomousCommand = new Autonomous_RightRightRight();
+//			}
+			
 		}
-		
 		else {
-			autonomousCommand = new Autonomous_DriveStraight();   
+			autonomousCommand = new Autonomous_DriveStraight();
 		}
 		
+		if(autonomousCommand != null) {
+			autonomousCommand.start();
+		}
+
         SmartDashboard.putData(autonomousCommand);
 
 	}
@@ -188,20 +222,29 @@ public class Robot extends IterativeRobot {
 	
 	
 	public void log() {
-		SmartDashboard.putNumber("driveEncoderOne", CommandBase.drive.getEncoderOne());
-		SmartDashboard.putNumber("driveEncoderTwo", CommandBase.drive.getEncoderTwo());
-		
-		SmartDashboard.putNumber("liftEncoder", CommandBase.lift.getEncoder());
+		SmartDashboard.putNumber("driveEncoderLeftRate", CommandBase.drive.getEncoderLeftRate());
+		SmartDashboard.putNumber("driveEncoderLeftDist", CommandBase.drive.getEncoderLeftDist());
+		SmartDashboard.putNumber("driveEncoderRightRate", CommandBase.drive.getEncoderRightRate());
+		SmartDashboard.putNumber("driveEncoderRightDist", CommandBase.drive.getEncoderRightDist());
 
+		
+		SmartDashboard.putNumber("liftEncoderVel", CommandBase.lift.getEncoderVelocity());
+		SmartDashboard.putNumber("liftEncoderPos", CommandBase.lift.getEncoderPosition());
+
+		SmartDashboard.putNumber("gyroAngleX", CommandBase.gyro.gyro.getAngleX());
+		SmartDashboard.putNumber("gyroAngleY", CommandBase.gyro.gyro.getAngleY());
+		SmartDashboard.putNumber("gyroAngleZ", CommandBase.gyro.gyro.getAngleZ());
+		
 		SmartDashboard.putBoolean("lift lower limit", CommandBase.lift.getLowerLimit());
 		SmartDashboard.putBoolean("lift upper limit", CommandBase.lift.getUpperLimit());
 
-		SmartDashboard.putBoolean("intake left limit", CommandBase.intake.getLeftInnerLimit());
-		SmartDashboard.putBoolean("intake right limit", CommandBase.intake.getRightInnerLimit());
+		SmartDashboard.putBoolean("intake left inner limit", CommandBase.leftArm.getInnerLimit());
+		SmartDashboard.putBoolean("intake right inner limit", CommandBase.rightArm.getInnerLimit());
 		
-		SmartDashboard.putBoolean("intake left outer limit", CommandBase.intake.getLeftOuterLimit());
-		SmartDashboard.putBoolean("intake right outer limit", CommandBase.intake.getRightOuterLimit());
-
+		SmartDashboard.putNumber("IntakeLeftEncoderVel", CommandBase.leftArm.getEncoderVel());
+		SmartDashboard.putNumber("InatakeRightEncoderVel", CommandBase.rightArm.getEncoderVel());
+		SmartDashboard.putNumber("IntakeLeftEncoderPos", CommandBase.leftArm.getEncoderPos());
+		SmartDashboard.putNumber("IntakeRightEncoderPos", CommandBase.rightArm.getEncoderPos());
 
 	}
 	

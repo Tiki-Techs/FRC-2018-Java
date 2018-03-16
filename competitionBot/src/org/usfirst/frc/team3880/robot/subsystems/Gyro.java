@@ -1,14 +1,15 @@
 package org.usfirst.frc.team3880.robot.subsystems;
 
-
 import org.usfirst.frc.team3880.robot.RobotMap;
+
+import com.analog.adis16448.frc.ADIS16448_IMU;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Gyro extends Subsystem {
 	
-	public AnalogGyro gyro;
+	public ADIS16448_IMU gyro;
 	RobotMap hardware;
 	
 	public static Gyro instance;
@@ -26,7 +27,7 @@ public class Gyro extends Subsystem {
     	
     	hardware = new RobotMap();
     	
-    	gyro = new AnalogGyro(hardware.GYRO);
+    	gyro = new ADIS16448_IMU();
     	
     }
     

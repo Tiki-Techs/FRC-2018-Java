@@ -8,7 +8,10 @@ public class Autonomous_LeftLeftLeft extends CommandBase {
 		requires(drive);
 		requires(lift);
 		requires(gyro);
-		requires(intake);
+		requires(leftIntakeWheel);
+		requires(rightIntakeWheel);
+		requires(leftArm);
+		requires(rightArm);
 	}
 	
 	 @Override
@@ -18,7 +21,7 @@ public class Autonomous_LeftLeftLeft extends CommandBase {
 
 	 @Override
 	 protected void execute() {
-	 
+		 
 	 }
 
 	 @Override

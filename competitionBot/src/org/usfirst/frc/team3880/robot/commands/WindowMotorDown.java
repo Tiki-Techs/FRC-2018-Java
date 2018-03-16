@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class LiftUp extends CommandBase {
 	
-	double POWER = 0.8;
+	double POWER = -0.8;
 
 	public LiftUp() {
     	requires(lift);
@@ -22,9 +22,7 @@ public class LiftUp extends CommandBase {
      */
     @Override
     protected void execute() {
-//    	if (!lift.getUpperLimit()) {
-    		lift.set(POWER);
-//    	}    
+    	lift.set(POWER);
     }
 
     @Override
@@ -41,7 +39,7 @@ public class LiftUp extends CommandBase {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return lift.getUpperLimit();
+		return false;
 	}
 
 }
