@@ -56,7 +56,7 @@ public class Robot extends IterativeRobot {
 	char robotPosition;
 		
 
-	private SendableChooser<String> m_chooser;
+	private SendableChooser m_chooser;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -70,7 +70,7 @@ public class Robot extends IterativeRobot {
 		CameraServer.getInstance().startAutomaticCapture(0);
 //		CameraServer.getInstance().startAutomaticCapture(1);
 		
-		m_chooser = new SendableChooser<>();
+		m_chooser = new SendableChooser();
 		
 		
 		CommandBase.gyro.gyro.calibrate();
@@ -82,9 +82,10 @@ public class Robot extends IterativeRobot {
 		
 //		CommandBase.gyro.gyro.calibrate();
 		
-//		m_chooser.addDefault("Default Auto", "");
-//		m_chooser.addObject("My Auto", kCustomAuto);
-//		SmartDashboard.putData("Auto choices", m_chooser);
+		m_chooser.addDefault("Robot on left", 'L');
+		m_chooser.addObject("Robot in center", 'C');
+		m_chooser.addObject("Robot on right", 'R');
+		SmartDashboard.putData("Auto choices", m_chooser);
 	}
 
 	/**
@@ -106,7 +107,9 @@ public class Robot extends IterativeRobot {
 //		System.out.println("Auto selected: " + m_autoSelected);
 		
 		String gameData = null;
-		char robotPosition = 'L';
+//		char robotPosition = 'L';
+		
+		char robotPosition = (char) m_chooser.getSelected();
 
 		char switchPosition;
 		char scalePosition;
