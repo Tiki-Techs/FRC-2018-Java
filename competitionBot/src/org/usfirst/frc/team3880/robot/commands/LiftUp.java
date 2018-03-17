@@ -25,6 +25,10 @@ public class LiftUp extends CommandBase {
     	if (!lift.getUpperLimit()) {
     		lift.set(POWER);
     	}    
+    	else {
+    		lift.set(0);
+    		lift.resetEncoder();
+    	}
     }
 
     @Override

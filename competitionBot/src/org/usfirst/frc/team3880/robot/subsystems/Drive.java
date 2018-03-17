@@ -41,7 +41,6 @@ public class Drive extends Subsystem {
         hardware = new RobotMap();
         
         try {
-        	
         	// TODO: add encoders to robotmap
         	driveEncoderLeft = new Encoder(hardware.DRIVE_ENCODER_LEFT_ONE, 
         								   hardware.DRIVE_ENCODER_LEFT_TWO, 

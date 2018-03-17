@@ -55,6 +55,10 @@ public class Lift extends Subsystem {
 		return liftUpperLimit.get();
 	}
 	
+	public void resetEncoder() {
+		lift.setSelectedSensorPosition(0, 0, 0);
+	}
+	
 	
 //
 	public double getEncoderPosition() {

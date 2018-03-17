@@ -236,6 +236,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("gyroAngleZ", CommandBase.gyro.gyro.getAngleZ());
 		
 		SmartDashboard.putBoolean("lift upper limit", CommandBase.lift.getUpperLimit());
+		
+		SmartDashboard.putBoolean("window limit", CommandBase.windowMotor.getLimit());
 
 
 		
