@@ -24,10 +24,10 @@ public class DriveStandard extends CommandBase {
     @Override
     protected void execute() {
     	if(CommandBase.OI_MODE == 2) {
-    		drive.set(oi.getLeftY(), oi.getRightY());
+    		drive.drive(oi.getLeftY(), oi.getRightY());
     	}
     	else if(CommandBase.OI_MODE == 1) {
-    		drive.set(oi.getRightY(), oi.getRightX());
+    		drive.drive(oi.getRightY(), oi.getRightX());
     	}
     }
 

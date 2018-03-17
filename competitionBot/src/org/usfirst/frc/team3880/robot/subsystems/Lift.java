@@ -16,6 +16,7 @@ public class Lift extends Subsystem {
 	TalonSRX lift;
 	
 	DigitalInput liftUpperLimit;
+	DigitalInput liftLowerLimit;
 	
 	RobotMap hardware;
 	
@@ -38,7 +39,7 @@ public class Lift extends Subsystem {
 
 			lift.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,0); /* PIDLoop=0, timeoutMs=0 */
 			liftUpperLimit = new DigitalInput(hardware.UPPER_LIFT_LIMIT);
-			
+			liftLowerLimit = new DigitalInput(hardware.LOWER_LIFT_LIMIT);
 		}
 		
 		catch (Exception e) {
@@ -53,6 +54,10 @@ public class Lift extends Subsystem {
 	
 	public boolean getUpperLimit() {
 		return liftUpperLimit.get();
+	}
+	
+	public boolean getLowerLimit() {
+		return liftLowerLimit.get();
 	}
 	
 	public void resetEncoder() {

@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+	
+	double xboxSensivity = 0.85;
 
 	public Joystick joy1 = new Joystick(0);
 	public Button 	buttonR1 = new JoystickButton(joy1, 1), 
@@ -170,10 +172,6 @@ public class OI {
 	double JOY2_DEAD_ZONE_Y = 0.1;
 	double JOY2_DEAD_ZONE_X = 0.1;
 	
-	double XBOX_DEAD_ZONE_LEFT_Y = 0.1;
-	double XBOX_DEAD_ZONE_LEFT_X = 0.1;
-	double XBOX_DEAD_ZONE_RIGHT_Y = 0.1;
-	double XBOX_DEAD_ZONE_RIGHT_X = 0.1;
 	
 	
 	public double getRightY() {
@@ -230,12 +228,7 @@ public class OI {
 	
 	
 	public double getXboxLeftX() {
-		if(Math.abs(xbox.getRawAxis(0)) > XBOX_DEAD_ZONE_LEFT_X) {
 			return xbox.getRawAxis(0);
-		}
-		else {
-			return 0;
-		}
 	}
 	
 	public double getXboxLeftY() {
@@ -243,13 +236,7 @@ public class OI {
 	}
 	
 	public double getXboxRightX() {
-		
-		if(Math.abs(xbox.getRawAxis(4)) > XBOX_DEAD_ZONE_RIGHT_X) {
-			return xbox.getRawAxis(4);
-		}
-		else {
-			return 0;
-		}
+		return xbox.getRawAxis(4);
 	}
 	
 	public double getXboxRightY() {

@@ -26,13 +26,14 @@ public class RobotMap {
 	public int LEFT_ARM_BACKWARD = 5;
 	
 	public int RIGHT_ARM_MODULE_NUMBER = 0;
-	public int RIGHT_ARM_FORWARD = 2;
-	public int RIGHT_ARM_BACKWARD = 3;
+	public int RIGHT_ARM_FORWARD = 4;
+	public int RIGHT_ARM_BACKWARD = 5;
 	
 	public int UPPER_LIFT_LIMIT = 4;
+	public int LOWER_LIFT_LIMIT = 5;
 	
 	public int WINDOW_MOTOR_VICTOR = 3;
-	public int WINDOW_UPPER_LIMIT = 5;
+	public int WINDOW_UPPER_LIMIT = 6;
 	
 	
 	public int DRIVE_ENCODER_LEFT_ONE = 0;

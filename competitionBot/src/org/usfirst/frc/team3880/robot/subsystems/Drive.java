@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3880.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
+
+import org.usfirst.frc.team3880.robot.subsystems.Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
@@ -17,6 +19,8 @@ public class Drive extends Subsystem {
 	public TalonSRX backRightDrive;
 	public TalonSRX frontLeftDrive;
 	public TalonSRX backLeftDrive;
+	
+	double joystickSensitivity = 0.85;
 	
 	Encoder driveEncoderLeft;
 	Encoder driveEncoderRight;
@@ -73,7 +77,11 @@ public class Drive extends Subsystem {
 //		frontRightDrive.set(ControlMode.PercentOutput, forward + turn);
 //    }
 	
-	public void set(double left, double right) {
+	public void drive(double left, double right) {
+		
+		left = (joystickSensitivity * Math.pow(left, 3)) + ((1 - joystickSensitivity) * left);
+		right = (joystickSensitivity * Math.pow(right, 3)) + ((1 - joystickSensitivity) * right);
+
 		if(CommandBase.OI_MODE == 2) {
 			backLeftDrive.set(ControlMode.PercentOutput, -left);
 			frontLeftDrive.set(ControlMode.PercentOutput, -left);
@@ -104,6 +112,34 @@ public class Drive extends Subsystem {
 		return driveEncoderRight.getDistance();
 	}
 
+	public void setHeading(double percent) {
+		double angle = CommandBase.gyro.gyro.getAngle();
+		double left;
+		double right;
+		
+		if (angle < 10 || angle > 350) {
+			left = 1;
+			right = 1;
+		}
+		else if (angle > 180) {
+			left = 1;
+			right = 1+(angle-360)/180;
+		}
+		else if (angle < 180) {
+			right = 1;
+			left = 1-(angle/180);
+		}
+		else {
+			left = 0;
+			right = 0;
+		}
+		
+		backLeftDrive.set(ControlMode.PercentOutput, -left*percent);
+		frontLeftDrive.set(ControlMode.PercentOutput, -left*percent);
+		backRightDrive.set(ControlMode.PercentOutput, right*percent);
+		frontRightDrive.set(ControlMode.PercentOutput, right*percent);
+		
+	}
 	
 	@Override
 	protected void initDefaultCommand() {

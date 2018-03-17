@@ -22,13 +22,13 @@ public class LiftDown extends CommandBase {
      */
     @Override
     protected void execute() {
-//    	if (lift.getEncoderPosition < 5000) {
+
+    	if (!lift.getLowerLimit()) {
     		lift.set(POWER);
-//    	}
-    		
-//    	else {
-//    		lift.set(0);
-//    	}
+    	}    
+    	else {
+    		lift.set(0);
+    	}
     }
 
     @Override
