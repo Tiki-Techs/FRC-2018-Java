@@ -9,8 +9,7 @@ public class CubeIntakeArms extends CommandBase {
 	double INTAKE_VALUE = .5;
 	
 	public CubeIntakeArms() {
-    	requires(leftArm);
-    	requires(rightArm);
+    	requires(intakeArms);
     }
 
     @Override
@@ -27,8 +26,7 @@ public class CubeIntakeArms extends CommandBase {
     protected void execute() {
       	
     	
-    	leftArm.set(DoubleSolenoid.Value.kForward);
-    	rightArm.set(DoubleSolenoid.Value.kForward);
+    	intakeArms.set(DoubleSolenoid.Value.kForward);
     }
 
     @Override

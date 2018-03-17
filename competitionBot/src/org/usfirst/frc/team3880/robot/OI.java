@@ -86,10 +86,8 @@ public class OI {
 			buttonR7.whileHeld(new ClimbUp());
 			buttonR8.whileHeld(new ClimbDown());
 			
-			buttonR9.whileHeld(new LeftArmIn());
-			buttonR10.whileHeld(new RightArmIn());
+			buttonR9.whileHeld(new ArmsIn());
 			buttonR11.whileHeld(new LeftArmOut());
-			buttonR12.whileHeld(new RightArmOut());
 			
 			// POV
 			// Throttle
@@ -117,11 +115,9 @@ public class OI {
 			buttonL2.whileHeld(new CubeIntakeWheels());
 			buttonL3.whileHeld(new CubeOuttakeWheels());
 			
-			buttonR5.whileHeld(new RightArmIn());
-			buttonR6.whileHeld(new RightArmOut());
 			
 			buttonL4.whileHeld(new LeftArmOut());
-			buttonL5.whileHeld(new LeftArmIn());
+			buttonL5.whileHeld(new ArmsIn());
 
 			
 			leftButton.whileHeld(new LeftWheelOut());
@@ -134,7 +130,7 @@ public class OI {
 			XButton.whenPressed(new ShiftTorque());
 			BButton.whenPressed(new ShiftSpeed());
 			
-			leftButton.whileHeld(new CubeIntakeWheels());
+			leftButton.whileHeld(new CubeOuttakeWheels());
 			rightButton.whileHeld(new CubeIntakeWheels());
 			
 			selectButton.whenPressed(new CubeIntakeArms());
@@ -143,8 +139,8 @@ public class OI {
 			leftStickButton.whileHeld(new ClimbUp());
 			
 			
-			xboxRightTrigger.whileActive(new WindowMotorUp());
-			xboxLeftTrigger.whileActive(new WindowMotorDown());
+//			xboxRightTrigger.whileActive(new WindowMotorUp());
+//			xboxLeftTrigger.whileActive(new WindowMotorDown());
 			
 			
 			// controller 2- intake and lift
@@ -159,6 +155,9 @@ public class OI {
 			
 			buttonR9.whileHeld(new ClimbUp());
 			buttonR10.whileHeld(new ClimbDown());
+			
+			buttonR7.whileHeld(new WindowMotorUp());
+			buttonR8.whileHeld(new WindowMotorDown());
 			
 		}
 

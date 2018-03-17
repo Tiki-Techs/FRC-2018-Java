@@ -4,11 +4,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
-public class RightArmOut extends CommandBase {
+public class ArmsIn extends CommandBase {
 	
 	
-	public RightArmOut() {
-    	requires(rightArm);
+	public ArmsIn() {
+    	requires(intakeArms);
     }
 
     @Override
@@ -25,8 +25,8 @@ public class RightArmOut extends CommandBase {
     protected void execute() {
       	
     	
-    	rightArm.set(DoubleSolenoid.Value.kReverse);
-    		
+    	intakeArms.set(DoubleSolenoid.Value.kForward);
+
     }
 
     @Override

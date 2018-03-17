@@ -105,12 +105,16 @@ public class Robot extends IterativeRobot {
 		// autoSelected
 //		System.out.println("Auto selected: " + m_autoSelected);
 		
-		String gameData;
+		String gameData = null;
+		char robotPosition = 'L';
 
 		char switchPosition;
 		char scalePosition;
 		
+		CommandBase.gyro.gyro.reset();
+		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
+	
 		
 		//Defaulting to "LLL" to prevent null pointer
 		if(gameData == null) {
@@ -121,7 +125,12 @@ public class Robot extends IterativeRobot {
 			switchPosition = gameData.charAt(0);
 			scalePosition = gameData.charAt(1);
 				
-			autonomousCommand = new Autonomous_DriveStraight();
+			if (switchPosition == robotPosition) {
+				autonomousCommand = new AutoLiftUp();
+			}
+			else {
+				autonomousCommand = new Autonomous_DriveStraight();
+			}
 			
 //			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'L') {
 //				autonomousCommand = new Autonomous_LeftLeftLeft();
@@ -238,6 +247,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("lift upper limit", CommandBase.lift.getUpperLimit());
 		
 		SmartDashboard.putBoolean("window limit", CommandBase.windowMotor.getLimit());
+		
+		SmartDashboard.putBoolean("lift lower limit", CommandBase.lift.getLowerLimit());
 
 
 		

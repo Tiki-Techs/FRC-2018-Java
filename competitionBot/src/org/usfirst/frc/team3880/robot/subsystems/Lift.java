@@ -53,15 +53,15 @@ public class Lift extends Subsystem {
 	}
 	
 	public boolean getUpperLimit() {
-		return liftUpperLimit.get();
+		return !liftUpperLimit.get();
 	}
 	
 	public boolean getLowerLimit() {
-		return liftLowerLimit.get();
+		return !liftLowerLimit.get();
 	}
 	
 	public void resetEncoder() {
-		lift.setSelectedSensorPosition(0, 0, 0);
+//		lift.setSelectedSensorPosition(0, 0, 0);
 	}
 	
 	

@@ -23,12 +23,12 @@ public class LiftDown extends CommandBase {
     @Override
     protected void execute() {
 
-//    	if (!lift.getLowerLimit()) {
+    	if (!lift.getLowerLimit()) {
     		lift.set(POWER);
-//    	}    
-//    	else {
-//    		lift.set(0);
-//    	}
+    	}    
+    	else {
+    		lift.set(0);
+    	}
     }
 
     @Override

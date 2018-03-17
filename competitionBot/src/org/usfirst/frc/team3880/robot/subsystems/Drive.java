@@ -121,7 +121,7 @@ public class Drive extends Subsystem {
 			left = 1;
 			right = 1;
 		}
-		else if (angle > 180) {
+		else if (angle >= 180) {
 			left = 1;
 			right = 1+(angle-360)/180;
 		}
@@ -132,6 +132,10 @@ public class Drive extends Subsystem {
 		else {
 			left = 0;
 			right = 0;
+		}
+		
+		if (percent == 0) {
+			percent = 0.5;
 		}
 		
 		backLeftDrive.set(ControlMode.PercentOutput, -left*percent);

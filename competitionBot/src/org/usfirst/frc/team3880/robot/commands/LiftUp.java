@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class LiftUp extends CommandBase {
 	
-	double POWER = 0.3;
+	double POWER = 1;
 
 	public LiftUp() {
     	requires(lift);

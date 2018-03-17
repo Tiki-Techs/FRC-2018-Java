@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 public class ClimbDown extends CommandBase {
 
 	
-	double WINCH_STRENGTH = 1;
+	double WINCH_STRENGTH = .1;
 	
 	public ClimbDown() {
     	requires(climb);

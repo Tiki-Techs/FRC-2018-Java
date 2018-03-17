@@ -15,14 +15,14 @@ public abstract class CommandBase extends Command {
     // Create a single static instance of all of your subsystems
     public static Drive drive;
     public static Climb climb;
-    public static LeftArm leftArm;
-    public static RightArm rightArm;
+    public static IntakeArms intakeArms;
     public static LeftIntakeWheel leftIntakeWheel;
     public static RightIntakeWheel rightIntakeWheel;
     public static Lift lift;
     public static Pneumatics pneumatics;
     public static Gyro gyro;
     public static WindowMotor windowMotor;
+    public static ClimbPneumatics climbPneumatics;
     
     
     public static int OI_MODE = 3;
@@ -30,8 +30,7 @@ public abstract class CommandBase extends Command {
     public static void init() {      
         drive = Drive.getInstance();
         climb = Climb.getInstance();
-        leftArm = LeftArm.getInstance();
-        rightArm = RightArm.getInstance();
+        intakeArms = IntakeArms.getInstance();
         rightIntakeWheel = RightIntakeWheel.getInstance();
         leftIntakeWheel = LeftIntakeWheel.getInstance();
         lift = Lift.getInstance();

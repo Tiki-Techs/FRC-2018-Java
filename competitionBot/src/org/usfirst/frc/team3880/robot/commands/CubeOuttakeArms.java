@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class CubeOuttakeArms extends CommandBase {
 	double OUTTAKE_VALUE = -.5;
 	public CubeOuttakeArms() {
-    	requires(leftArm);
-    	requires(rightArm);
+    	requires(intakeArms);
     }
 
     @Override
@@ -25,8 +24,7 @@ public class CubeOuttakeArms extends CommandBase {
     protected void execute() {
     	
 
-    	leftArm.set(DoubleSolenoid.Value.kReverse);
-    	rightArm.set(DoubleSolenoid.Value.kReverse);
+    	intakeArms.set(DoubleSolenoid.Value.kReverse);
 
     }
 

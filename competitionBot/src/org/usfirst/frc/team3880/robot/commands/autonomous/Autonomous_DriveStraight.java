@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Timer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class Autonomous_DriveStraight extends CommandBase {
-	Timer timer = new Timer();
+	Timer timer;
 	
 	double DRIVE_VALUE = 0.1;
 	public Autonomous_DriveStraight() {
@@ -15,12 +15,12 @@ public class Autonomous_DriveStraight extends CommandBase {
 		requires(gyro);
 		requires(leftIntakeWheel);
 		requires(rightIntakeWheel);
-		requires(leftArm);
-		requires(rightArm);
+		requires(intakeArms);
 	}
 	
 	 @Override
 	 protected void initialize() {
+		 timer  = new Timer();
 	    	timer.reset();
 	    	timer.start();
 	 }
@@ -30,8 +30,10 @@ public class Autonomous_DriveStraight extends CommandBase {
 	 protected void execute() {
 	   	 double LEFT_ENC_DISTANCE = CommandBase.drive.getEncoderLeftDist();
 	     double RIGHT_ENC_DISTANCE = CommandBase.drive.getEncoderLeftDist();
-		 while(timer.get() < 1.2) {
-			 CommandBase.drive.setHeading(0.4);
+		 if (timer.get() < 2.8) {
+			 System.out.println(timer.get());
+			 CommandBase.drive.setHeading(-0.4);
+
 //			 drive.backLeftDrive.set(ControlMode.PercentOutput, -.4);
 //			 drive.frontLeftDrive.set(ControlMode.PercentOutput, -.4);
 //			 drive.backRightDrive.set(ControlMode.PercentOutput, .4);
@@ -56,6 +58,10 @@ public class Autonomous_DriveStraight extends CommandBase {
 //				 drive.frontRightDrive.set(ControlMode.PercentOutput, .4);
 //			 }
 	 	}
+		 
+		 else {
+			 CommandBase.drive.drive(0, 0);
+		 }
 	 }
 
 	 @Override

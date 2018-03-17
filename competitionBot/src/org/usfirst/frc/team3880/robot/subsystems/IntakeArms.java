@@ -11,33 +11,32 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class RightArm extends Subsystem {
+public class IntakeArms extends Subsystem {
 
-	DoubleSolenoid rightArm;
+	DoubleSolenoid armSolenoid;
 	
 	RobotMap hardware;
 	
-	public static RightArm instance;
+	public static IntakeArms instance;
 
-    public static RightArm getInstance() {
+    public static IntakeArms getInstance() {
     	
 	   if (instance == null) {
-		   instance = new RightArm();
+		   instance = new IntakeArms();
 	   }
 	
 	   return instance;
     }
 	
-	private RightArm() {
+	private IntakeArms() {
 		
 		hardware = new RobotMap(); 
 		
 		try {
 			
-			rightArm = new DoubleSolenoid(hardware.RIGHT_ARM_MODULE_NUMBER, 
-										  hardware.RIGHT_ARM_FORWARD, 
-										  hardware.RIGHT_ARM_BACKWARD);
-			
+			armSolenoid = new DoubleSolenoid(hardware.ARM_MODULE_NUMBER, 
+										 hardware.ARM_FORWARD, 
+										 hardware.ARM_BACKWARD);
 		}
 		
 		catch (Exception e) 
@@ -47,14 +46,13 @@ public class RightArm extends Subsystem {
         }
 	}
 	
-	public void set(DoubleSolenoid.Value value) {
-		rightArm.set(value);
+	public void set (DoubleSolenoid.Value value) {
+		armSolenoid.set(value);
 	}
 	
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
-
 	}
 
 }

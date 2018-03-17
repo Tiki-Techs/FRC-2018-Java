@@ -8,7 +8,7 @@ public class LeftArmOut extends CommandBase {
 	
 	
 	public LeftArmOut() {
-    	requires(leftArm);
+    	requires(intakeArms);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class LeftArmOut extends CommandBase {
     @Override
     protected void execute() {
       	
-    	leftArm.set(DoubleSolenoid.Value.kReverse);
+    	intakeArms.set(DoubleSolenoid.Value.kReverse);
 
     }
 

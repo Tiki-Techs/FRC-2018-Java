@@ -3,7 +3,7 @@ package org.usfirst.frc.team3880.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class CubeOuttakeWheels extends CommandBase {
-		double OUTTAKE_VALUE = -.5;
+		double OUTTAKE_VALUE = -1;
 		
 		public CubeOuttakeWheels() {
 			requires(rightIntakeWheel);
@@ -21,7 +21,6 @@ public class CubeOuttakeWheels extends CommandBase {
 	     */
 	    @Override
 	    protected void execute() {
-	      	
 	    	rightIntakeWheel.spin(OUTTAKE_VALUE);
 	    	leftIntakeWheel.spin(OUTTAKE_VALUE);
 	    }
