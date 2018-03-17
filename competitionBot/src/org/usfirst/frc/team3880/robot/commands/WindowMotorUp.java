@@ -23,7 +23,7 @@ public class WindowMotorUp extends CommandBase {
     @Override
     protected void execute() {
     	if (!windowMotor.getLimit()) {
-    		windowMotor.set(POWER);
+    		windowMotor.set(oi.xbox.getRawAxis(3) - oi.xbox.getRawAxis(2));
     	}    
     	else {
     		windowMotor.set(0);

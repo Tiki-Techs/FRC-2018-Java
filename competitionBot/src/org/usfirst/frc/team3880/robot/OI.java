@@ -61,9 +61,7 @@ public class OI {
 					rightButton = new JoystickButton(xbox, 6),
 					selectButton = new JoystickButton(xbox, 7),
 					startButton = new JoystickButton(xbox, 8),
-					leftStickButton = new JoystickButton(xbox, 9),
-					rightStickButton = new JoystickButton(xbox, 10);
-	
+					leftStickButton = new JoystickButton(xbox, 9);	
 	private Trigger xboxLeftTrigger = new XboxLeftTrigger();
 	private Trigger xboxRightTrigger = new XboxRightTrigger();
 	
@@ -130,8 +128,8 @@ public class OI {
 			rightButton.whileHeld(new RightWheelOut());
 		}
 		if(mode == 3) {
-			AButton.whileHeld(new LiftUp());
-			YButton.whileHeld(new LiftDown());
+			AButton.whileHeld(new LiftDown());
+			YButton.whileHeld(new LiftUp());
 			
 			XButton.whenPressed(new ShiftTorque());
 			BButton.whenPressed(new ShiftSpeed());
@@ -142,7 +140,8 @@ public class OI {
 			selectButton.whenPressed(new CubeIntakeArms());
 			startButton.whenPressed(new CubeOuttakeArms());
 			
-			rightStickButton.whileHeld(new ClimbUp());
+			leftStickButton.whileHeld(new ClimbUp());
+			
 			
 			xboxRightTrigger.whileActive(new WindowMotorUp());
 			xboxLeftTrigger.whileActive(new WindowMotorDown());

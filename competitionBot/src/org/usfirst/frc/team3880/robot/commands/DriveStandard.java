@@ -29,6 +29,9 @@ public class DriveStandard extends CommandBase {
     	else if(CommandBase.OI_MODE == 1) {
     		drive.drive(oi.getRightY(), oi.getRightX());
     	}
+    	else if(CommandBase.OI_MODE == 3) {
+    		drive.drive(oi.getXboxLeftY(), oi.getXboxRightX());
+    	}
     }
 
     @Override

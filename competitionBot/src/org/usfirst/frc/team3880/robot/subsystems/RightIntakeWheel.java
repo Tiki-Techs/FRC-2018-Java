@@ -42,7 +42,7 @@ public class RightIntakeWheel extends Subsystem {
 	}
 	
 	public void spin (double value) {
-		rightIntakeWheel.set(value);
+		rightIntakeWheel.set(-value);
 	}
 	
 	
