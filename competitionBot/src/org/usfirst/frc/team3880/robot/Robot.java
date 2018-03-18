@@ -133,8 +133,8 @@ public class Robot extends IterativeRobot {
 			}
 //			if (false) {}
 			else {
-//				autonomousCommand = new Autonomous_DriveStraight();
-				autonomousCommand = new AutoLiftUp();
+				autonomousCommand = new Autonomous_DriveStraight();
+//				autonomousCommand = new AutoLiftUp();
 			}
 			
 //			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'L') {
