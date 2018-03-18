@@ -163,6 +163,11 @@ public class Drive extends Subsystem {
 		
 	}
 	
+	public void resetEncoders() {
+		driveEncoderLeft.reset();
+		driveEncoderRight.reset();
+	}
+	
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

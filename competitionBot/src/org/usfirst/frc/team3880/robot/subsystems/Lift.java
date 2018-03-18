@@ -5,6 +5,7 @@ import org.usfirst.frc.team3880.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -51,16 +52,20 @@ public class Lift extends Subsystem {
         }
 	}
 	
-	public void set(double speed) {
-		lift.set(ControlMode.PercentOutput, speed);
-	
+	public void set(double speed) {	
 		
-		if(speed == 0 && lift.getSelectedSensorVelocity(0) < 0) {
-			speed = .1;
-			adjusted = true;
+//		if(speed == 0 && lift.getSelectedSensorVelocity(0) < 0) {
+//			speed = .05;
+//			lift.setNeutralMode(NeutralMode.Brake);
+//		}
+//		else if (speed != 0) {
+//			lift.setNeutralMode(NeutralMode.Coast);
+//		}
+		if(speed == 0) {
+			lift.set(ControlMode.PercentOutput, 0.1);
 		}
-		else if(adjusted == true) {
-			speed = 0;
+		else {
+			lift.set(ControlMode.PercentOutput, speed);
 		}
 	
 	}
@@ -84,7 +89,7 @@ public class Lift extends Subsystem {
 	}
 	
 	public void resetEncoder() {
-//		lift.setSelectedSensorPosition(0, 0, 0);
+		lift.setSelectedSensorPosition(0, 0, 0);
 	}
 	
 	

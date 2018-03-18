@@ -2,6 +2,7 @@ package org.usfirst.frc.team3880.robot.commands.autonomous;
 
 import org.usfirst.frc.team3880.robot.commands.CommandBase;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -70,6 +71,12 @@ public class Autonomous_DriveStraight extends CommandBase {
 		 drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
 		 drive.backRightDrive.set(ControlMode.PercentOutput, 0);
 		 drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
+		 
+		 double encoderDistanceLeft = drive.getEncoderLeftDist();
+		 double encoderDistanceRight = drive.getEncoderRightDist();
+		 
+		 SmartDashboard.putNumber("Left Encoder auto distance", encoderDistanceLeft);
+		 SmartDashboard.putNumber("Right encoder auto distance", encoderDistanceRight);
 	 }
 
 	 @Override

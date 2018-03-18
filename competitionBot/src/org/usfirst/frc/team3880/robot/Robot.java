@@ -56,7 +56,7 @@ public class Robot extends IterativeRobot {
 	char robotPosition;
 		
 
-	private SendableChooser m_chooser;
+	private SendableChooser<Character> m_chooser;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -70,7 +70,7 @@ public class Robot extends IterativeRobot {
 		CameraServer.getInstance().startAutomaticCapture(0);
 //		CameraServer.getInstance().startAutomaticCapture(1);
 		
-		m_chooser = new SendableChooser();
+		m_chooser = new SendableChooser<Character>();
 		
 		
 		CommandBase.gyro.gyro.calibrate();
@@ -115,6 +115,7 @@ public class Robot extends IterativeRobot {
 		char scalePosition;
 		
 		CommandBase.gyro.gyro.reset();
+		CommandBase.drive.resetEncoders();
 		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 	
@@ -134,7 +135,7 @@ public class Robot extends IterativeRobot {
 //			if (false) {}
 			else {
 				autonomousCommand = new Autonomous_DriveStraight();
-//				autonomousCommand = new AutoLiftUp();
+//					autonomousCommand = new AutoLiftUp();
 			}
 			
 //			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'L') {

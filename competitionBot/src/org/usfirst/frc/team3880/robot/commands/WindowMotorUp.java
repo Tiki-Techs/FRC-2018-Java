@@ -22,7 +22,7 @@ public class WindowMotorUp extends CommandBase {
      */
     @Override
     protected void execute() {
-    	if (!windowMotor.getLimit()) {
+//    	if (!windowMotor.getLimit()) {
     		if ( oi.getXboxRightTrigger() != 0 || oi.getXboxLeftTrigger() != 0) {
     	
     		windowMotor.set(oi.xbox.getRawAxis(3) - oi.xbox.getRawAxis(2));
@@ -36,7 +36,8 @@ public class WindowMotorUp extends CommandBase {
     		else {
     			windowMotor.set(0);
     		}
-    	}    
+//    	}    
+    	if(true){}
     	
     	else {
     		windowMotor.set(0);
