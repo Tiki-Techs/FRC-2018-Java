@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3880.robot.subsystems;
 
+import org.usfirst.frc.team3880.robot.OI;
 import org.usfirst.frc.team3880.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -14,6 +15,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Lift extends Subsystem {
 
 	TalonSRX lift;
+	
+	boolean adjusted;
 	
 	DigitalInput liftUpperLimit;
 	DigitalInput liftLowerLimit;
@@ -50,6 +53,16 @@ public class Lift extends Subsystem {
 	
 	public void set(double speed) {
 		lift.set(ControlMode.PercentOutput, speed);
+	
+		
+		if(speed == 0 && lift.getSelectedSensorVelocity(0) < 0) {
+			speed = .1;
+			adjusted = true;
+		}
+		else if(adjusted == true) {
+			speed = 0;
+		}
+	
 	}
 	
 	public boolean getUpperLimit() {
@@ -58,6 +71,16 @@ public class Lift extends Subsystem {
 	
 	public boolean getLowerLimit() {
 		return !liftLowerLimit.get();
+	}
+	
+	public void setPos(double target) {
+		//target is position of encoder
+		
+	}
+	public void stayStill(boolean isPressed) {
+		if(!isPressed && lift.getSelectedSensorVelocity(0) < 0) {
+			
+		}
 	}
 	
 	public void resetEncoder() {

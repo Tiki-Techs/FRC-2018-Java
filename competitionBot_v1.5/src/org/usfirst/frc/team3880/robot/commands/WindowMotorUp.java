@@ -23,8 +23,21 @@ public class WindowMotorUp extends CommandBase {
     @Override
     protected void execute() {
     	if (!windowMotor.getLimit()) {
+    		if ( oi.getXboxRightTrigger() != 0 || oi.getXboxLeftTrigger() != 0) {
+    	
     		windowMotor.set(oi.xbox.getRawAxis(3) - oi.xbox.getRawAxis(2));
+    		}
+    		else if (oi.joy1.getRawButton(7)){
+        		windowMotor.set(1);
+        	}
+    		else if(oi.joy1.getRawButton(8)) {
+        		windowMotor.set(-1);
+        	}
+    		else {
+    			windowMotor.set(0);
+    		}
     	}    
+    	
     	else {
     		windowMotor.set(0);
     	}

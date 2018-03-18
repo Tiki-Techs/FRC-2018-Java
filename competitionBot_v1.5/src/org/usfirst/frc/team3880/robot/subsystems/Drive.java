@@ -96,6 +96,15 @@ public class Drive extends Subsystem {
 		}
     }
 	
+	public void set(double left, double right) {
+		
+			backLeftDrive.set(ControlMode.PercentOutput, -left);
+			frontLeftDrive.set(ControlMode.PercentOutput, -left);
+			backRightDrive.set(ControlMode.PercentOutput, right);
+			frontRightDrive.set(ControlMode.PercentOutput, right);
+
+    }
+	
 	public double getEncoderLeftRate() {
 		return driveEncoderLeft.getRate();
 	}
@@ -113,9 +122,15 @@ public class Drive extends Subsystem {
 	}
 
 	public void setHeading(double percent) {
-		double angle = CommandBase.gyro.gyro.getAngle();
+		double angle = CommandBase.gyro.gyro.getAngleZ();
 		double left;
 		double right;
+		System.out.println("angle " + angle);
+		
+		while(angle>= 360) {
+			angle -= 360;
+			//keeps angle from getting too big if it turns more than 360 degrees in one direction
+		}
 		
 		if (angle < 10 || angle > 350) {
 			left = 1;
@@ -123,7 +138,7 @@ public class Drive extends Subsystem {
 		}
 		else if (angle >= 180) {
 			left = 1;
-			right = 1+(angle-360)/180;
+			right = 1+((angle-360)/180);
 		}
 		else if (angle < 180) {
 			right = 1;
@@ -138,10 +153,13 @@ public class Drive extends Subsystem {
 			percent = 0.5;
 		}
 		
-		backLeftDrive.set(ControlMode.PercentOutput, -left*percent);
-		frontLeftDrive.set(ControlMode.PercentOutput, -left*percent);
-		backRightDrive.set(ControlMode.PercentOutput, right*percent);
-		frontRightDrive.set(ControlMode.PercentOutput, right*percent);
+		double finalLeft = left*percent;
+		double finalRight = right*percent;
+		
+		System.out.println(finalLeft);
+		System.out.println(finalRight);
+		
+		set(finalLeft, finalRight);
 		
 	}
 	

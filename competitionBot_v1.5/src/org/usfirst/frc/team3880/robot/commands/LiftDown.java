@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class LiftDown extends CommandBase {
 	
-	double POWER = -0.3; // down: negative
+	double POWER = -1; // down: negative
 
 	public LiftDown() {
     	requires(lift);

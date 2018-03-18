@@ -28,39 +28,43 @@ public class AutoLiftUp extends CommandBase {
 
 	 @Override
 	 protected void execute() {
-	   	 double LEFT_ENC_DISTANCE = drive.getEncoderLeftDist();
-	     double RIGHT_ENC_DISTANCE = drive.getEncoderLeftDist();
-		 if (timer.get() < 2.8) {
-			 System.out.println(timer.get());
-			 drive.setHeading(-0.4);
-
+		 System.out.println(timer.get());
+		
+		 if(timer.get() <= .8) {
+			 windowMotor.set(-.3);
+			 //drop intake down
+		 }
+		 else if (timer.get() <= 4) {
+			 CommandBase.drive.set(-0.4,-0.4);
+			 lift.set(.3);
+			 windowMotor.set(0);
+			 //drive to switch
 	 	}
 		 
-		 if (2.8 < timer.get() && timer.get() < 3.2) {
-			 drive.drive(0, 0);
-			 rightIntakeWheel.spin(0);
-			 leftIntakeWheel.spin(0);
-			 
-			 if (!lift.getUpperLimit()) {
-				 lift.set(0.5);
-			 }
+		 else if(timer.get() <= 4.5) {
+			drive.backLeftDrive.set(ControlMode.Disabled, 0);
+			drive.frontLeftDrive.set(ControlMode.Disabled, 0);
+			drive.backRightDrive.set(ControlMode.Disabled, 0);
+			drive.frontRightDrive.set(ControlMode.Disabled, 0); 
+			lift.set(.1);
+			
+			rightIntakeWheel.spin(-1);
+			leftIntakeWheel.spin(1);
+			//shoot 
 			 
 		 }
 		 
-		 if (timer.get() > 3.2 && timer.get() < 4) {
-			 drive.drive(0, 0);
+		 else if (timer.get() <= 5.5) {
+			 drive.drive(0.4, 0.4);
 
-			 rightIntakeWheel.spin(-1);
-			 leftIntakeWheel.spin(-1);
-			 
-			 lift.set(0);
+			 rightIntakeWheel.spin(-0);
+			 leftIntakeWheel.spin(-0);
 		 }
 		 else {
-			 drive.drive(0, 0);
+//			 drive.drive(0, 0);
 			 
 			 rightIntakeWheel.spin(0);
 			 leftIntakeWheel.spin(0);
-			 lift.set(0);
 
 		 }
 	 }

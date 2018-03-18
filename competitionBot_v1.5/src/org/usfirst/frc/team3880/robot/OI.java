@@ -156,8 +156,6 @@ public class OI {
 			buttonR9.whileHeld(new ClimbUp());
 			buttonR10.whileHeld(new ClimbDown());
 			
-			buttonR7.whileHeld(new WindowMotorUp());
-			buttonR8.whileHeld(new WindowMotorDown());
 			
 		}
 
@@ -242,11 +240,21 @@ public class OI {
 	}
 	
 	public static double getXboxLeftTrigger() {
-		return xbox.getRawAxis(2);
+		if(Math.abs(xbox.getRawAxis(2)) >= 0.1) {
+			return xbox.getRawAxis(2);
+		}
+		else {
+			return 0;
+		}
 	}
 	
 	public static double getXboxRightTrigger() {
-		return xbox.getRawAxis(3);
+		if(Math.abs(xbox.getRawAxis(3)) >= 0.1) {
+			return xbox.getRawAxis(3);
+		}
+		else {
+			return 0;
+		}
 	}
 	
 	public int getXboxPOV() {

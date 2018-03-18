@@ -32,7 +32,7 @@ public class Autonomous_DriveStraight extends CommandBase {
 	     double RIGHT_ENC_DISTANCE = CommandBase.drive.getEncoderLeftDist();
 		 if (timer.get() < 2.8) {
 			 System.out.println(timer.get());
-			 CommandBase.drive.setHeading(-0.4);
+			 CommandBase.drive.set(-0.4,-0.4);
 
 //			 drive.backLeftDrive.set(ControlMode.PercentOutput, -.4);
 //			 drive.frontLeftDrive.set(ControlMode.PercentOutput, -.4);
@@ -60,7 +60,7 @@ public class Autonomous_DriveStraight extends CommandBase {
 	 	}
 		 
 		 else {
-			 CommandBase.drive.drive(0, 0);
+			 CommandBase.drive.set(0, 0);
 		 }
 	 }
 

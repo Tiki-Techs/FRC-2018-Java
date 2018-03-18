@@ -131,8 +131,10 @@ public class Robot extends IterativeRobot {
 			if (switchPosition == robotPosition) {
 				autonomousCommand = new AutoLiftUp();
 			}
+//			if (false) {}
 			else {
-				autonomousCommand = new Autonomous_DriveStraight();
+//				autonomousCommand = new Autonomous_DriveStraight();
+				autonomousCommand = new AutoLiftUp();
 			}
 			
 //			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'L') {
@@ -185,7 +187,8 @@ public class Robot extends IterativeRobot {
 			
 		}
 		else {
-			autonomousCommand = new Autonomous_DriveStraight();
+//			autonomousCommand = new Autonomous_DriveStraight();
+			autonomousCommand = new AutoLiftUp();
 		}
 		
 		if(autonomousCommand != null) {
