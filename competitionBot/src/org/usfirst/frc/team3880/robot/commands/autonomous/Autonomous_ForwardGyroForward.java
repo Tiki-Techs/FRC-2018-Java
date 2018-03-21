@@ -13,8 +13,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	private double step2EndTime;
 	private double step0LeftPct;
 	private double step0RighttPct;
-	private double step1LeftPct;
-	private double step1RighttPct;
+	private double step1DrivePct;
 	private double step2LeftPct;
 	private double step2RightPct;
 	private double step1LiftPct;
@@ -46,8 +45,8 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		step0LeftPct = SmartDashboard.getNumber("autoFTR0LeftPct", -0.4);
 		step0RighttPct = SmartDashboard.getNumber("autoFTR0RightPct", -0.4);
 
-		step1LeftPct = SmartDashboard.getNumber("autoFTR1LeftPct", -0.4);
-		step1RighttPct = SmartDashboard.getNumber("autoFTR1RightPct", 0.4);
+		// Motor duty-cycle for spin: left is set to `step1DrivePct` right to `-1 * step1DrivePct`
+		step1DrivePct = SmartDashboard.getNumber("autoFTR1DrivePct", 0.4);
 		step1ClockwiseAngle = SmartDashboard.getNumber("autoFTR1ClockwiseAngle", 90.0);
 		step1AngularDeadzone = SmartDashboard.getNumber("autoFTR1AngularDeadzone", 10.0);
 		step1LiftPct = SmartDashboard.getNumber("autoFTR1RLiftPct", 0.7);
@@ -103,7 +102,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		double currentRobotAngle = gyro.gyro.getAngle();
 		double distanceToDesired = desiredRobotAngle - currentRobotAngle;
 		if (Math.abs(distanceToDesired) < step1AngularDeadzone == false){
-			drive.set(step1LeftPct, step1RighttPct);
+			drive.set(step1DrivePct, -step1DrivePct);
 		}
 	}
 
