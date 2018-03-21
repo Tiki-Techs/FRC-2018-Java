@@ -114,6 +114,12 @@ public class Drive extends Subsystem {
 		return driveEncoderRight.getDistance();
 	}
 
+	public double getEncoderLeftDistancePerPulse() { return driveEncoderLeft.getDistancePerPulse(); }
+	public void setEncoderLeftDistancePerPulse(double d) { driveEncoderLeft.setDistancePerPulse(d); }
+	public double getEncoderRightDistancePerPulse() { return driveEncoderRight.getDistancePerPulse(); }
+	public void setEncoderRighttDistancePerPulse(double d) { driveEncoderRight.setDistancePerPulse(d); }
+
+
 	public void setHeading(double percent) {
 		double angle = CommandBase.gyro.gyro.getAngleZ();
 		double left;

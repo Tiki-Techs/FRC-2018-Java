@@ -31,11 +31,25 @@ public class Autonomous_DriveStraight extends CommandBase {
 	 protected void execute() {
 	   	 double LEFT_ENC_DISTANCE = CommandBase.drive.getEncoderLeftDist();
 	     double RIGHT_ENC_DISTANCE = CommandBase.drive.getEncoderRightDist();
-		 SmartDashboard.putNumber("Left Encoder distance at `execute()`", LEFT_ENC_DISTANCE);
-		 SmartDashboard.putNumber("Right encoder auto distance at `execute()`", RIGHT_ENC_DISTANCE);
-		 if (timer.get() < 2.8) {
+		 SmartDashboard.putNumber("Left Encoder distance at `execute()` -- expect 0", LEFT_ENC_DISTANCE);
+		 SmartDashboard.putNumber("Right encoder auto distance at `execute()` -- expect 0", RIGHT_ENC_DISTANCE);
+		 SmartDashboard.putNumber("Left Encoder distance per pulse", CommandBase.drive.getEncoderLeftDistancePerPulse());
+		 SmartDashboard.putNumber("Right Encoder distance per pulse", CommandBase.drive.getEncoderRightDistancePerPulse());
+
+		 //Get all the magic numbers from the dashboard
+         double autoTimerDuration = SmartDashboard.getNumber("autoTimerDuration", 2.8);
+         double autoLeftDrivePercent = SmartDashboard.getNumber("autoLeftDrivePercent", -0.4);
+         double autoRighttDrivePercent = SmartDashboard.getNumber("autoRightDrivePercent", -0.4);
+
+         // Change encoder distances based on SmartDashboard, or use current values
+         double newLeftDistancePerPulse = SmartDashboard.getNumber("autoLeftDistPerPulse", CommandBase.drive.getEncoderLeftDistancePerPulse());
+         double newRightDistancePerPulse = SmartDashboard.getNumber("autoRightDistPerPulse", CommandBase.drive.getEncoderRightDistancePerPulse());
+         CommandBase.drive.setEncoderLeftDistancePerPulse(newLeftDistancePerPulse);
+         CommandBase.drive.setEncoderRighttDistancePerPulse(newRightDistancePerPulse);
+
+         if (timer.get() < autoTimerDuration) {
 			 System.out.println(timer.get());
-			 CommandBase.drive.set(-0.4,-0.4);
+			 CommandBase.drive.set(autoLeftDrivePercent,autoRighttDrivePercent);
 	 	 }
 		 else {
 			 CommandBase.drive.set(0, 0);
