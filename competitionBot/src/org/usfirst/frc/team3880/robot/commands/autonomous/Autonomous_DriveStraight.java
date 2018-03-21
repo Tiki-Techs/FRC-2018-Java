@@ -30,12 +30,13 @@ public class Autonomous_DriveStraight extends CommandBase {
 	 @Override
 	 protected void execute() {
 	   	 double LEFT_ENC_DISTANCE = CommandBase.drive.getEncoderLeftDist();
-	     double RIGHT_ENC_DISTANCE = CommandBase.drive.getEncoderLeftDist();
+	     double RIGHT_ENC_DISTANCE = CommandBase.drive.getEncoderRightDist();
+		 SmartDashboard.putNumber("Left Encoder distance at `execute()`", LEFT_ENC_DISTANCE);
+		 SmartDashboard.putNumber("Right encoder auto distance at `execute()`", RIGHT_ENC_DISTANCE);
 		 if (timer.get() < 2.8) {
 			 System.out.println(timer.get());
 			 CommandBase.drive.set(-0.4,-0.4);
-	 	}
-		 
+	 	 }
 		 else {
 			 CommandBase.drive.set(0, 0);
 		 }
