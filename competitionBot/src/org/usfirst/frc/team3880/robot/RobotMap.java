@@ -38,9 +38,7 @@ public class RobotMap {
 	public int DRIVE_ENCODER_LEFT_TWO = 1;
 	public int DRIVE_ENCODER_RIGHT_ONE = 2;
 	public int DRIVE_ENCODER_RIGHT_TWO = 3;
-	
-	
-	
+
     private static RobotMap instance;
     
 	public static  RobotMap getInstance() {

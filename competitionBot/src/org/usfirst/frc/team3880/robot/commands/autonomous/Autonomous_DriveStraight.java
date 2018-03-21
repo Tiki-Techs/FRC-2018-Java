@@ -34,30 +34,6 @@ public class Autonomous_DriveStraight extends CommandBase {
 		 if (timer.get() < 2.8) {
 			 System.out.println(timer.get());
 			 CommandBase.drive.set(-0.4,-0.4);
-
-//			 drive.backLeftDrive.set(ControlMode.PercentOutput, -.4);
-//			 drive.frontLeftDrive.set(ControlMode.PercentOutput, -.4);
-//			 drive.backRightDrive.set(ControlMode.PercentOutput, .4);
-//			 drive.frontRightDrive.set(ControlMode.PercentOutput, .4);
-
-//			 if(LEFT_ENC_DISTANCE > RIGHT_ENC_DISTANCE) {
-//				 drive.backLeftDrive.set(ControlMode.PercentOutput, .35);
-//				 drive.frontLeftDrive.set(ControlMode.PercentOutput, .35);
-//				 drive.backRightDrive.set(ControlMode.PercentOutput, .45);
-//				 drive.frontRightDrive.set(ControlMode.PercentOutput, .45);
-//			 }
-//			 else if(LEFT_ENC_DISTANCE < RIGHT_ENC_DISTANCE) {
-//				 drive.backLeftDrive.set(ControlMode.PercentOutput, .45);
-//				 drive.frontLeftDrive.set(ControlMode.PercentOutput, .45);
-//				 drive.backRightDrive.set(ControlMode.PercentOutput, .35);
-//				 drive.frontRightDrive.set(ControlMode.PercentOutput, .35);
-//			 }
-//			 else {
-//				 drive.backLeftDrive.set(ControlMode.PercentOutput, .4);
-//				 drive.frontLeftDrive.set(ControlMode.PercentOutput, .4);
-//				 drive.backRightDrive.set(ControlMode.PercentOutput, .4);
-//				 drive.frontRightDrive.set(ControlMode.PercentOutput, .4);
-//			 }
 	 	}
 		 
 		 else {

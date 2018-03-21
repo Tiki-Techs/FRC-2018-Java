@@ -60,14 +60,10 @@ public class AutoLiftUp extends CommandBase {
 
 			 rightIntakeWheel.spin(-0);
 			 leftIntakeWheel.spin(-0);
-			 
 		 }
 		 else {
-//			 drive.drive(0, 0);
-			 
 			 rightIntakeWheel.spin(0);
 			 leftIntakeWheel.spin(0);
-
 		 }
 	 }
 

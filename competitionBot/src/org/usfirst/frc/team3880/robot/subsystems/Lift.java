@@ -52,15 +52,7 @@ public class Lift extends Subsystem {
         }
 	}
 	
-	public void set(double speed) {	
-		
-//		if(speed == 0 && lift.getSelectedSensorVelocity(0) < 0) {
-//			speed = .05;
-//			lift.setNeutralMode(NeutralMode.Brake);
-//		}
-//		else if (speed != 0) {
-//			lift.setNeutralMode(NeutralMode.Coast);
-//		}
+	public void set(double speed) {
 		if(speed == 0) {
 			lift.set(ControlMode.PercentOutput, 0.1);
 		}
@@ -91,9 +83,7 @@ public class Lift extends Subsystem {
 	public void resetEncoder() {
 		lift.setSelectedSensorPosition(0, 0, 0);
 	}
-	
-	
-//
+
 	public double getEncoderPosition() {
 		return -lift.getSelectedSensorPosition(0);
 	}

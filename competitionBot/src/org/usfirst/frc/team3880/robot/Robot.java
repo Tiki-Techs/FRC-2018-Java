@@ -68,8 +68,7 @@ public class Robot extends IterativeRobot {
 		CommandBase.init();
 		
 		CameraServer.getInstance().startAutomaticCapture(0);
-//		CameraServer.getInstance().startAutomaticCapture(1);
-		
+
 		m_chooser = new SendableChooser<Character>();
 		
 		
@@ -77,10 +76,6 @@ public class Robot extends IterativeRobot {
 		
 		
 		log();
-		
-		// robotPosition = (L/C/R)
-		
-//		CommandBase.gyro.gyro.calibrate();
 		
 		m_chooser.addDefault("Robot on left", 'L');
 		m_chooser.addObject("Robot in center", 'C');
@@ -101,14 +96,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-//		m_autoSelected = m_chooser.getSelected() = SmartDashboard.getString("Auto Selector",
-		// defaultAuto);;
-		// autoSelected
-//		System.out.println("Auto selected: " + m_autoSelected);
-		
 		String gameData = null;
-//		char robotPosition = 'L';
-		
+
 		char robotPosition = (char) m_chooser.getSelected();
 
 		char switchPosition;
@@ -132,63 +121,11 @@ public class Robot extends IterativeRobot {
 			if (switchPosition == robotPosition) {
 				autonomousCommand = new AutoLiftUp();
 			}
-//			if (false) {}
 			else {
 				autonomousCommand = new Autonomous_DriveStraight();
-//					autonomousCommand = new AutoLiftUp();
 			}
-			
-//			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'L') {
-//				autonomousCommand = new Autonomous_LeftLeftLeft();
-//			}
-//			if (robotPosition == 'C' && closeSwitchPosition == 'L' && scalePosition == 'L') {
-//				autonomousCommand = new Autonomous_CenterLeftLeft();
-//			}
-//			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'L') {
-//				autonomousCommand = new Autonomous_RightLeftLeft();
-//			}
-//			
-//			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'L') {
-//				autonomousCommand = new Autonomous_LeftRightLeft();
-//			}
-//			
-//			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'L') {
-//				autonomousCommand = new Autonomous_RightLeftLeft();
-//			}
-//			
-//			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'L') {
-//				autonomousCommand = new Autonomous_LeftRightLeft();
-//			}
-//			if (robotPosition == 'C' && closeSwitchPosition == 'R' && scalePosition == 'L') {
-//				autonomousCommand = new Autonomous_CenterLeftLeft();
-//			}
-//			if (robotPosition == 'R' && closeSwitchPosition == 'R' && scalePosition == 'L') {
-//				autonomousCommand = new Autonomous_RightRightLeft();
-//			}
-//			
-//			if (robotPosition == 'L' && closeSwitchPosition == 'L' && scalePosition == 'R') {
-//				autonomousCommand = new Autonomous_LeftLeftRight();
-//			}
-//			if (robotPosition == 'C' && closeSwitchPosition == 'L' && scalePosition == 'R') {
-//				autonomousCommand = new Autonomous_CenterLeftRight();
-//			}
-//			if (robotPosition == 'R' && closeSwitchPosition == 'L' && scalePosition == 'R') {
-//				autonomousCommand = new Autonomous_RightLeftRight();
-//			}
-//			
-//			if (robotPosition == 'L' && closeSwitchPosition == 'R' && scalePosition == 'R') {
-//				autonomousCommand = new Autonomous_LeftRightRight();
-//			}
-//			if (robotPosition == 'C' && closeSwitchPosition == 'R' && scalePosition == 'R') {
-//				autonomousCommand = new Autonomous_CenterRightRight();
-//			}
-//			if (robotPosition == 'R' && closeSwitchPosition == 'R' && scalePosition == 'R') {
-//				autonomousCommand = new Autonomous_RightRightRight();
-//			}
-			
 		}
 		else {
-//			autonomousCommand = new Autonomous_DriveStraight();
 			autonomousCommand = new AutoLiftUp();
 		}
 		
@@ -256,11 +193,5 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("window limit", CommandBase.windowMotor.getLimit());
 		
 		SmartDashboard.putBoolean("lift lower limit", CommandBase.lift.getLowerLimit());
-
-
-		
-
 	}
-	
-	
 }

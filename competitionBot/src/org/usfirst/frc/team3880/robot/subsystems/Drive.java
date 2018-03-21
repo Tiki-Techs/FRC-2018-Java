@@ -69,14 +69,7 @@ public class Drive extends Subsystem {
         }
 		
 	}
-	
-//	public void set(double forward, double turn) {
-//		backLeftDrive.set(ControlMode.PercentOutput, - (forward - turn));
-//		frontLeftDrive.set(ControlMode.PercentOutput, -(forward - turn));
-//		backRightDrive.set(ControlMode.PercentOutput, forward + turn);
-//		frontRightDrive.set(ControlMode.PercentOutput, forward + turn);
-//    }
-	
+
 	public void drive(double left, double right) {
 		
 		left = (joystickSensitivity * Math.pow(left, 3)) + ((1 - joystickSensitivity) * left);

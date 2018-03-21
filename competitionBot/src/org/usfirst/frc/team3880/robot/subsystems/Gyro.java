@@ -24,11 +24,8 @@ public class Gyro extends Subsystem {
     }
     
     private Gyro() {
-    	
     	hardware = new RobotMap();
-    	
     	gyro = new ADIS16448_IMU();
-    	
     }
     
     
