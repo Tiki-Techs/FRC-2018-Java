@@ -8,19 +8,29 @@ import org.usfirst.frc.team3880.robot.commands.CommandBase;
 public class Autonomous_ForwardGyroForward extends CommandBase {
 	Timer timer;
 
+	// Times, in seconds, when the phase changes. These values must be strictly increasing
 	private double step0EndTime;
 	private double step1EndTime;
 	private double step2EndTime;
+	
+	// Duty % for the drives in the various phases. Note that `step1DrivePct` is single-value so that robot spins in place
 	private double step0LeftPct;
 	private double step0RighttPct;
 	private double step1DrivePct;
 	private double step2LeftPct;
 	private double step2RightPct;
+	
+	// Sets the lift height (?) in step 1
 	private double step1LiftPct;
+	
+	// Angle, in degrees, of desired clockwise turn
 	private double step1ClockwiseAngle;
 	// Stop turning if +- deadzone from desiredRobotAngle
 	private double step1AngularDeadzone;
+	
+	// Read during initialization
 	private double initialRobotAngle;
+	// == `(initialRobotAngle + step1ClockwisAngle) modulo 360` (always in range[0 .. 360])
 	private double desiredRobotAngle;
 
 	public Autonomous_ForwardGyroForward() {
@@ -37,6 +47,10 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		timer = new Timer();
 		timer.reset();
 		timer.start();
+		
+		/* Initialize all magic numbers, preferably by reading SmartDashboard, 
+		but with reasonable defaults
+		*/
 
 		step0EndTime = SmartDashboard.getNumber("autoFTR0FinalTime", 4.5);
 		step1EndTime = SmartDashboard.getNumber("autoFTR1FinalTime", 5.5);
@@ -59,6 +73,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		desiredRobotAngle = (initialRobotAngle + step1ClockwiseAngle) % 360;
 	}
 
+	/* Returns the phase for the given time (in seconds). Note that phases start at 0. */
 	private int phaseFor(double t) {
 		if (t < step0EndTime)
 		{
@@ -75,12 +90,18 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		return 3;
 	}
 
+	/*
+	Phase 0 behavior: drive forward
+	*/
 	private void ForwardInitial(double time)
 	{
 		drive.set(step0LeftPct, step0RighttPct);
 	}
 
 	/*
+	
+	Phase 1 behavior: raise lift, rotate to `desiredRobotAngle`
+	
 	I can imagine a couple of things being wrong with this:
 
 	First, it assumes that the gyro angle never is negative: that it's always in [0 .. 360]
@@ -106,6 +127,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		}
 	}
 
+	/* Phase 2 behavior: Drive forward, spin intake wheels */
 	private void ForwardAgain(double time)
 	{
 		drive.set(step2LeftPct, step2RightPct);
@@ -113,6 +135,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		leftIntakeWheel.spin(1);
 	}
 
+	/* Phase 3 behavior : Shut down motors */
 	private void Stop(double time)
 	{
 		end();
@@ -128,6 +151,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	protected void execute() {
 		double time = timer.get();
 		int phase = phaseFor(time);
+		// Call the behavior appropriate for the phase 
 		switch (phase) {
 			case 0:
 				ForwardInitial(time);
