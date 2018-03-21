@@ -21,36 +21,36 @@ public class Autonomous_DriveStraight extends CommandBase {
 	
 	 @Override
 	 protected void initialize() {
-		 timer  = new Timer();
-	    	timer.reset();
-	    	timer.start();
+		timer  = new Timer();
+		timer.reset();
+		timer.start();
 	 }
 
 
 	 @Override
 	 protected void execute() {
-	   	 double LEFT_ENC_DISTANCE = CommandBase.drive.getEncoderLeftDist();
-	     double RIGHT_ENC_DISTANCE = CommandBase.drive.getEncoderRightDist();
+		 double LEFT_ENC_DISTANCE = CommandBase.drive.getEncoderLeftDist();
+		 double RIGHT_ENC_DISTANCE = CommandBase.drive.getEncoderRightDist();
 		 SmartDashboard.putNumber("Left Encoder distance at `execute()` -- expect 0", LEFT_ENC_DISTANCE);
 		 SmartDashboard.putNumber("Right encoder auto distance at `execute()` -- expect 0", RIGHT_ENC_DISTANCE);
 		 SmartDashboard.putNumber("Left Encoder distance per pulse", CommandBase.drive.getEncoderLeftDistancePerPulse());
 		 SmartDashboard.putNumber("Right Encoder distance per pulse", CommandBase.drive.getEncoderRightDistancePerPulse());
 
 		 //Get all the magic numbers from the dashboard
-         double autoTimerDuration = SmartDashboard.getNumber("autoTimerDuration", 2.8);
-         double autoLeftDrivePercent = SmartDashboard.getNumber("autoLeftDrivePercent", -0.4);
-         double autoRighttDrivePercent = SmartDashboard.getNumber("autoRightDrivePercent", -0.4);
+		 double autoTimerDuration = SmartDashboard.getNumber("autoTimerDuration", 2.8);
+		 double autoLeftDrivePercent = SmartDashboard.getNumber("autoLeftDrivePercent", -0.4);
+		 double autoRightDrivePercent = SmartDashboard.getNumber("autoRightDrivePercent", -0.4);
 
-         // Change encoder distances based on SmartDashboard, or use current values
-         double newLeftDistancePerPulse = SmartDashboard.getNumber("autoLeftDistPerPulse", CommandBase.drive.getEncoderLeftDistancePerPulse());
-         double newRightDistancePerPulse = SmartDashboard.getNumber("autoRightDistPerPulse", CommandBase.drive.getEncoderRightDistancePerPulse());
-         CommandBase.drive.setEncoderLeftDistancePerPulse(newLeftDistancePerPulse);
-         CommandBase.drive.setEncoderRighttDistancePerPulse(newRightDistancePerPulse);
+		 // Change encoder distances based on SmartDashboard, or use current values
+		 double newLeftDistancePerPulse = SmartDashboard.getNumber("autoLeftDistPerPulse", CommandBase.drive.getEncoderLeftDistancePerPulse());
+		 double newRightDistancePerPulse = SmartDashboard.getNumber("autoRightDistPerPulse", CommandBase.drive.getEncoderRightDistancePerPulse());
+		 CommandBase.drive.setEncoderLeftDistancePerPulse(newLeftDistancePerPulse);
+		 CommandBase.drive.setEncoderRighttDistancePerPulse(newRightDistancePerPulse);
 
-         if (timer.get() < autoTimerDuration) {
+		 if (timer.get() < autoTimerDuration) {
 			 System.out.println(timer.get());
-			 CommandBase.drive.set(autoLeftDrivePercent,autoRighttDrivePercent);
-	 	 }
+			 CommandBase.drive.set(autoLeftDrivePercent,autoRightDrivePercent);
+		 }
 		 else {
 			 CommandBase.drive.set(0, 0);
 		 }
