@@ -18,7 +18,9 @@ public class ClimbPistonPush extends CommandBase {
      * (for example, if we want the joysticks to be less sensitive, we can multiply them by .5 in the getLeftSpeed method and leave our command the same).
      */
     protected void execute() {
-    	climbPneumatics.push();
+    	if(oi.joy1.getRawButton(11)) {
+    		climbPneumatics.push();
+    	}
     }
 
     /*

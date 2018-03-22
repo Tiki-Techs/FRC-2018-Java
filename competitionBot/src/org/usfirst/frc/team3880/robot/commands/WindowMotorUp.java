@@ -27,18 +27,18 @@ public class WindowMotorUp extends CommandBase {
     	
     		windowMotor.set(oi.xbox.getRawAxis(3) - oi.xbox.getRawAxis(2));
     		}
-    		else if (oi.joy1.getRawButton(7)){
-        		windowMotor.set(1);
-        	}
-    		else if(oi.joy1.getRawButton(8)) {
-        		windowMotor.set(-1);
-        	}
+//    		else if (oi.joy1.getRawButton(7)){
+//        		windowMotor.set(1);
+//        	}
+//    		else if(oi.joy1.getRawButton(8)) {
+//        		windowMotor.set(-1);
+//        	}
     		
     		
-    		else if(oi.joy1.getRawButton(11)) {
+    		else if(oi.joy1.getRawButton(7)) {
     			windowMotor.setDegree(70);
     		}
-    		else if(oi.joy1.getRawButton(12)) {
+    		else if(oi.joy1.getRawButton(8)) {
     			windowMotor.setDegree(0);
     		}
     		//set degree based on pot. need 90 degree for up

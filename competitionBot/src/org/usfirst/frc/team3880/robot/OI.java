@@ -136,25 +136,29 @@ public class OI {
 			selectButton.whenPressed(new CubeIntakeArms());
 			startButton.whenPressed(new CubeOuttakeArms());
 			
-			leftStickButton.whileHeld(new ClimbUp());
+			leftStickButton.whileHeld(new ClimbPistonPush());
 			
 			
 //			xboxRightTrigger.whileActive(new WindowMotorUp());
 //			xboxLeftTrigger.whileActive(new WindowMotorDown());
 			
 			
-			// controller 2- intake and lift
+			// controller 2- intake, lift.
+			buttonR1.whileHeld(new LiftUp());
+			buttonR2.whileHeld(new LiftDown());
+			
 			buttonR3.whileHeld(new CubeIntakeWheels());
 			buttonR4.whileHeld(new CubeOuttakeWheels());
 			
 			buttonR5.whenPressed(new CubeIntakeArms());
 			buttonR6.whenPressed(new CubeOuttakeArms());
 			
-			buttonR1.whileHeld(new LiftUp());
-			buttonR2.whileHeld(new LiftDown());
-			
 			buttonR9.whileHeld(new ClimbUp());
 			buttonR10.whileHeld(new ClimbDown());
+			
+			//climb piston is used by pressing button 9 on controller 2 and left stick on controller 1
+			
+			
 			
 			
 		}
