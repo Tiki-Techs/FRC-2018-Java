@@ -136,37 +136,35 @@ public class Drive extends Subsystem {
 	public void setEncoderRighttDistancePerPulse(double d) { driveEncoderRight.setDistancePerPulse(d); }
 
 
-	public void setHeading(double percent) {
-		double angle = CommandBase.gyro.getGyroAngle();
-		double left;
-		double right;
-		System.out.println("angle " + angle);
+	public void setHeading(double angle, double percent) {
+        double left;
+        double right;
 
-		// while(angle>= 360) {
-		// 	angle -= 360;
-		// 	//keeps angle from getting too big if it turns more than 360 degrees in one direction
-		// }
+        double globalGyroDeadzone = SmartDashboard.getNumber("globalGyroDeadzone", 10.0);
 
-		if (angle < 10 || angle > 350) {
-			left = 1;
+		double currentAngle = CommandBase.gyro.getGyroAngle();
+        System.out.println("Target angle " + angle + ", current angle " + currentAngle);
+
+		angle %= 360; if (angle < 0) { angle += 360; }
+        double angleOffset = (angle - currentAngle) % 180;
+
+        if (Math.abs(angleOffset) < globalGyroDeadzone) {
+            // drive straight
+            left = 1;
 			right = 1;
-		}
-		else if (angle >= 180) {
-			left = 1;
-			right = 1+((angle-360)/180);
-		}
-		else if (angle < 180) {
-			right = 1;
-			left = 1-(angle/180);
-		}
-		else {
-			left = 0;
-			right = 0;
-		}
-
-		if (percent == 0) {
-			percent = 0.5;
-		}
+        }
+        else {
+            if (angleOffset > 0) {
+                // fastest turn is clockwise
+                left = 1;
+    			right = 1-(Math.abs(angleOffset)/90);
+            }
+            else /* if (angleOffset < 180) */ {
+                // fastest turn is anticlockwise
+    			left = 1-(Math.abs(angleOffset)/90);
+                right = 1;
+            }
+        }
 
 		double finalLeft = left*percent;
 		double finalRight = right*percent;
@@ -182,7 +180,7 @@ public class Drive extends Subsystem {
 		driveEncoderLeft.reset();
 		driveEncoderRight.reset();
 	}
-	
+
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

@@ -119,14 +119,17 @@ public class Robot extends IterativeRobot {
 			scalePosition = gameData.charAt(1);
 
 			if (switchPosition == robotPosition) {
-				autonomousCommand = new AutoLiftUp();
+				// autonomousCommand = new AutoLiftUp();
+                autonomousCommand = new Autonomous_ForwardGyroForward();
 			}
 			else {
 				autonomousCommand = new Autonomous_DriveStraight();
+                // autonomousCommand = new Autonomous_ScoreAroundSwitch();
+                // autonomousCommand = new Autonomous_ScoreScale();
 			}
 		}
 		else {
-			autonomousCommand = new AutoLiftUp();
+			autonomousCommand = new Autonomous_DriveStraight();
 		}
 
 		if(autonomousCommand != null) {
@@ -185,7 +188,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("FLD current draw", CommandBase.drive.frontLeftDrive.getOutputCurrent());
 		SmartDashboard.putNumber("BLD current draw", CommandBase.drive.backLeftDrive.getOutputCurrent());
 
-		
+
         SmartDashboard.putNumber("right DriveEnc pulse setting", CommandBase.drive.getEncoderRightDistancePerPulse());
         SmartDashboard.putNumber("left DriveEnc pulse setting", CommandBase.drive.getEncoderLeftDistancePerPulse());
 
@@ -203,6 +206,6 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("lift lower limit", CommandBase.lift.getLowerLimit());
 
 		SmartDashboard.putNumber("window potentiometer", CommandBase.windowMotor.getPot());
-		SmartDashboard.putBoolean("window limit", CommandBase.windowMotor.getLimit());	
+		SmartDashboard.putBoolean("window limit", CommandBase.windowMotor.getLimit());
 	}
 }
