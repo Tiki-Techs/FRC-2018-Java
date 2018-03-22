@@ -28,7 +28,7 @@ public class Gyro extends Subsystem {
     	gyro = new ADIS16448_IMU();
     }
 
-    public void getGyroAngle() {
+    public double getGyroAngle() {
         double adjAngle = gyro.getAngleZ() % 360;
 
         if (adjAngle < 0) {
