@@ -38,6 +38,10 @@ public class Gyro extends Subsystem {
         return adjAngle;
     }
 
+    public boolean withinDeadZone(double target) {
+        return Math.abs(getGyroAngle()-target)<=SmartDashboard.getNumber("globalGyroDeadzone", 10.0);
+    }
+
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

@@ -96,7 +96,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	*/
 	private void ForwardInitial(double time)
 	{
-		drive.setHeading(0, step0RighttPct);
+		drive.set(step0LeftPct, step0RighttPct);
 	}
 
 	/*
@@ -121,15 +121,17 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	{
 		lift.set(step1LiftPct);
 
-        if (!gyro.withinDeadZone(desiredRobotAngle)){
-            drive.set(step1DrivePct, -step1DrivePct);
-        }
+		double currentRobotAngle = gyro.getGyroAngle();
+		double distanceToDesired = desiredRobotAngle - currentRobotAngle;
+		if (Math.abs(distanceToDesired) < step1AngularDeadzone == false){
+			drive.set(step1DrivePct, -step1DrivePct);
+		}
 	}
 
 	/* Phase 2 behavior: Drive forward, spin intake wheels */
 	private void ForwardAgain(double time)
 	{
-		drive.setHeading(desiredRobotAngle, step2RightPct);
+		drive.set(step2LeftPct, step2RightPct);
 		rightIntakeWheel.spin(-1);
 		leftIntakeWheel.spin(1);
 	}
