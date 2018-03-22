@@ -33,6 +33,16 @@ public class WindowMotorUp extends CommandBase {
     		else if(oi.joy1.getRawButton(8)) {
         		windowMotor.set(-1);
         	}
+    		
+    		
+    		else if(oi.joy1.getRawButton(11)) {
+    			windowMotor.setDegree(70);
+    		}
+    		else if(oi.joy1.getRawButton(12)) {
+    			windowMotor.setDegree(0);
+    		}
+    		//set degree based on pot. need 90 degree for up
+    		
     		else {
     			windowMotor.set(0);
     		}

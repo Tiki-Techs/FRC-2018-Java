@@ -38,6 +38,8 @@ public class RobotMap {
 	public int DRIVE_ENCODER_LEFT_TWO = 1;
 	public int DRIVE_ENCODER_RIGHT_ONE = 2;
 	public int DRIVE_ENCODER_RIGHT_TWO = 3;
+	
+	public int WINDOW_POT_ANALOG = 0;
 
     private static RobotMap instance;
     

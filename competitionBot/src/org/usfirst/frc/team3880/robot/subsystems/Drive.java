@@ -56,6 +56,17 @@ public class Drive extends Subsystem {
     		driveEncoderLeft.setDistancePerPulse(0.0092);
     		driveEncoderRight.setDistancePerPulse(0.0092);
     		
+    		setCurrentLimit(frontRightDrive, 40);
+    		setCurrentLimit(backRightDrive, 40);
+    		setCurrentLimit(frontLeftDrive, 40);
+    		setCurrentLimit(backLeftDrive, 40);
+    		
+    		frontRightDrive.configOpenloopRamp(.5, 10);
+      		backRightDrive.configOpenloopRamp(.5, 10);
+      		frontLeftDrive.configOpenloopRamp(.5, 10);
+      		backLeftDrive.configOpenloopRamp(.5, 10);
+      		
+    		
 			frontRightDrive = new TalonSRX(hardware.FRONT_RIGHT_DRIVE_TALON);
 			backRightDrive = new TalonSRX(hardware.BACK_RIGHT_DRIVE_TALON);
 			frontLeftDrive = new TalonSRX(hardware.FRONT_LEFT_DRIVE_TALON);
@@ -69,7 +80,12 @@ public class Drive extends Subsystem {
         }
 		
 	}
-
+	public void setCurrentLimit(TalonSRX talon, int ampLimit) {
+		talon.configPeakCurrentLimit(0, 0); 
+		talon.configPeakCurrentDuration(0, 0);//immediately limit
+		talon.configContinuousCurrentLimit(ampLimit, 10); //10 ms timeout
+		talon.enableCurrentLimit(true); 
+	}
 	public void drive(double left, double right) {
 		
 		left = (joystickSensitivity * Math.pow(left, 3)) + ((1 - joystickSensitivity) * left);
