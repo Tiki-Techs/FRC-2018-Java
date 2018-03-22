@@ -180,6 +180,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("driveEncoderRightRate", CommandBase.drive.getEncoderRightRate());
 		SmartDashboard.putNumber("driveEncoderRightDist", CommandBase.drive.getEncoderRightDist());
 
+        SmartDashboard.putNumber("right DriveEnc pulse setting", CommandBase.drive.getEncoderRightDistancePerPulse());
+        SmartDashboard.putNumber("left DriveEnc pulse setting", CommandBase.drive.getEncoderLeftDistancePerPulse());
+
 
 		SmartDashboard.putNumber("liftEncoderVel", CommandBase.lift.getEncoderVelocity());
 		SmartDashboard.putNumber("liftEncoderPos", CommandBase.lift.getEncoderPosition());
