@@ -74,6 +74,9 @@ public class WindowMotor extends Subsystem {
 			windowMotor.set(0);
 		}
 	}
+	public double getPot() {
+		return pot.get();
+	}
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
