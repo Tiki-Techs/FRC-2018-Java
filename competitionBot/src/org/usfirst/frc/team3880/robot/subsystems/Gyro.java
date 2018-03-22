@@ -29,7 +29,7 @@ public class Gyro extends Subsystem {
     }
 
     public double getGyroAngle() {
-        double adjAngle = gyro.getAngleZ() % 360;
+        double adjAngle = gyro.getYaw() % 360;
 
         if (adjAngle < 0) {
             adjAngle += 360;
