@@ -81,6 +81,24 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("Robot in center", 'C');
 		m_chooser.addObject("Robot on right", 'R');
 		SmartDashboard.putData("Auto choices", m_chooser);
+
+
+
+        SmartDashboard.putNumber("autoFTR0FinalTime", 4.5);
+        SmartDashboard.putNumber("autoFTR1FinalTime", 5.5);
+        SmartDashboard.putNumber("autoFTR2FinalTime", 6);
+
+        SmartDashboard.putNumber("autoFTR0LeftPct", -0.4);
+        SmartDashboard.putNumber("autoFTR0RightPct", -0.4);
+
+        // Motor duty-cycle for spin: left is set to `step1DrivePct` right to `-1 * step1DrivePct`
+        SmartDashboard.putNumber("autoFTR1DrivePct", 0.4);
+        SmartDashboard.putNumber("autoFTR1ClockwiseAngle", 90.0);
+        SmartDashboard.putNumber("autoFTR1AngularDeadzone", 10.0);
+        SmartDashboard.putNumber("autoFTR1RLiftPct", 0.7);
+
+        SmartDashboard.putNumber("autoFTR2LeftPct", -0.4);
+        SmartDashboard.putNumber("autoFTR2RightPct", -0.4);
 	}
 
 	/**
