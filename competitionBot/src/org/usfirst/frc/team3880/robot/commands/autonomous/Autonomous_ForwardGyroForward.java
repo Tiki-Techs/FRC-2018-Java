@@ -12,22 +12,23 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	private double step0EndTime;
 	private double step1EndTime;
 	private double step2EndTime;
-	
-	// Duty % for the drives in the various phases. Note that `step1DrivePct` is single-value so that robot spins in place
+
+	// Duty % for the drives in the various phases. Note that `step1DrivePct`
+    // is single-value so that robot spins in place
 	private double step0LeftPct;
 	private double step0RighttPct;
 	private double step1DrivePct;
 	private double step2LeftPct;
 	private double step2RightPct;
-	
+
 	// Sets the lift height (?) in step 1
 	private double step1LiftPct;
-	
+
 	// Angle, in degrees, of desired clockwise turn
 	private double step1ClockwiseAngle;
 	// Stop turning if +- deadzone from desiredRobotAngle
 	private double step1AngularDeadzone;
-	
+
 	// Read during initialization
 	private double initialRobotAngle;
 	// == `(initialRobotAngle + step1ClockwisAngle) modulo 360` (always in range[0 .. 360])
@@ -47,8 +48,8 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		timer = new Timer();
 		timer.reset();
 		timer.start();
-		
-		/* Initialize all magic numbers, preferably by reading SmartDashboard, 
+
+		/* Initialize all magic numbers, preferably by reading SmartDashboard,
 		but with reasonable defaults
 		*/
 
@@ -69,7 +70,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		step2RightPct = SmartDashboard.getNumber("autoFTR2RightPct", -0.4);
 
 		// Read the gyro.
-		initialRobotAngle = gyro.gyro.getAngle();
+		initialRobotAngle = gyro.getGyroAngle();
 		desiredRobotAngle = (initialRobotAngle + step1ClockwiseAngle) % 360;
 	}
 
@@ -99,9 +100,9 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	}
 
 	/*
-	
+
 	Phase 1 behavior: raise lift, rotate to `desiredRobotAngle`
-	
+
 	I can imagine a couple of things being wrong with this:
 
 	First, it assumes that the gyro angle never is negative: that it's always in [0 .. 360]
@@ -120,7 +121,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	{
 		lift.set(step1LiftPct);
 
-		double currentRobotAngle = gyro.gyro.getAngle();
+		double currentRobotAngle = gyro.getGyroAngle();
 		double distanceToDesired = desiredRobotAngle - currentRobotAngle;
 		if (Math.abs(distanceToDesired) < step1AngularDeadzone == false){
 			drive.set(step1DrivePct, -step1DrivePct);
@@ -151,7 +152,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	protected void execute() {
 		double time = timer.get();
 		int phase = phaseFor(time);
-		// Call the behavior appropriate for the phase 
+		// Call the behavior appropriate for the phase
 		switch (phase) {
 			case 0:
 				ForwardInitial(time);
@@ -174,6 +175,12 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
 		drive.backRightDrive.set(ControlMode.PercentOutput, 0);
 		drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
+
+        lift.set(0);
+
+        rightIntakeWheel.spin(0);
+		leftIntakeWheel.spin(0);
+
 	}
 
 	@Override

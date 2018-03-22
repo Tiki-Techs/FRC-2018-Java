@@ -10,6 +10,19 @@ public class AutoDriveForwardTurnRight extends CommandBase {
 
 	double DRIVE_VALUE = 0.1;
 
+    double step0FinalTime;
+    double step0LeftPct;
+    double step0RighttPct;
+
+    double step1FinalTime;
+    double step1LeftPct;
+    double step1RighttPct;
+    double step1LiftPct;
+
+    double step2FinalTime;
+    double step2LeftPct;
+    double step2RighttPct;
+
 	public AutoDriveForwardTurnRight() {
 		requires(drive);
 		requires(lift);
@@ -21,27 +34,34 @@ public class AutoDriveForwardTurnRight extends CommandBase {
 
 	@Override
 	protected void initialize() {
+
+        // get constants from SmartDashboard
+        step0FinalTime = SmartDashboard.getNumber("autoFTR0FinalTime", 4.5);
+		step0LeftPct = SmartDashboard.getNumber("autoFTR0LeftPct", -0.4);
+		step0RighttPct = SmartDashboard.getNumber("autoFTR0RightPct", -0.4);
+
+		step1FinalTime = SmartDashboard.getNumber("autoFTR1FinalTime", 5.5);
+		step1LeftPct = SmartDashboard.getNumber("autoFTR1LeftPct", -0.4);
+		step1RighttPct = SmartDashboard.getNumber("autoFTR1RightPct", 0.4);
+		step1LiftPct = SmartDashboard.getNumber("autoFTR1RLiftPct", 0.7);
+
+		step2FinalTime = SmartDashboard.getNumber("autoFTR2FinalTime", 6);
+		step2LeftPct = SmartDashboard.getNumber("autoFTR2LeftPct", -0.4);
+		step2RighttPct = SmartDashboard.getNumber("autoFTR2RightPct", -0.4);
+
+
 		timer = new Timer();
 		timer.reset();
 		timer.start();
+
+
 	}
 
 
 	@Override
 	protected void execute() {
 		System.out.println(timer.get());
-		double step0FinalTime = SmartDashboard.getNumber("autoFTR0FinalTime", 4.5);
-		double step0LeftPct = SmartDashboard.getNumber("autoFTR0LeftPct", -0.4);
-		double step0RighttPct = SmartDashboard.getNumber("autoFTR0RightPct", -0.4);
 
-		double step1FinalTime = SmartDashboard.getNumber("autoFTR1FinalTime", 5.5);
-		double step1LeftPct = SmartDashboard.getNumber("autoFTR1LeftPct", -0.4);
-		double step1RighttPct = SmartDashboard.getNumber("autoFTR1RightPct", 0.4);
-		double step1LiftPct = SmartDashboard.getNumber("autoFTR1RLiftPct", 0.7);
-
-		double step2FinalTime = SmartDashboard.getNumber("autoFTR2FinalTime", 6);
-		double step2LeftPct = SmartDashboard.getNumber("autoFTR2LeftPct", -0.4);
-		double step2RighttPct = SmartDashboard.getNumber("autoFTR2RightPct", -0.4);
 
 		if (timer.get() < 0.5) {
 			windowMotor.set(-1);
@@ -65,6 +85,11 @@ public class AutoDriveForwardTurnRight extends CommandBase {
 		drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
 		drive.backRightDrive.set(ControlMode.PercentOutput, 0);
 		drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
+
+        rightIntakeWheel.spin(0);
+        leftIntakeWheel.spin(0);
+
+        lift.set(0);
 	}
 
 	@Override

@@ -47,14 +47,14 @@ import org.usfirst.frc.team3880.robot.commands.*;
 @SuppressWarnings("unused")
 public class Robot extends IterativeRobot {
 	//if false runs driveforward
-	
-	
+
+
 	Command autonomousCommand;
-	
+
 	NetworkTable table;
-	
+
 	char robotPosition;
-		
+
 
 	private SendableChooser<Character> m_chooser;
 
@@ -64,19 +64,19 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		
+
 		CommandBase.init();
-		
+
 		CameraServer.getInstance().startAutomaticCapture(0);
 
 		m_chooser = new SendableChooser<Character>();
-		
-		
+
+
 		CommandBase.gyro.gyro.calibrate();
-		
-		
+
+
 		log();
-		
+
 		m_chooser.addDefault("Robot on left", 'L');
 		m_chooser.addObject("Robot in center", 'C');
 		m_chooser.addObject("Robot on right", 'R');
@@ -102,22 +102,22 @@ public class Robot extends IterativeRobot {
 
 		char switchPosition;
 		char scalePosition;
-		
+
 		CommandBase.gyro.gyro.reset();
 		CommandBase.drive.resetEncoders();
-		
+
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-	
-		
+
+
 		//Defaulting to "LLL" to prevent null pointer
 		if(gameData == null) {
 			gameData = "LLL";
 		}
-		
+
 		if (gameData.length() > 0) {
 			switchPosition = gameData.charAt(0);
 			scalePosition = gameData.charAt(1);
-				
+
 			if (switchPosition == robotPosition) {
 				autonomousCommand = new AutoLiftUp();
 			}
@@ -128,7 +128,7 @@ public class Robot extends IterativeRobot {
 		else {
 			autonomousCommand = new AutoLiftUp();
 		}
-		
+
 		if(autonomousCommand != null) {
 			autonomousCommand.start();
 		}
@@ -136,7 +136,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData(autonomousCommand);
 
 	}
-	
+
 	/**
 	 * This function is called periodically during autonomous.
 	 */
@@ -145,21 +145,21 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
         log();
 	}
-	
+
 	public void teleopInit()
     {
 	// This makes sure that the autonomous stops running when
-	// teleop starts running. If you want the autonomous to 
+	// teleop starts running. If you want the autonomous to
 	// continue until interrupted by another command, remove
 	// this line or comment it out.
         Scheduler.getInstance().add(new DriveStandard());
     }
-	
+
 	/**
      * This function is called periodically during operator control
      */
 	@Override
-    public void teleopPeriodic() 
+    public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
         log();
@@ -172,26 +172,26 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		log();
 	}
-	
-	
+
+
 	public void log() {
 		SmartDashboard.putNumber("driveEncoderLeftRate", CommandBase.drive.getEncoderLeftRate());
 		SmartDashboard.putNumber("driveEncoderLeftDist", CommandBase.drive.getEncoderLeftDist());
 		SmartDashboard.putNumber("driveEncoderRightRate", CommandBase.drive.getEncoderRightRate());
 		SmartDashboard.putNumber("driveEncoderRightDist", CommandBase.drive.getEncoderRightDist());
 
-		
+
 		SmartDashboard.putNumber("liftEncoderVel", CommandBase.lift.getEncoderVelocity());
 		SmartDashboard.putNumber("liftEncoderPos", CommandBase.lift.getEncoderPosition());
 
 		SmartDashboard.putNumber("gyroAngleX", CommandBase.gyro.gyro.getAngleX());
 		SmartDashboard.putNumber("gyroAngleY", CommandBase.gyro.gyro.getAngleY());
-		SmartDashboard.putNumber("gyroAngleZ", CommandBase.gyro.gyro.getAngleZ());
-		
+		SmartDashboard.putNumber("gyroAngleZ", CommandBase.gyro.getGyroAngle());
+
 		SmartDashboard.putBoolean("lift upper limit", CommandBase.lift.getUpperLimit());
-		
+
 		SmartDashboard.putBoolean("window limit", CommandBase.windowMotor.getLimit());
-		
+
 		SmartDashboard.putBoolean("lift lower limit", CommandBase.lift.getLowerLimit());
 	}
 }
