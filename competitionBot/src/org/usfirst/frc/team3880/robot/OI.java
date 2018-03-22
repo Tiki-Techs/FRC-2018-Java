@@ -124,17 +124,26 @@ public class OI {
 			rightButton.whileHeld(new RightWheelOut());
 		}
 		if(mode == 3) {
-			AButton.whileHeld(new LiftDown());
-			YButton.whileHeld(new LiftUp());
+
+			// Commands shared between the two controllers
+			LiftDown liftDown = new LiftDown();
+			LiftUp liftUp = new LiftUp();
+			CubeOuttakeWheels cubeOuttakeWheels = new CubeOuttakeWheels();
+			CubeIntakeWheels cubeIntakeWheels = new CubeIntakeWheels();
+			CubeIntakeArms cubeIntakeArms = new CubeIntakeArms();
+			CubeOuttakeArms cubeOuttakeArms = new CubeOuttakeArms();
+
+			AButton.whileHeld(liftDown);
+			YButton.whileHeld(liftUp);
 			
 			XButton.whenPressed(new ShiftTorque());
 			BButton.whenPressed(new ShiftSpeed());
-			
-			leftButton.whileHeld(new CubeOuttakeWheels());
-			rightButton.whileHeld(new CubeIntakeWheels());
-			
-			selectButton.whenPressed(new CubeIntakeArms());
-			startButton.whenPressed(new CubeOuttakeArms());
+
+			leftButton.whileHeld(cubeOuttakeWheels);
+			rightButton.whileHeld(cubeIntakeWheels);
+
+			selectButton.whenPressed(cubeIntakeArms);
+			startButton.whenPressed(cubeOuttakeArms);
 			
 			leftStickButton.whileHeld(new ClimbPistonPush());
 			
@@ -144,14 +153,14 @@ public class OI {
 			
 			
 			// controller 2- intake, lift.
-			buttonR1.whileHeld(new LiftUp());
-			buttonR2.whileHeld(new LiftDown());
+			buttonR1.whileHeld(liftUp);
+			buttonR2.whileHeld(liftDown);
 			
-			buttonR3.whileHeld(new CubeIntakeWheels());
-			buttonR4.whileHeld(new CubeOuttakeWheels());
+			buttonR3.whileHeld(cubeIntakeWheels);
+			buttonR4.whileHeld(cubeOuttakeWheels);
 			
-			buttonR5.whenPressed(new CubeIntakeArms());
-			buttonR6.whenPressed(new CubeOuttakeArms());
+			buttonR5.whenPressed(cubeIntakeArms);
+			buttonR6.whenPressed(cubeOuttakeArms);
 			
 			buttonR9.whileHeld(new ClimbUp());
 			buttonR10.whileHeld(new ClimbDown());
