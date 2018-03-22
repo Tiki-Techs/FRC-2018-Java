@@ -19,75 +19,75 @@ public class Drive extends Subsystem {
 	public TalonSRX backRightDrive;
 	public TalonSRX frontLeftDrive;
 	public TalonSRX backLeftDrive;
-	
+
 	double joystickSensitivity = 0.85;
-	
+
 	Encoder driveEncoderLeft;
 	Encoder driveEncoderRight;
-	
+
 	RobotMap hardware;
-	
+
 	public static Drive instance;
 
     public static Drive getInstance() {
-    	
+
 	   if (instance == null) {
 		   instance = new Drive();
 	   }
-	
+
 	   return instance;
     }
 
-	
+
 	private Drive() {
 		super("DriveWheels");
-		
+
         hardware = new RobotMap();
-        
+
         try {
         	// TODO: add encoders to robotmap
-        	driveEncoderLeft = new Encoder(hardware.DRIVE_ENCODER_LEFT_ONE, 
-        								   hardware.DRIVE_ENCODER_LEFT_TWO, 
+        	driveEncoderLeft = new Encoder(hardware.DRIVE_ENCODER_LEFT_ONE,
+        								   hardware.DRIVE_ENCODER_LEFT_TWO,
         								   false, Encoder.EncodingType.k4X);
-        	driveEncoderRight = new Encoder(hardware.DRIVE_ENCODER_RIGHT_ONE, 
-        									hardware.DRIVE_ENCODER_RIGHT_TWO, 
+        	driveEncoderRight = new Encoder(hardware.DRIVE_ENCODER_RIGHT_ONE,
+        									hardware.DRIVE_ENCODER_RIGHT_TWO,
         									false, Encoder.EncodingType.k4X);
 
     		driveEncoderLeft.setDistancePerPulse(0.0092);
     		driveEncoderRight.setDistancePerPulse(0.0092);
-    		
+
     		setCurrentLimit(frontRightDrive, 40);
     		setCurrentLimit(backRightDrive, 40);
     		setCurrentLimit(frontLeftDrive, 40);
     		setCurrentLimit(backLeftDrive, 40);
-    		
+
     		frontRightDrive.configOpenloopRamp(.5, 10);
       		backRightDrive.configOpenloopRamp(.5, 10);
       		frontLeftDrive.configOpenloopRamp(.5, 10);
       		backLeftDrive.configOpenloopRamp(.5, 10);
-      		
-    		
+
+
 			frontRightDrive = new TalonSRX(hardware.FRONT_RIGHT_DRIVE_TALON);
 			backRightDrive = new TalonSRX(hardware.BACK_RIGHT_DRIVE_TALON);
 			frontLeftDrive = new TalonSRX(hardware.FRONT_LEFT_DRIVE_TALON);
 			backLeftDrive = new TalonSRX(hardware.BACK_LEFT_DRIVE_TALON);
-			
+
         }
-        
+
         catch (Exception e) {
             System.out.println(e);
             System.out.println("Drive failed");
         }
-		
+
 	}
 	public void setCurrentLimit(TalonSRX talon, int ampLimit) {
-		talon.configPeakCurrentLimit(0, 0); 
+		talon.configPeakCurrentLimit(0, 0);
 		talon.configPeakCurrentDuration(0, 0);//immediately limit
 		talon.configContinuousCurrentLimit(ampLimit, 10); //10 ms timeout
-		talon.enableCurrentLimit(true); 
+		talon.enableCurrentLimit(true);
 	}
 	public void drive(double left, double right) {
-		
+
 		left = (joystickSensitivity * Math.pow(left, 3)) + ((1 - joystickSensitivity) * left);
 		right = (joystickSensitivity * Math.pow(right, 3)) + ((1 - joystickSensitivity) * right);
 
@@ -104,28 +104,28 @@ public class Drive extends Subsystem {
 			frontRightDrive.set(ControlMode.PercentOutput, left + right);
 		}
     }
-	
+
 	public void set(double left, double right) {
-		
+
 			backLeftDrive.set(ControlMode.PercentOutput, -left);
 			frontLeftDrive.set(ControlMode.PercentOutput, -left);
 			backRightDrive.set(ControlMode.PercentOutput, right);
 			frontRightDrive.set(ControlMode.PercentOutput, right);
 
     }
-	
+
 	public double getEncoderLeftRate() {
 		return driveEncoderLeft.getRate();
 	}
-	
+
 	public double getEncoderLeftDist() {
 		return driveEncoderLeft.getDistance();
 	}
-	
+
 	public double getEncoderRightRate() {
 		return driveEncoderRight.getRate();
 	}
-	
+
 	public double getEncoderRightDist() {
 		return driveEncoderRight.getDistance();
 	}
@@ -137,16 +137,16 @@ public class Drive extends Subsystem {
 
 
 	public void setHeading(double percent) {
-		double angle = CommandBase.gyro.gyro.getAngleZ();
+		double angle = CommandBase.gyro.getGyroAngle();
 		double left;
 		double right;
 		System.out.println("angle " + angle);
-		
-		while(angle>= 360) {
-			angle -= 360;
-			//keeps angle from getting too big if it turns more than 360 degrees in one direction
-		}
-		
+
+		// while(angle>= 360) {
+		// 	angle -= 360;
+		// 	//keeps angle from getting too big if it turns more than 360 degrees in one direction
+		// }
+
 		if (angle < 10 || angle > 350) {
 			left = 1;
 			right = 1;
@@ -163,26 +163,26 @@ public class Drive extends Subsystem {
 			left = 0;
 			right = 0;
 		}
-		
+
 		if (percent == 0) {
 			percent = 0.5;
 		}
-		
+
 		double finalLeft = left*percent;
 		double finalRight = right*percent;
-		
+
 		System.out.println(finalLeft);
 		System.out.println(finalRight);
-		
+
 		set(finalLeft, finalRight);
-		
+
 	}
-	
+
 	public void resetEncoders() {
 		driveEncoderLeft.reset();
 		driveEncoderRight.reset();
 	}
-	
+
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
