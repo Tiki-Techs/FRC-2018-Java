@@ -12,12 +12,11 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lift extends Subsystem {
 
 	TalonSRX lift;
-
-	boolean adjusted;
 
 	DigitalInput liftUpperLimit;
 	DigitalInput liftLowerLimit;
@@ -41,7 +40,7 @@ public class Lift extends Subsystem {
 		try {
 			lift = new TalonSRX(hardware.LIFT_TALON);
 
-			lift.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,0); /* PIDLoop=0, timeoutMs=0 */
+			lift.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0); /* PIDLoop=0, timeoutMs=0 */
 			liftUpperLimit = new DigitalInput(hardware.UPPER_LIFT_LIMIT);
 			liftLowerLimit = new DigitalInput(hardware.LOWER_LIFT_LIMIT);
 		}
@@ -72,11 +71,10 @@ public class Lift extends Subsystem {
 
 	public void setPos(double target) {
 		//target is position of encoder
-
-	}
-	public void stayStill(boolean isPressed) {
-		if(!isPressed && lift.getSelectedSensorVelocity(0) < 0) {
-
+		double differential = target - lift.getSelectedSensorPosition(0);
+		
+		if (Math.abs(differential) > SmartDashboard.getNumber("liftEncoderDeadZone", 10)) {
+			set(1*Math.signum(differential));
 		}
 	}
 
@@ -84,11 +82,11 @@ public class Lift extends Subsystem {
 		lift.setSelectedSensorPosition(0, 0, 0);
 	}
 
-	public double getEncoderPosition() {
+	public int getEncoderPosition() {
 		return -lift.getSelectedSensorPosition(0);
 	}
 
-	public double getEncoderVelocity() {
+	public int getEncoderVelocity() {
 		return -lift.getSelectedSensorVelocity(0);
 	}
 

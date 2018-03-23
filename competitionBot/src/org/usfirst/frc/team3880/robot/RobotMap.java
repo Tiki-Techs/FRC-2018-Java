@@ -34,10 +34,10 @@ public class RobotMap {
 	public int WINDOW_UPPER_LIMIT = 6;
 	
 	
-	public int DRIVE_ENCODER_LEFT_ONE = 0;
-	public int DRIVE_ENCODER_LEFT_TWO = 1;
-	public int DRIVE_ENCODER_RIGHT_ONE = 2;
-	public int DRIVE_ENCODER_RIGHT_TWO = 3;
+	public int DRIVE_ENCODER_LEFT_ONE = 2;
+	public int DRIVE_ENCODER_LEFT_TWO = 3;
+	public int DRIVE_ENCODER_RIGHT_ONE = 0;
+	public int DRIVE_ENCODER_RIGHT_TWO = 1;
 	
 	public int WINDOW_POT_ANALOG = 0;
 

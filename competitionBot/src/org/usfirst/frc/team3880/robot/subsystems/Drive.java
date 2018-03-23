@@ -57,6 +57,12 @@ public class Drive extends Subsystem {
 
     		driveEncoderLeft.setDistancePerPulse(0.0092);
     		driveEncoderRight.setDistancePerPulse(0.0092);
+    		
+    		frontRightDrive = new TalonSRX(hardware.FRONT_RIGHT_DRIVE_TALON);
+			backRightDrive = new TalonSRX(hardware.BACK_RIGHT_DRIVE_TALON);
+			frontLeftDrive = new TalonSRX(hardware.FRONT_LEFT_DRIVE_TALON);
+			backLeftDrive = new TalonSRX(hardware.BACK_LEFT_DRIVE_TALON);
+			
 
     		setCurrentLimit(frontRightDrive, 40);
     		setCurrentLimit(backRightDrive, 40);
@@ -69,10 +75,6 @@ public class Drive extends Subsystem {
       		backLeftDrive.configOpenloopRamp(.5, 10);
 
 
-			frontRightDrive = new TalonSRX(hardware.FRONT_RIGHT_DRIVE_TALON);
-			backRightDrive = new TalonSRX(hardware.BACK_RIGHT_DRIVE_TALON);
-			frontLeftDrive = new TalonSRX(hardware.FRONT_LEFT_DRIVE_TALON);
-			backLeftDrive = new TalonSRX(hardware.BACK_LEFT_DRIVE_TALON);
 
         }
 
@@ -176,6 +178,37 @@ public class Drive extends Subsystem {
 
 		set(finalLeft, finalRight);
 
+	}
+	
+	public boolean turnDegrees(int degrees) {
+		double driveValue = (degrees - CommandBase.gyro.getGyroAngle()) /degrees;
+		
+		if(CommandBase.gyro.getGyroAngle() < degrees - 2.5) {
+			set(-driveValue, driveValue);
+			return false;
+		}
+		else if(CommandBase.gyro.getGyroAngle() > degrees + 2.5) {
+			set(driveValue, -driveValue);
+			return false;
+		}
+		else {
+			set(0, 0);
+			return true;
+		}
+	}
+	
+	public boolean driveDistance(int distance, double driveValue) {
+		double driveDistCurrent = (getEncoderRightDist() + getEncoderLeftDist()) / 2;
+		
+		if(driveDistCurrent < distance) {
+			setHeading(0, driveValue);
+			return false;
+		}
+		else {
+			set(0, 0);
+			resetEncoders();
+			return true;
+		}
 	}
 
 	public void resetEncoders() {

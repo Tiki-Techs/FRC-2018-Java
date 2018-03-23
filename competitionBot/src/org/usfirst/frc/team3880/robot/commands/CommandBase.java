@@ -37,6 +37,7 @@ public abstract class CommandBase extends Command {
         pneumatics = Pneumatics.getInstance();
         gyro = Gyro.getInstance();
         windowMotor = WindowMotor.getInstance();
+        climbPneumatics = ClimbPneumatics.getInstance();
 
         //  ^^^ EVERY SUBSYSTEM MUST be init'd here.  don't move it
         

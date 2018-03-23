@@ -28,7 +28,7 @@ public class ClimbPneumatics extends Subsystem {
     	
     	hardware = new RobotMap();
     	
-    	climbPiston = new Solenoid(hardware.CLIMB_PISTON);
+//    	climbPiston = new Solenoid(hardware.CLIMB_PISTON);
     }
     
     public void push() {
