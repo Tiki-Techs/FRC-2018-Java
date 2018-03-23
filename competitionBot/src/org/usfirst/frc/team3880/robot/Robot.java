@@ -57,6 +57,8 @@ public class Robot extends IterativeRobot {
 
 
 	private SendableChooser<Character> m_chooser;
+	
+	private SendableChooser<Boolean> test_mode;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -70,7 +72,11 @@ public class Robot extends IterativeRobot {
 		CameraServer.getInstance().startAutomaticCapture(0);
 
 		m_chooser = new SendableChooser<Character>();
-
+		
+		test_mode = new SendableChooser<Boolean>();
+		test_mode.addDefault("Test Mode off", false);
+		test_mode.addObject("Test Mode on", true);
+		SmartDashboard.putData("Test Mode", test_mode);
 
 		CommandBase.gyro.gyro.calibrate();
 
@@ -108,7 +114,20 @@ public class Robot extends IterativeRobot {
 
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 
-
+		if ((boolean) test_mode.getSelected()) {
+			if (robotPosition == 'R') {
+				// autonomousCommand = new AutoLiftUp();
+                autonomousCommand = new Autonomous_ForwardGyroForward();
+			}
+			else if (robotPosition == 'C') {
+				// autonomousCommand = new AutoLiftUp();
+                autonomousCommand = new AutoCenterTwoCube(45, 0);
+			}
+			if (robotPosition == 'L') {
+				// autonomousCommand = new AutoLiftUp();
+                autonomousCommand = new AutoDriveForwardTurnRight();
+			}
+		}
 		//Defaulting to "LLL" to prevent null pointer
 		if(gameData == null) {
 			gameData = "LLL";

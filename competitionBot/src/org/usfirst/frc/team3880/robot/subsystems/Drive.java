@@ -180,14 +180,14 @@ public class Drive extends Subsystem {
 
 	}
 	
-	public boolean turnDegrees(int degrees) {
-		double driveValue = (degrees - CommandBase.gyro.getGyroAngle()) /degrees;
+	public boolean turnDegrees(double angleOne) {
+		double driveValue = (angleOne - CommandBase.gyro.getGyroAngle()) /angleOne;
 		
-		if(CommandBase.gyro.getGyroAngle() < degrees - 2.5) {
+		if(CommandBase.gyro.getGyroAngle() < angleOne - 2.5) {
 			set(-driveValue, driveValue);
 			return false;
 		}
-		else if(CommandBase.gyro.getGyroAngle() > degrees + 2.5) {
+		else if(CommandBase.gyro.getGyroAngle() > angleOne + 2.5) {
 			set(driveValue, -driveValue);
 			return false;
 		}

@@ -23,12 +23,12 @@ public class AutoCenterTwoCube extends CommandBase {
     double step2LeftPct;
     double step2RighttPct;
     
-    int angleOne;
-    int angleTwo;
+    double angleOne;
+    double angleTwo;
     
     int phase;
 
-	public AutoCenterTwoCube(int turnOne, int turnTwo) {
+	public AutoCenterTwoCube(double turnOne, double turnTwo) {
 		requires(drive);
 		requires(lift);
 		requires(gyro);
