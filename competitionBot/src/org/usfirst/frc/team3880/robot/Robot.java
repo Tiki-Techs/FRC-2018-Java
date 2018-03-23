@@ -57,8 +57,9 @@ public class Robot extends IterativeRobot {
 
 
 	private SendableChooser<Character> m_chooser;
-	
 	private SendableChooser<Boolean> test_mode;
+	private SendableChooser<Command> auto_selectable;
+
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -77,15 +78,22 @@ public class Robot extends IterativeRobot {
 		test_mode.addDefault("Test Mode off", false);
 		test_mode.addObject("Test Mode on", true);
 		SmartDashboard.putData("Test Mode", test_mode);
-
-		CommandBase.gyro.gyro.calibrate();
-
+		
+		auto_selectable = new SendableChooser<Command>();
+		auto_selectable.addDefault("drive straight", new Autonomous_DriveStraight());
+		auto_selectable.addObject("straight forward and score", new AutoLiftUp());
+		auto_selectable.addObject("forward, turn, and score", new Autonomous_ForwardGyroForward());
+		auto_selectable.addObject("center two cube left", new AutoCenterTwoCube(315, 0, 90, 270, 0));
+		auto_selectable.addObject("center two cube right", new AutoCenterTwoCube(45, 0, 270, 90, 0));
+		SmartDashboard.putData("Test Mode Auto Selector", auto_selectable);
 
 		log();
 
 		m_chooser.addDefault("Robot on left", 'L');
 		m_chooser.addObject("Robot in center", 'C');
 		m_chooser.addObject("Robot on right", 'R');
+		m_chooser.addObject("drive straight", 'X');
+
 		SmartDashboard.putData("Auto choices", m_chooser);
 	}
 
@@ -105,6 +113,8 @@ public class Robot extends IterativeRobot {
 		String gameData = null;
 
 		char robotPosition = (char) m_chooser.getSelected();
+		
+		System.out.println(robotPosition);
 
 		char switchPosition;
 		char scalePosition;
@@ -115,47 +125,71 @@ public class Robot extends IterativeRobot {
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 
 		if ((boolean) test_mode.getSelected()) {
-			if (robotPosition == 'R') {
-				// autonomousCommand = new AutoLiftUp();
-                autonomousCommand = new Autonomous_ForwardGyroForward();
-			}
-			else if (robotPosition == 'C') {
-				// autonomousCommand = new AutoLiftUp();
-                autonomousCommand = new AutoCenterTwoCube(45, 0);
-			}
-			if (robotPosition == 'L') {
-				// autonomousCommand = new AutoLiftUp();
-                autonomousCommand = new AutoDriveForwardTurnRight();
-			}
+			autonomousCommand = (Command) auto_selectable.getSelected();
 		}
-		//Defaulting to "LLL" to prevent null pointer
-		if(gameData == null) {
-			gameData = "LLL";
-		}
+		else {
+			//Defaulting to "LLL" to prevent null pointer
+			if(gameData == null) {
+				gameData = "LLL";
+			}
+	
+			if (gameData.length() > 0) {
+				switchPosition = gameData.charAt(0);
+				scalePosition = gameData.charAt(1);
+	
+				if (robotPosition == 'C') {
+					if (switchPosition == 'L') {
+						autonomousCommand = new AutoCenterTwoCube(315, 0, 90, 270, 0);
+				        SmartDashboard.putString("auto", "center two cube left");
 
-		if (gameData.length() > 0) {
-			switchPosition = gameData.charAt(0);
-			scalePosition = gameData.charAt(1);
+					}
+					else if (switchPosition == 'R') {
+						autonomousCommand = new AutoCenterTwoCube(45, 0, 270, 90, 0);
+				        SmartDashboard.putString("auto", "center two cube right");
 
-			if (switchPosition == robotPosition) {
-				// autonomousCommand = new AutoLiftUp();
-                autonomousCommand = new Autonomous_ForwardGyroForward();
+					}
+					else {
+						autonomousCommand = new Autonomous_DriveStraight();
+				        SmartDashboard.putString("auto", "drive straight");
+
+					}
+				}
+				else {
+					if (switchPosition == robotPosition) {
+//		                autonomousCommand = new Autonomous_ForwardGyroForward();
+		                autonomousCommand = new AutoLiftUp();
+				        SmartDashboard.putString("auto", "drive straight shoot");
+
+
+					}
+					else {
+						autonomousCommand = new Autonomous_DriveStraight();
+				        SmartDashboard.putString("auto", "drive straight");
+
+					}
+				
+				}
+	
 			}
 			else {
 				autonomousCommand = new Autonomous_DriveStraight();
-                // autonomousCommand = new Autonomous_ScoreAroundSwitch();
-                // autonomousCommand = new Autonomous_ScoreScale();
+		        SmartDashboard.putString("auto", "drive straight");
+
 			}
-		}
-		else {
-			autonomousCommand = new Autonomous_DriveStraight();
 		}
 
 		if(autonomousCommand != null) {
 			autonomousCommand.start();
 		}
+		else {
+			autonomousCommand = new Autonomous_DriveStraight();
+			autonomousCommand.start();
+		}
+
+		System.out.println(autonomousCommand);
 
         SmartDashboard.putData(autonomousCommand);
+        SmartDashboard.putString("auto data", robotPosition+" "+gameData);
 
 	}
 

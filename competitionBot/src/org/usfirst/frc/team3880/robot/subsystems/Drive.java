@@ -69,10 +69,10 @@ public class Drive extends Subsystem {
     		setCurrentLimit(frontLeftDrive, 40);
     		setCurrentLimit(backLeftDrive, 40);
 
-    		frontRightDrive.configOpenloopRamp(.5, 10);
-      		backRightDrive.configOpenloopRamp(.5, 10);
-      		frontLeftDrive.configOpenloopRamp(.5, 10);
-      		backLeftDrive.configOpenloopRamp(.5, 10);
+    		frontRightDrive.configOpenloopRamp(.1, 10);
+      		backRightDrive.configOpenloopRamp(.1, 10);
+      		frontLeftDrive.configOpenloopRamp(.1, 10);
+      		backLeftDrive.configOpenloopRamp(.1, 10);
 
 
 
@@ -94,6 +94,9 @@ public class Drive extends Subsystem {
 
 		left = (joystickSensitivity * Math.pow(left, 3)) + ((1 - joystickSensitivity) * left);
 		right = (joystickSensitivity * Math.pow(right, 3)) + ((1 - joystickSensitivity) * right);
+		
+//    	System.out.println("drive is working");
+
 
 		if(CommandBase.OI_MODE == 2) {
 			backLeftDrive.set(ControlMode.PercentOutput, -left);

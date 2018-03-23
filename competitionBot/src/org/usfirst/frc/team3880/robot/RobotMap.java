@@ -25,7 +25,9 @@ public class RobotMap {
 	public int ARM_FORWARD = 4;
 	public int ARM_BACKWARD = 5;
 	
-	public int CLIMB_PISTON = 3;
+	public int CLIMB_PISTON_MODULE_NUMBER = 0;
+	public int CLIMB_PISTON_FORWARD = 0;
+	public int CLIMB_PISTON_REVERSE = 1;
 	
 	public int UPPER_LIFT_LIMIT = 5;
 	public int LOWER_LIFT_LIMIT = 4;

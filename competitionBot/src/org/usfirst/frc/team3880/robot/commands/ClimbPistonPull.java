@@ -2,9 +2,9 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
-public class ClimbPistonPush extends CommandBase {
+public class ClimbPistonPull extends CommandBase {
 	
-    public ClimbPistonPush() {
+    public ClimbPistonPull() {
     	requires(climbPneumatics);
     }
 
@@ -18,7 +18,9 @@ public class ClimbPistonPush extends CommandBase {
      * (for example, if we want the joysticks to be less sensitive, we can multiply them by .5 in the getLeftSpeed method and leave our command the same).
      */
     protected void execute() {
-    	climbPneumatics.push();
+    	if(oi.joy1.getRawButton(12)) {
+    		climbPneumatics.pull();
+    	}
     }
 
     /*

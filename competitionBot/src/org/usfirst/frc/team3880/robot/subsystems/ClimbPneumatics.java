@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class ClimbPneumatics extends Subsystem {
 	
-	Solenoid climbPiston;
+	DoubleSolenoid climbPiston;
 	
 	RobotMap hardware;
 	
@@ -28,11 +28,18 @@ public class ClimbPneumatics extends Subsystem {
     	
     	hardware = new RobotMap();
     	
-//    	climbPiston = new Solenoid(hardware.CLIMB_PISTON);
+    	climbPiston = new DoubleSolenoid(
+    			hardware.CLIMB_PISTON_MODULE_NUMBER, 
+    			hardware.CLIMB_PISTON_FORWARD, 
+    			hardware.CLIMB_PISTON_REVERSE
+    			);    }
+    
+    public void pull() {
+    	climbPiston.set(DoubleSolenoid.Value.kReverse);
     }
     
     public void push() {
-    	climbPiston.set(true);
+    	climbPiston.set(DoubleSolenoid.Value.kForward);
     }
 
 	@Override

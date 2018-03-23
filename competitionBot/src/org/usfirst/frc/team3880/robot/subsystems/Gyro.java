@@ -15,33 +15,33 @@ public class Gyro extends Subsystem {
 
 	public static Gyro instance;
 
-    public static Gyro getInstance() {
+	public static Gyro getInstance() {
 
-	   if (instance == null) {
-		   instance = new Gyro();
-	   }
+		if (instance == null) {
+			instance = new Gyro();
+		}
 
-	   return instance;
-    }
+		return instance;
+	}
 
-    private Gyro() {
-    	hardware = new RobotMap();
-    	gyro = new ADIS16448_IMU();
-    }
+	private Gyro() {
+		hardware = new RobotMap();
+		gyro = new ADIS16448_IMU();
+	}
 
-    public double getGyroAngle() {
-        double adjAngle = gyro.getYaw() % 360;
+	public double getGyroAngle() {
+		double adjAngle = gyro.getYaw() % 360;
 
-        if (adjAngle < 0) {
-            adjAngle += 360;
-        }
+		if (adjAngle < 0) {
+			adjAngle += 360;
+		}
 
-        return adjAngle;
-    }
+		return adjAngle;
+	}
 
-    public boolean withinDeadZone(double target) {
-        return Math.abs(getGyroAngle()-target)<=SmartDashboard.getNumber("globalGyroDeadzone", 10.0);
-    }
+	public boolean withinDeadZone(double target) {
+		return Math.abs(getGyroAngle() - target) <= SmartDashboard.getNumber("globalGyroDeadzone", 10.0);
+	}
 
 	@Override
 	protected void initDefaultCommand() {
