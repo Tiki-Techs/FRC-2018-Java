@@ -2,6 +2,8 @@ package org.usfirst.frc.team3880.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class WindowMotorUp extends CommandBase {
 	
 	double POWER = 0.8;
@@ -22,34 +24,45 @@ public class WindowMotorUp extends CommandBase {
      */
     @Override
     protected void execute() {
-    	if (!windowMotor.getLimit()) {
-    		if ( oi.getXboxRightTrigger() != 0 || oi.getXboxLeftTrigger() != 0) {
-    	
-    		windowMotor.set(oi.xbox.getRawAxis(3) - oi.xbox.getRawAxis(2));
-    		}
-//    		else if (oi.joy1.getRawButton(7)){
-//        		windowMotor.set(1);
-//        	}
+//    	if (!windowMotor.getLimit()) {
+//    		if ( oi.getXboxRightTrigger() != 0 || oi.getXboxLeftTrigger() != 0) {
+//    	
+//    		windowMotor.set(oi.xbox.getRawAxis(3) - oi.xbox.getRawAxis(2));
+//    		}
+    		if (oi.joy1.getRawButton(7)){
+        		windowMotor.set(1);
+        		System.out.println("WINDOW MOTOR UP");
+        		SmartDashboard.putBoolean("window motor moved up during match", true);
+        	}
+    		
+    		
+//    		else if(oi.joy1.getRawButton(7)) {
+//    			windowMotor.setDegree(70);
+//    		}
 //    		else if(oi.joy1.getRawButton(8)) {
-//        		windowMotor.set(-1);
-//        	}
-    		
-    		
-    		else if(oi.joy1.getRawButton(7)) {
-    			windowMotor.setDegree(70);
-    		}
-    		else if(oi.joy1.getRawButton(8)) {
-    			windowMotor.setDegree(0);
-    		}
+//    			windowMotor.setDegree(0);
+//    		}
     		//set degree based on pot. need 90 degree for up
     		
+    		else if(oi.joy1.getRawButton(8)) {
+            	windowMotor.set(-1);
+        		SmartDashboard.putBoolean("window motor moved down during match", true);
+
+            	
+    		}
+    		else if(oi.xbox.getRawButton(5)){
+    			windowMotor.set(.5);
+    		}
+    		else if(oi.xbox.getRawButton(6)) {
+    			windowMotor.set(-.5);
+    		}
     		else {
     			windowMotor.set(0);
     		}
-    	}        	
-    	else {
-    		windowMotor.set(0);
-    	}
+//    	}        	
+//    	else {
+//    		windowMotor.set(0);
+//    	}
     }
 
     @Override

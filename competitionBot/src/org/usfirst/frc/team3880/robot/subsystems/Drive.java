@@ -21,6 +21,9 @@ public class Drive extends Subsystem {
 	public TalonSRX backRightDrive;
 	public TalonSRX frontLeftDrive;
 	public TalonSRX backLeftDrive;
+	
+	private double encoder_left_factor = 1.210;
+	private double encoder_right_factor = 1.0;
 
 	double joystickSensitivity = 0.85;
 
@@ -69,10 +72,10 @@ public class Drive extends Subsystem {
     		setCurrentLimit(frontLeftDrive, 40);
     		setCurrentLimit(backLeftDrive, 40);
 
-    		frontRightDrive.configOpenloopRamp(.5, 10);
-      		backRightDrive.configOpenloopRamp(.5, 10);
-      		frontLeftDrive.configOpenloopRamp(.5, 10);
-      		backLeftDrive.configOpenloopRamp(.5, 10);
+    		frontRightDrive.configOpenloopRamp(.1, 10);
+      		backRightDrive.configOpenloopRamp(.1, 10);
+      		frontLeftDrive.configOpenloopRamp(.1, 10);
+      		backLeftDrive.configOpenloopRamp(.1, 10);
 
 
 
@@ -94,6 +97,9 @@ public class Drive extends Subsystem {
 
 		left = (joystickSensitivity * Math.pow(left, 3)) + ((1 - joystickSensitivity) * left);
 		right = (joystickSensitivity * Math.pow(right, 3)) + ((1 - joystickSensitivity) * right);
+		
+//    	System.out.println("drive is working");
+
 
 		if(CommandBase.OI_MODE == 2) {
 			backLeftDrive.set(ControlMode.PercentOutput, -left);
@@ -123,7 +129,7 @@ public class Drive extends Subsystem {
 	}
 
 	public double getEncoderLeftDist() {
-		return driveEncoderLeft.getDistance();
+		return driveEncoderLeft.getDistance() * encoder_left_factor;
 	}
 
 	public double getEncoderRightRate() {
@@ -131,7 +137,7 @@ public class Drive extends Subsystem {
 	}
 
 	public double getEncoderRightDist() {
-		return driveEncoderRight.getDistance();
+		return driveEncoderRight.getDistance() * encoder_right_factor;
 	}
 
 	public double getEncoderLeftDistancePerPulse() { return driveEncoderLeft.getDistancePerPulse(); }

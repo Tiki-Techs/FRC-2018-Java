@@ -9,6 +9,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	Timer timer;
 
 	// Times, in seconds, when the phase changes. These values must be strictly increasing
+	private double stepDownEndTime;
 	private double step0EndTime;
 	private double step1EndTime;
 	private double step2EndTime;
@@ -52,7 +53,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		/* Initialize all magic numbers, preferably by reading SmartDashboard,
 		but with reasonable defaults
 		*/
-
+		stepDownEndTime = 1.0;
 		step0EndTime = SmartDashboard.getNumber("autoFTR0FinalTime", 4.5);
 		step1EndTime = SmartDashboard.getNumber("autoFTR1FinalTime", 5.5);
 		step2EndTime = SmartDashboard.getNumber("autoFTR2FinalTime", 6);
@@ -76,6 +77,9 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 
 	/* Returns the phase for the given time (in seconds). Note that phases start at 0. */
 	private int phaseFor(double t) {
+		if (t < stepDownEndTime) {
+			return -1;
+		}
 		if (t < step0EndTime)
 		{
 			return 0;
@@ -94,9 +98,15 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	/*
 	Phase 0 behavior: drive forward
 	*/
+	private void WindowDown(double time) {
+		windowMotor.set(-0.5);
+	}
 	private void ForwardInitial(double time)
 	{
-		drive.setHeading(0, step0RighttPct);
+//		drive.setHeading(0, step0RighttPct);
+		drive.set(step0LeftPct, step0RighttPct);
+		windowMotor.set(0);
+
 	}
 
 	/*
@@ -129,9 +139,12 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	/* Phase 2 behavior: Drive forward, spin intake wheels */
 	private void ForwardAgain(double time)
 	{
-		drive.setHeading(desiredRobotAngle, step2RightPct);
+		lift.set(0);
+
+//		drive.setHeading(desiredRobotAngle, step2RightPct);
+		drive.set(step0LeftPct, step0RighttPct);
 		rightIntakeWheel.spin(-1);
-		leftIntakeWheel.spin(1);
+		leftIntakeWheel.spin(-1);
 	}
 
 	/* Phase 3 behavior : Shut down motors */
@@ -152,6 +165,9 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		int phase = phaseFor(time);
 		// Call the behavior appropriate for the phase
 		switch (phase) {
+			case -1:
+				WindowDown(time);
+				break;
 			case 0:
 				ForwardInitial(time);
 				break;

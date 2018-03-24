@@ -53,7 +53,7 @@ public class Lift extends Subsystem {
 
 	public void set(double speed) {
 		if(speed == 0) {
-			lift.set(ControlMode.PercentOutput, 0.1);
+			lift.set(ControlMode.PercentOutput, 0.05);
 		}
 		else {
 			lift.set(ControlMode.PercentOutput, speed);

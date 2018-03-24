@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class CubeIntakeWheels extends CommandBase {
 	
-		double INTAKE_VALUE = .5;
+		double INTAKE_VALUE = 1;
 		
 		public CubeIntakeWheels() {
 			requires(leftIntakeWheel);

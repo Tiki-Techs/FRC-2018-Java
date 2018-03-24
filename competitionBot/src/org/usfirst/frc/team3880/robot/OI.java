@@ -61,7 +61,7 @@ public class OI {
 					rightButton = new JoystickButton(xbox, 6),
 					selectButton = new JoystickButton(xbox, 7),
 					startButton = new JoystickButton(xbox, 8),
-					leftStickButton = new JoystickButton(xbox, 9);	
+					leftStickButton = new JoystickButton(xbox, 9);
 	private Trigger xboxLeftTrigger = new XboxLeftTrigger();
 	private Trigger xboxRightTrigger = new XboxRightTrigger();
 	
@@ -141,11 +141,9 @@ public class OI {
 
 			leftButton.whileHeld(cubeOuttakeWheels);
 			rightButton.whileHeld(cubeIntakeWheels);
-
-			selectButton.whenPressed(cubeIntakeArms);
-			startButton.whenPressed(cubeOuttakeArms);
 			
-			leftStickButton.whileHeld(new ClimbPistonPush());
+			buttonR11.whenPressed(new ClimbPistonPull());
+			selectButton.whenPressed(new ClimbPistonPush());
 			
 			
 //			xboxRightTrigger.whileActive(new WindowMotorUp());
