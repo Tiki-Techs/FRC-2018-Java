@@ -7,12 +7,15 @@ import org.usfirst.frc.team3880.robot.commands.CommandBase;
 
 public class Autonomous_ForwardGyroForward extends CommandBase {
 	Timer timer;
+	
+	int phase;
 
 	// Times, in seconds, when the phase changes. These values must be strictly increasing
 	private double stepDownEndTime;
-	private double step0EndTime;
-	private double step1EndTime;
-	private double step2EndTime;
+	private double step0EndCondition;
+	private double step1EndCondition;
+	private double step2EndCondition;
+	private double step3EndCondition;
 
 	// Duty % for the drives in the various phases. Note that `step1DrivePct`
     // is single-value so that robot spins in place
@@ -54,9 +57,9 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		but with reasonable defaults
 		*/
 		stepDownEndTime = 1.0;
-		step0EndTime = SmartDashboard.getNumber("autoFTR0FinalTime", 4.5);
-		step1EndTime = SmartDashboard.getNumber("autoFTR1FinalTime", 5.5);
-		step2EndTime = SmartDashboard.getNumber("autoFTR2FinalTime", 6);
+		step0EndCondition = SmartDashboard.getNumber("autoFTR0FinalTime", 4.5);
+		step1EndCondition = SmartDashboard.getNumber("autoFTR1FinalTime", 5.5);
+		step2EndCondition = SmartDashboard.getNumber("autoFTR2FinalTime", 6);
 
 		step0LeftPct = SmartDashboard.getNumber("autoFTR0LeftPct", -0.4);
 		step0RighttPct = SmartDashboard.getNumber("autoFTR0RightPct", -0.4);
@@ -77,22 +80,26 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 
 	/* Returns the phase for the given time (in seconds). Note that phases start at 0. */
 	private int phaseFor(double t) {
+		double left = drive.getEncoderLeftDist();
+		double right = drive.getEncoderRightDist();
 		if (t < stepDownEndTime) {
 			return -1;
 		}
-		if (t < step0EndTime)
-		{
+		if ((phase == -1 || phase == 0) && (left < step0EndCondition && right < step0EndCondition)) {
 			return 0;
 		}
-		if (t < step1EndTime)
-		{
+		else if ((phase == 0 || phase == 1) && (gyro.withinDeadZone(step1EndCondition))) {
 			return 1;
 		}
-		if (t < step2EndTime)
-		{
+		else if ((phase == 1 || phase == 2) && (left < step2EndCondition && right < step2EndCondition)) {
 			return 2;
 		}
-		return 3;
+		else if ((phase == 2 || phase == 3)) {
+			return 3;
+		}
+		else {
+			return 4;
+		}
 	}
 
 	/*
@@ -143,6 +150,12 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 
 //		drive.setHeading(desiredRobotAngle, step2RightPct);
 		drive.set(step0LeftPct, step0RighttPct);
+
+	}
+	
+	private void Shoot(double time) {
+		drive.set(0, 0);
+
 		rightIntakeWheel.spin(-1);
 		leftIntakeWheel.spin(-1);
 	}
@@ -162,7 +175,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	@Override
 	protected void execute() {
 		double time = timer.get();
-		int phase = phaseFor(time);
+		phase = phaseFor(time);
 		// Call the behavior appropriate for the phase
 		switch (phase) {
 			case -1:
@@ -178,6 +191,9 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 				ForwardAgain(time);
 				break;
 			case 3:
+				Shoot(time);
+				break;
+			case 4:
 				Stop(time);
 				break;
 		}

@@ -55,13 +55,9 @@ public class AutoLiftUp extends CommandBase  {
 		*/
 		stepDownEndTime = 1.0;
 		step0EndTime = SmartDashboard.getNumber("autoFTR0FinalTime", 4.5);
-<<<<<<< HEAD
 		step1EndTime = SmartDashboard.getNumber("autoFTR1FinalTime", 5.75);
 		step2EndTime = SmartDashboard.getNumber("autoFTR2FinalTime", 6.5);
-=======
-		step1EndTime = SmartDashboard.getNumber("autoFTR1FinalTime", 5.5);
-		step2EndTime = SmartDashboard.getNumber("autoFTR2FinalTime", 6);
->>>>>>> 47071b65fb02d11595f2f42c3a259e49d2543894
+
 
 		step0LeftPct = SmartDashboard.getNumber("autoFTR0LeftPct", -0.4);
 		step0RighttPct = SmartDashboard.getNumber("autoFTR0RightPct", -0.4);

@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -119,7 +120,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		String gameData = null;
 
 		char robotPosition = (char) m_chooser.getSelected();
 		
@@ -130,8 +130,18 @@ public class Robot extends IterativeRobot {
 
 		CommandBase.gyro.gyro.reset();
 		CommandBase.drive.resetEncoders();
+		
+		String gameData = null;
+		Timer autoTimeoutTimer = new Timer();
+		while (autoTimeoutTimer.get() < 5) {
+			// time out after 5 seconds trying to get game data
+			String getData = DriverStation.getInstance().getGameSpecificMessage();
+			if (getData != null ) {
+				gameData = getData;
+				break;
+			}
+		}
 
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
 
 		if ((boolean) test_mode.getSelected()) {
 			autonomousCommand = (Command) auto_selectable.getSelected();
@@ -139,14 +149,17 @@ public class Robot extends IterativeRobot {
 		else {
 			//Defaulting to "LLL" to prevent null pointer
 			if(gameData == null) {
-				gameData = "LLL";
+				gameData = "";
 			}
 	
 			if (gameData.length() > 0) {
 				switchPosition = gameData.charAt(0);
 				scalePosition = gameData.charAt(1);
-	
+				
+				SmartDashboard.putString("Switch Position", String.valueOf(switchPosition));
+				
 				if (robotPosition == 'C') {
+					// robot in center
 					if (switchPosition == 'L') {
 						autonomousCommand = new AutoCenterTwoCube(315, 0, 90, 270, 0);
 				        SmartDashboard.putString("auto", "center two cube left");
@@ -165,13 +178,15 @@ public class Robot extends IterativeRobot {
 				}
 				else {
 					if (switchPosition == robotPosition) {
-//		                autonomousCommand = new Autonomous_ForwardGyroForward();
+						// robot on correct side: drive forward, turn, and score
+//		                autonomousCommand = new Autonomous_ForwardGyroTurnShoot();
 		                autonomousCommand = new AutoLiftUp();
-				        SmartDashboard.putString("auto", "drive straight shoot");
+				        SmartDashboard.putString("auto", "drive forward, turn, shoot");
 
 
 					}
 					else {
+						// robot on incorrect side: drive straight, come back
 						autonomousCommand = new Autonomous_DriveStraight();
 				        SmartDashboard.putString("auto", "drive straight");
 
