@@ -18,8 +18,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 public class Drive extends Subsystem {
 
 	public TalonSRX frontRightDrive;
+	public TalonSRX centerRightDrive;	
 	public TalonSRX backRightDrive;
 	public TalonSRX frontLeftDrive;
+	public TalonSRX centerLeftDrive;
 	public TalonSRX backLeftDrive;
 	
 	private double encoder_left_factor = 1.210;
@@ -62,8 +64,10 @@ public class Drive extends Subsystem {
     		driveEncoderRight.setDistancePerPulse(0.0092);
     		
     		frontRightDrive = new TalonSRX(hardware.FRONT_RIGHT_DRIVE_TALON);
+    		centerRightDrive = new TalonSRX(hardware.CENTER_RIGHT_DRIVE_TALON);
 			backRightDrive = new TalonSRX(hardware.BACK_RIGHT_DRIVE_TALON);
 			frontLeftDrive = new TalonSRX(hardware.FRONT_LEFT_DRIVE_TALON);
+    		centerLeftDrive = new TalonSRX(hardware.CENTER_LEFT_DRIVE_TALON);
 			backLeftDrive = new TalonSRX(hardware.BACK_LEFT_DRIVE_TALON);
 			
 

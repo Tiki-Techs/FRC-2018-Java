@@ -136,6 +136,8 @@ public class Robot extends IterativeRobot {
 		CommandBase.gyro.gyro.reset();
 		CommandBase.drive.resetEncoders();
 		
+		CommandBase.pneumatics.Shift(DoubleSolenoid.Value.kReverse);
+		
 		String gameData = null;
 		Timer autoTimeoutTimer = new Timer();
 		while (autoTimeoutTimer.get() < 5) {
