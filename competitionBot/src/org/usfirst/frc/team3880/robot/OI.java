@@ -65,7 +65,7 @@ public class OI {
 	private Trigger xboxLeftTrigger = new XboxLeftTrigger();
 	private Trigger xboxRightTrigger = new XboxRightTrigger();
 	
-	public OI (int mode) {
+	public OI (double mode) {
 		
 		if (mode == 1) {
 			// 1 joystick + xbox

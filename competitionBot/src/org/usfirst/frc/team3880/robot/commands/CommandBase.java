@@ -25,7 +25,7 @@ public abstract class CommandBase extends Command {
     public static ClimbPneumatics climbPneumatics;
     
     
-    public static int OI_MODE = 3;
+    public static double OI_MODE;
     
     public static void init() {      
         drive = Drive.getInstance();
@@ -40,7 +40,9 @@ public abstract class CommandBase extends Command {
         climbPneumatics = ClimbPneumatics.getInstance();
 
         //  ^^^ EVERY SUBSYSTEM MUST be init'd here.  don't move it
-        
+        SmartDashboard.putNumber("OI Mode", 3);
+
+        OI_MODE = SmartDashboard.getNumber("OI Mode", 3);
         oi = new OI(OI_MODE);
     }
 
