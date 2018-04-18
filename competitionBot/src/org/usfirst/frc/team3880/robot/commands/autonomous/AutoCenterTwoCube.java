@@ -65,7 +65,7 @@ public class AutoCenterTwoCube extends CommandBase {
 	}
 
 	private boolean ForwardTwo(double time) {
-		return drive.driveDistance(80, 1);
+		return drive.driveDistance(80, 0.5);
 	}
 
 	private boolean RotateTwo(double time) {
@@ -139,27 +139,34 @@ public class AutoCenterTwoCube extends CommandBase {
 			break;
 		case 1:
 			if (RotateOne(time)) {
+				timer.reset();
+				timer.start();
 				phase++;
 				System.out.println("Phase changed to " + phase);
 			}
 			break;
 		case 2:
 			if (ForwardTwo(time)) {
+				timer.reset();
+				timer.start();
 				phase++;
 				System.out.println("Phase changed to " + phase);
 			}
 			break;
 		case 3:
 			if (RotateTwo(time)) {
+				timer.reset();
+				timer.start();
 				phase++;
 				System.out.println("Phase changed to " + phase);
 			}
 			break;
 		case 4:
 			if (ForwardThree(time)) {
+				timer.reset();
+				timer.start();
 				phase++;
 				System.out.println("Phase changed to " + phase);
-				timer.reset();
 			}
 			break;
 		case 5:
@@ -167,48 +174,63 @@ public class AutoCenterTwoCube extends CommandBase {
 				phase++;
 				System.out.println("Phase changed to " + phase);
 				timer.reset();
+				timer.start();
 			}
 			break;
 		case 6:
 			if (BackwardOne(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
 			}
 			break;
 		case 7:
 			if (RotateThree(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
 			}
 			break;
 		case 8:
 			if (ForwardFour(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
 			}
 			break;
 		case 9:
 			if (RotateFour(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
 			}
 			break;
 		case 10:
 			if (ForwardFive(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
 			}
 			break;
 		case 11:
 			if (RotateFive(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
 			}
 			break;
 		case 12:
 			if (Score(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
 			}
 			break;
 		case 13:

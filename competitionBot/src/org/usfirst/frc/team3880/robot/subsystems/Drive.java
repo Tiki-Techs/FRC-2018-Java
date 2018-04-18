@@ -204,9 +204,8 @@ public class Drive extends Subsystem {
 	}
 	
 	public boolean driveDistance(int distance, double driveValue) {
-		double driveDistCurrent = (getEncoderRightDist() + getEncoderLeftDist()) / 2;
 		
-		if(driveDistCurrent < distance) {
+		if(getEncoderRightDist() < distance && getEncoderLeftDist() < distance) {
 			setHeading(0, driveValue);
 			return false;
 		}

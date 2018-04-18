@@ -13,8 +13,9 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	// Times, in seconds, when the phase changes. These values must be strictly increasing
 	private double stepDownEndTime;
 	private double step0EndCondition;
-	private double step1EndCondition;
-	private double step2EndCondition;
+	
+	private double step1EndDistance;
+	private double step2EndDistance;
 	private double step3EndCondition;
 
 	// Duty % for the drives in the various phases. Note that `step1DrivePct`
@@ -52,14 +53,16 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		timer = new Timer();
 		timer.reset();
 		timer.start();
+		
+		phase = 0;
 
 		/* Initialize all magic numbers, preferably by reading SmartDashboard,
 		but with reasonable defaults
 		*/
 		stepDownEndTime = 1.0;
 		step0EndCondition = SmartDashboard.getNumber("autoFTR0FinalTime", 4.5);
-		step1EndCondition = SmartDashboard.getNumber("autoFTR1FinalTime", 5.5);
-		step2EndCondition = SmartDashboard.getNumber("autoFTR2FinalTime", 6);
+		step1EndDistance = SmartDashboard.getNumber("autoTurnScoreDistance", 100);
+		step2EndDistance = SmartDashboard.getNumber("autoTurnScoreFinalDistance", 20);
 
 		step0LeftPct = SmartDashboard.getNumber("autoFTR0LeftPct", -0.4);
 		step0RighttPct = SmartDashboard.getNumber("autoFTR0RightPct", -0.4);
@@ -79,41 +82,45 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	}
 
 	/* Returns the phase for the given time (in seconds). Note that phases start at 0. */
-	private int phaseFor(double t) {
-		double left = drive.getEncoderLeftDist();
-		double right = drive.getEncoderRightDist();
-		if (t < stepDownEndTime) {
-			return -1;
-		}
-		if ((phase == -1 || phase == 0) && (left < step0EndCondition && right < step0EndCondition)) {
-			return 0;
-		}
-		else if ((phase == 0 || phase == 1) && (gyro.withinDeadZone(step1EndCondition))) {
-			return 1;
-		}
-		else if ((phase == 1 || phase == 2) && (left < step2EndCondition && right < step2EndCondition)) {
-			return 2;
-		}
-		else if ((phase == 2 || phase == 3)) {
-			return 3;
-		}
-		else {
-			return 4;
-		}
-	}
+//	private int phaseFor(double t) {
+//		double left = drive.getEncoderLeftDist();
+//		double right = drive.getEncoderRightDist();
+//		if (t < stepDownEndTime) {
+//			return -1;
+//		}
+//		if ((phase == -1 || phase == 0) && (left < step0EndCondition && right < step0EndCondition)) {
+//			return 0;
+//		}
+//		else if ((phase == 0 || phase == 1) && (gyro.withinDeadZone(step1EndCondition))) {
+//			return 1;
+//		}
+//		else if ((phase == 1 || phase == 2) && (left < step2EndCondition && right < step2EndCondition)) {
+//			return 2;
+//		}
+//		else if ((phase == 2 || phase == 3)) {
+//			return 3;
+//		}
+//		else {
+//			return 4;
+//		}
+//	}
 
 	/*
 	Phase 0 behavior: drive forward
 	*/
-	private void WindowDown(double time) {
+	private boolean WindowDown(double time) {
 		windowMotor.set(-0.5);
+		
+		return time > 1;
 	}
-	private void ForwardInitial(double time)
+	private boolean ForwardInitial(double time)
 	{
-//		drive.setHeading(0, step0RighttPct);
 		drive.set(step0LeftPct, step0RighttPct);
 		windowMotor.set(0);
-
+		double rightDistance = drive.getEncoderRightDist();
+		double leftDistance = drive.getEncoderLeftDist();
+		
+		return leftDistance > step1EndDistance && rightDistance > step1EndDistance;
 	}
 
 	/*
@@ -134,69 +141,122 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	Honestly, this _is_ what you want to use PID control for, but that adds a lot of complexity
 	that I don't think we have time to deal with.
 	 */
-	private void Rotate(double time)
-	{
+	
+	private boolean LiftUp(double time) {
 		lift.set(step1LiftPct);
+
+		if (time > 1) {
+			lift.set(0);
+		}
+		else {
+			return false;
+		}
+		
+		return true;
+	}
+	private boolean Rotate(double time)
+	{
 
         if (!gyro.withinDeadZone(desiredRobotAngle)){
             drive.set(step1DrivePct, -step1DrivePct);
+            return true;
         }
+        else {
+        	drive.set(0, 0);
+        }
+        
+    	return false;
+        
 	}
 
 	/* Phase 2 behavior: Drive forward, spin intake wheels */
-	private void ForwardAgain(double time)
+	private boolean ForwardAgain(double time)
 	{
-		lift.set(0);
-
-//		drive.setHeading(desiredRobotAngle, step2RightPct);
 		drive.set(step0LeftPct, step0RighttPct);
+		windowMotor.set(0);
+		double rightDistance = drive.getEncoderRightDist();
+		double leftDistance = drive.getEncoderLeftDist();
+		
+		return leftDistance > step2EndDistance && rightDistance > step2EndDistance;
 
 	}
 	
-	private void Shoot(double time) {
+	private boolean Score(double time) {
 		drive.set(0, 0);
 
 		rightIntakeWheel.spin(-1);
 		leftIntakeWheel.spin(-1);
-	}
-
-	/* Phase 3 behavior : Shut down motors */
-	private void Stop(double time)
-	{
-		end();
-		/* Or:
-		drive.set(0.0, 0.0);
-		rightIntakeWheel.spin(0);
-		leftIntakeWheel.spin(0);
-		*/
+		
+		return time > 1;
 	}
 
 
 	@Override
 	protected void execute() {
 		double time = timer.get();
-		phase = phaseFor(time);
+		// Call the behavior appropriate for the phase
+		System.out.println(timer.get());
+ 
+		// int phase = phaseFor(time);
 		// Call the behavior appropriate for the phase
 		switch (phase) {
-			case -1:
-				WindowDown(time);
-				break;
-			case 0:
-				ForwardInitial(time);
-				break;
-			case 1:
-				Rotate(time);
-				break;
-			case 2:
-				ForwardAgain(time);
-				break;
-			case 3:
-				Shoot(time);
-				break;
-			case 4:
-				Stop(time);
-				break;
+		case 0:
+			if (WindowDown(time)) {
+				phase++;
+				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
+			}
+			break;
+		case 1:
+			if (ForwardInitial(time)) {
+				phase++;
+				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
+				drive.resetEncoders();
+			}
+			break;
+		case 2:
+			if (Rotate(time)) {
+				phase++;
+				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
+				drive.resetEncoders();
+			}
+			break;
+		case 3:
+			if (LiftUp(time)) {
+				phase++;
+				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
+			}
+			break;
+		case 4:
+			if (ForwardAgain(time)) {
+				phase++;
+				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
+				drive.resetEncoders();
+			}
+			break;
+		case 5:
+			if (Score(time)) {
+				phase++;
+				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
+			}
+			break;
+		
+		case 6:
+			end();
+			break;
 		}
+
 	}
 
 	@Override
