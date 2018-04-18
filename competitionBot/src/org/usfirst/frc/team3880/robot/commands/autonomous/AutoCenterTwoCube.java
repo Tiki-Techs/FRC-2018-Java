@@ -61,7 +61,7 @@ public class AutoCenterTwoCube extends CommandBase {
 	}
 
 	private boolean RotateOne(double time) {
-		return drive.turnDegrees(angleOne);// 45 degrees or 315
+		return drive.turnDegrees(angleOne, 0.5);// 45 degrees or 315
 	}
 
 	private boolean ForwardTwo(double time) {
@@ -69,12 +69,13 @@ public class AutoCenterTwoCube extends CommandBase {
 	}
 
 	private boolean RotateTwo(double time) {
-		return drive.turnDegrees(angleTwo); // 0 degrees
+		return drive.turnDegrees(angleTwo, 0.5); // 0 degrees
 	}
 
 	private boolean ForwardThree(double time) {
 		windowMotor.set(.3);
 		lift.set(.5);
+		
 		return drive.driveDistance(62, .5);
 
 	}
@@ -82,37 +83,39 @@ public class AutoCenterTwoCube extends CommandBase {
 	private boolean Score(double time) {
 		rightIntakeWheel.spin(-1);
 		leftIntakeWheel.spin(-1);
+		
 		drive.set(0, 0);
+		
 		lift.set(0);
 		windowMotor.set(0);
+		
 		return time > .5;
 	}
 
 	private boolean BackwardOne(double time) {
 		drive.set(.4, .4);
+		
 		rightIntakeWheel.spin(0);
 		leftIntakeWheel.spin(0);
-		if (time > .2) {
-			return true;
-		} else {
-			return false;
-		}
+		
+		return time > 0.2;
 	}
 
 	private boolean RotateThree(double time) {
-		return drive.turnDegrees(angleThree); // 90 degrees or 270
+		return drive.turnDegrees(angleThree, 0.5); // 90 degrees or 270
 	}
 
 	private boolean ForwardFour(double time) {
 		rightIntakeWheel.spin(1);
 		leftIntakeWheel.spin(1);
+		
 		return drive.driveDistance(48, .5);
 	}
 
 	private boolean RotateFour(double time) {
 		rightIntakeWheel.spin(0);
 		leftIntakeWheel.spin(0);
-		return drive.turnDegrees(angleFour); //90 or 270
+		return drive.turnDegrees(angleFour, 0.5); //90 or 270
 	}
 
 	private boolean ForwardFive(double time) {
@@ -120,7 +123,7 @@ public class AutoCenterTwoCube extends CommandBase {
 	}
 
 	private boolean RotateFive(double time) {
-		return drive.turnDegrees(angleFive); // 0 degrees
+		return drive.turnDegrees(angleFive, 0.5); // 0 degrees
 	}
 
 	@Override

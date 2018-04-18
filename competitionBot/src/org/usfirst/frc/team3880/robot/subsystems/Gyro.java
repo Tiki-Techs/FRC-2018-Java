@@ -40,7 +40,7 @@ public class Gyro extends Subsystem {
 	}
 
 	public boolean withinDeadZone(double target) {
-		return Math.abs(getGyroAngle() - target) <= SmartDashboard.getNumber("globalGyroDeadzone", 10.0);
+		return Math.abs(getGyroAngle() - target) <= SmartDashboard.getNumber("globalGyroDeadzone", 5.0);
 	}
 
 	@Override

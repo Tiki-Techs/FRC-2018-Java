@@ -57,7 +57,8 @@ public class Robot extends IterativeRobot {
 	NetworkTable table;
 
 	char robotPosition;
-
+	
+	boolean autoStarted;
 
 	private SendableChooser<Character> m_chooser;
 	private SendableChooser<Boolean> test_mode;
@@ -103,8 +104,12 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("Robot in center", 'C');
 		m_chooser.addObject("Robot on right", 'R');
 		m_chooser.addObject("drive straight", 'X');
+		
+		SmartDashboard.putNumber("globalGyroDeadzone", 5.0);
 
 		SmartDashboard.putData("Auto choices", m_chooser);
+		
+		autoStarted = false;
 	}
 
 	/**
@@ -204,10 +209,12 @@ public class Robot extends IterativeRobot {
 
 		if(autonomousCommand != null) {
 			autonomousCommand.start();
+			autoStarted = true;
 		}
 		else {
 			autonomousCommand = new Autonomous_DriveStraight();
 			autonomousCommand.start();
+			autoStarted = true;
 		}
 
 		System.out.println(autonomousCommand);
@@ -227,6 +234,10 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
         Scheduler.getInstance().run();
         log();
+        
+        if (!autoStarted) {
+        	autonomousInit();
+        }
 	}
 
 	public void teleopInit()
@@ -304,5 +315,7 @@ public class Robot extends IterativeRobot {
 
 		SmartDashboard.putNumber("window potentiometer", CommandBase.windowMotor.getPot());
 		SmartDashboard.putBoolean("window limit", CommandBase.windowMotor.getLimit());
+		
+		SmartDashboard.putBoolean("auto has been run?", autoStarted);
 	}
 }
