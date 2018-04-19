@@ -113,9 +113,6 @@ public class Robot extends IterativeRobot {
 
             System.out.println(robotPosition);
 
-            char switchPosition;
-            char scalePosition;
-
             CommandBase.gyro.gyro.reset();
             CommandBase.gyro.setOffset();
             CommandBase.drive.resetEncoders();
@@ -133,67 +130,7 @@ public class Robot extends IterativeRobot {
                 }
             }
 
-
-            if ((boolean) test_mode.getSelected()) {
-                autonomousCommand = (Command) auto_selectable.getSelected();
-            } else {
-                //Defaulting to "LLL" to prevent null pointer
-                if (gameData == null) {
-                    gameData = "";
-                }
-
-                if (gameData.length() > 0) {
-                    switchPosition = gameData.charAt(0);
-                    scalePosition = gameData.charAt(1);
-
-                    SmartDashboard.putString("Switch Position", String.valueOf(switchPosition));
-
-                    if (robotPosition == 'C') {
-                        // robot in center
-                        if (switchPosition == 'L') {
-                            autonomousCommand = new AutoCenterTwoCube(315, 0, 90, 270, 0);
-                            SmartDashboard.putString("auto", "center two cube left");
-
-                        } else if (switchPosition == 'R') {
-                            autonomousCommand = new AutoCenterTwoCube(45, 0, 270, 90, 0);
-                            SmartDashboard.putString("auto", "center two cube right");
-
-                        } else {
-                            autonomousCommand = new Autonomous_DriveStraight();
-                            SmartDashboard.putString("auto", "drive straight");
-
-                        }
-                    } else {
-                        if (switchPosition == robotPosition) {
-                            // robot on correct side: drive forward, turn, and score
-                            if (switchPosition == 'L') {
-                                autonomousCommand = new Autonomous_ForwardGyroForward(90);
-                                SmartDashboard.putString("auto", "L");
-
-                            } else if (switchPosition == 'R') {
-                                autonomousCommand = new Autonomous_ForwardGyroForward(270);
-                                SmartDashboard.putString("auto", "R");
-
-                            }
-//		                autonomousCommand = new AutoLiftUp();
-
-
-                        } else {
-                            // robot on incorrect side: drive straight, come back
-                            autonomousCommand = new Autonomous_DriveStraight();
-                            SmartDashboard.putString("auto", "drive straight");
-
-                        }
-
-                    }
-
-                } else {
-                    autonomousCommand = new Autonomous_DriveStraight();
-                    SmartDashboard.putString("auto", "drive straight");
-
-                }
-            }
-
+            autonomousCommand = ((boolean) test_mode.getSelected()) ? (Command) auto_selectable.getSelected() : commandForGameDataAndSwitch(gameData, robotPosition);
             if (autonomousCommand != null) {
                 autonomousCommand.start();
                 autoStarted = true;
@@ -214,6 +151,67 @@ public class Robot extends IterativeRobot {
         }
 
     }
+
+    private static Command commandForGameDataAndSwitch(string gameData, char robotPosition) {
+        //Defaulting to "LLL" to prevent null pointer
+        gameData = gameData == null ? "" : gameData;
+
+        Command commandOrFallback = (gameData.length() > 1) ? commandForSwitchAndScale(gameData.charAt(0), gameData.charAt(1), robotPosition) : new Autonomous_DriveStraight();
+        if (gameData.length() <= 1)
+        {
+            SmartDashboard.putString("auto", "drive straight");
+        }
+        return commandOrFallback;
+    }
+
+    private static Command commandForSwitchAndScale(char switchPosition, char scalePosition, char robotPosition) {
+        char switchPosition = gameData.charAt(0);
+        char scalePosition = gameData.charAt(1);
+
+        SmartDashboard.putString("Switch Position", String.valueOf(switchPosition));
+
+        Command commandBasedOnPosition = robotPosition == 'C' ? CommandForRobotInCenter(switchPosition) : CommandForRobotOnSide(switchPosition, robotPosition);
+        return commandBasedOnPosition;
+    }
+
+    private static void CommandForRobotOnSide(char switchPosition, char localRobotPosition) {
+        Command sideCommand = null;
+        if (switchPosition == localRobotPosition) {
+            // robot on correct side: drive forward, turn, and score
+            if (switchPosition == 'L') {
+                sideCommand = new Autonomous_ForwardGyroForward(90);
+                SmartDashboard.putString("auto", "L");
+            } else if (switchPosition == 'R') {
+                sideCommand = new Autonomous_ForwardGyroForward(270);
+                SmartDashboard.putString("auto", "R");
+            }
+        } else {
+            // robot on incorrect side: drive straight, come back
+            sideCommand = new Autonomous_DriveStraight();
+            SmartDashboard.putString("auto", "drive straight");
+        }
+        return sideCommand;
+    }
+
+    private static Command CommandForRobotInCenter(char switchPosition) {
+        Command centeredRobotCommand = null;
+        // robot in center
+        if (switchPosition == 'L') {
+            centeredRobotCommand = new AutoCenterTwoCube(315, 0, 90, 270, 0);
+            SmartDashboard.putString("auto", "center two cube left");
+
+        } else if (switchPosition == 'R') {
+            centeredRobotCommand = new AutoCenterTwoCube(45, 0, 270, 90, 0);
+            SmartDashboard.putString("auto", "center two cube right");
+
+        } else {
+            centeredRobotCommand = new Autonomous_DriveStraight();
+            SmartDashboard.putString("auto", "drive straight");
+        }
+        return centeredRobotCommand;
+    }
+
+
 
     /**
      * This function is called periodically during autonomous.
