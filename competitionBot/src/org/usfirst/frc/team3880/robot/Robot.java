@@ -86,14 +86,15 @@ public class Robot extends IterativeRobot {
 		m_chooser = new SendableChooser<Character>();
 		
 		test_mode = new SendableChooser<Boolean>();
-		test_mode.addDefault("Test Mode off", false);
-		test_mode.addObject("Test Mode on", true);
-		SmartDashboard.putData("Test Mode", test_mode);
+		test_mode.addDefault("Manual Selection off", false);
+		test_mode.addObject("Manual Selection on", true);
+		SmartDashboard.putData("Manual Auto Selector", test_mode);
 		
 		auto_selectable = new SendableChooser<Command>();
 		auto_selectable.addDefault("drive straight", new Autonomous_DriveStraight());
 		auto_selectable.addObject("straight forward and score", new AutoLiftUp());
-		auto_selectable.addObject("forward, turn, and score", new Autonomous_ForwardGyroForward());
+		auto_selectable.addObject("forward, turn left, and score", new AutoDriveForwardTurnScore(270));
+		auto_selectable.addObject("forward, turn right, and score", new AutoDriveForwardTurnScore(90));
 		auto_selectable.addObject("center two cube left", new AutoCenterTwoCube(315, 0, 90, 270, 0));
 		auto_selectable.addObject("center two cube right", new AutoCenterTwoCube(45, 0, 270, 90, 0));
 		SmartDashboard.putData("Test Mode Auto Selector", auto_selectable);
@@ -125,6 +126,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		autoStarted = false;
 
 		char robotPosition = (char) m_chooser.getSelected();
 		
@@ -134,6 +136,7 @@ public class Robot extends IterativeRobot {
 		char scalePosition;
 
 		CommandBase.gyro.gyro.reset();
+		CommandBase.gyro.setOffset();
 		CommandBase.drive.resetEncoders();
 		
 		CommandBase.pneumatics.Shift(DoubleSolenoid.Value.kReverse);
@@ -186,9 +189,17 @@ public class Robot extends IterativeRobot {
 				else {
 					if (switchPosition == robotPosition) {
 						// robot on correct side: drive forward, turn, and score
-//		                autonomousCommand = new Autonomous_ForwardGyroTurnShoot();
+//		                if (switchPosition == 'L') {
+//		                	autonomousCommand = new Autonomous_ForwardGyroForward(90);
+//					        SmartDashboard.putString("auto", "L");
+//
+//		                }
+//		                else if (switchPosition == 'R') {
+//		                	autonomousCommand = new Autonomous_ForwardGyroForward(270);
+//					        SmartDashboard.putString("auto", "R");
+//
+//		                }
 		                autonomousCommand = new AutoLiftUp();
-				        SmartDashboard.putString("auto", "drive forward, turn, shoot");
 
 
 					}
@@ -279,6 +290,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		System.out.println(autoGyroLog);
+		autoStarted = false;
 	}
 
 

@@ -24,8 +24,8 @@ public class Drive extends Subsystem {
 	public TalonSRX centerLeftDrive;
 	public TalonSRX backLeftDrive;
 	
-	private double encoder_left_factor = 1.210;
-	private double encoder_right_factor = 1.0;
+	private double encoder_left_factor = 1;
+	private double encoder_right_factor = 1;
 
 	double joystickSensitivity = 0.85;
 
@@ -72,13 +72,17 @@ public class Drive extends Subsystem {
 			
 
     		setCurrentLimit(frontRightDrive, 40);
+    		setCurrentLimit(centerRightDrive, 30);
     		setCurrentLimit(backRightDrive, 40);
     		setCurrentLimit(frontLeftDrive, 40);
+    		setCurrentLimit(centerLeftDrive, 30);
     		setCurrentLimit(backLeftDrive, 40);
 
     		frontRightDrive.configOpenloopRamp(.1, 10);
+    		centerRightDrive.configOpenloopRamp(.1, 10);
       		backRightDrive.configOpenloopRamp(.1, 10);
       		frontLeftDrive.configOpenloopRamp(.1, 10);
+    		centerLeftDrive.configOpenloopRamp(.1, 10);
       		backLeftDrive.configOpenloopRamp(.1, 10);
 
 
@@ -102,29 +106,28 @@ public class Drive extends Subsystem {
 		left = (joystickSensitivity * Math.pow(left, 3)) + ((1 - joystickSensitivity) * left);
 		right = (joystickSensitivity * Math.pow(right, 3)) + ((1 - joystickSensitivity) * right);
 		
-//    	System.out.println("drive is working");
-
-
-		if(CommandBase.OI_MODE == 2) {
-			backLeftDrive.set(ControlMode.PercentOutput, -left);
-			frontLeftDrive.set(ControlMode.PercentOutput, -left);
-			backRightDrive.set(ControlMode.PercentOutput, right);
-			frontRightDrive.set(ControlMode.PercentOutput, right);
-		}
-		else if(CommandBase.OI_MODE == 1 || CommandBase.OI_MODE == 3) {
-			backLeftDrive.set(ControlMode.PercentOutput, -(left - right));
-			frontLeftDrive.set(ControlMode.PercentOutput, -(left - right));
-			backRightDrive.set(ControlMode.PercentOutput, left + right);
-			frontRightDrive.set(ControlMode.PercentOutput, left + right);
+		double leftSide = left - right;
+		double rightSide = left + right;
+		
+		if(CommandBase.OI_MODE == 1 || CommandBase.OI_MODE == 3) {
+			backLeftDrive.set(ControlMode.PercentOutput, -leftSide);
+			centerLeftDrive.set(ControlMode.PercentOutput, leftSide);
+			frontLeftDrive.set(ControlMode.PercentOutput, -leftSide);
+			
+			backRightDrive.set(ControlMode.PercentOutput, rightSide);
+			centerRightDrive.set(ControlMode.PercentOutput, -rightSide);
+			frontRightDrive.set(ControlMode.PercentOutput, -rightSide);
 		}
     }
 
 	public void set(double left, double right) {
 
 			backLeftDrive.set(ControlMode.PercentOutput, -left);
+			centerLeftDrive.set(ControlMode.PercentOutput, left);
 			frontLeftDrive.set(ControlMode.PercentOutput, -left);
 			backRightDrive.set(ControlMode.PercentOutput, right);
-			frontRightDrive.set(ControlMode.PercentOutput, right);
+			centerRightDrive.set(ControlMode.PercentOutput, -right);
+			frontRightDrive.set(ControlMode.PercentOutput, -right);
 
     }
 
@@ -141,7 +144,7 @@ public class Drive extends Subsystem {
 	}
 
 	public double getEncoderRightDist() {
-		return driveEncoderRight.getDistance() * encoder_right_factor;
+		return  - (driveEncoderRight.getDistance() * encoder_right_factor);
 	}
 
 	public double getEncoderLeftDistancePerPulse() { return driveEncoderLeft.getDistancePerPulse(); }

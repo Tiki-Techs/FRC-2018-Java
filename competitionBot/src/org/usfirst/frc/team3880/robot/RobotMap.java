@@ -6,8 +6,8 @@ public class RobotMap {
 	public int BACK_LEFT_DRIVE_TALON = 3;
 	public int FRONT_RIGHT_DRIVE_TALON = 4;
 	public int FRONT_LEFT_DRIVE_TALON = 2;
-	public int CENTER_LEFT_DRIVE_TALON = 7;
-	public int CENTER_RIGHT_DRIVE_TALON = 8;
+	public int CENTER_LEFT_DRIVE_TALON = 5;
+	public int CENTER_RIGHT_DRIVE_TALON = 0;
 
 	public int LIFT_TALON = 6;
 	

@@ -22,9 +22,8 @@ public class CubeIntakeWheels extends CommandBase {
 	     */
 	    @Override
 	    protected void execute() {
-	      	
-	    	rightIntakeWheel.spin(INTAKE_VALUE);
-	    	leftIntakeWheel.spin(INTAKE_VALUE);
+	      	rightIntakeWheel.spin(oi.xbox.getRawAxis(3) - oi.xbox.getRawAxis(2));
+	      	leftIntakeWheel.spin(oi.xbox.getRawAxis(3) - oi.xbox.getRawAxis(2));
 	    }
 
 	    @Override

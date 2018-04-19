@@ -139,8 +139,8 @@ public class OI {
 			XButton.whenPressed(new ShiftTorque());
 			BButton.whenPressed(new ShiftSpeed());
 
-			leftButton.whileHeld(cubeOuttakeWheels);
-			rightButton.whileHeld(cubeIntakeWheels);
+			leftButton.whileHeld(cubeOuttakeArms);
+			rightButton.whileHeld(cubeIntakeArms);
 			
 			buttonR11.whenPressed(new ClimbPistonPull());
 			selectButton.whenPressed(new ClimbPistonPush());

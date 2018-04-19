@@ -12,6 +12,8 @@ public class Gyro extends Subsystem {
 
 	public ADIS16448_IMU gyro;
 	RobotMap hardware;
+	
+	double offset;
 
 	public static Gyro instance;
 
@@ -27,16 +29,27 @@ public class Gyro extends Subsystem {
 	private Gyro() {
 		hardware = new RobotMap();
 		gyro = new ADIS16448_IMU();
+		gyro.reset();
+		offset = getGyroAngle();
 	}
 
 	public double getGyroAngle() {
-		double adjAngle = gyro.getYaw() % 360;
+		double adjAngle = ((2*gyro.getYaw()) % 360) - offset;
 
+		adjAngle = Math.abs(360-adjAngle);
+		
 		if (adjAngle < 0) {
 			adjAngle += 360;
 		}
 
 		return adjAngle;
+	}
+	
+	public void setOffset() {
+		offset = 0;
+		gyro.reset();
+		offset = getGyroAngle();
+		System.out.println(getGyroAngle());
 	}
 
 	public boolean withinDeadZone(double target) {

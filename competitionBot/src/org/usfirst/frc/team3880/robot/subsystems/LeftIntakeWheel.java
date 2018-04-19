@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3880.robot.subsystems;
 
 import org.usfirst.frc.team3880.robot.RobotMap;
+import org.usfirst.frc.team3880.robot.commands.CubeIntakeWheels;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Victor;
@@ -49,6 +50,7 @@ public class LeftIntakeWheel extends Subsystem {
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
+		setDefaultCommand(new CubeIntakeWheels());
 	}
 
 }

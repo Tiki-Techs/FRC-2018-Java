@@ -9,6 +9,7 @@ public class ClimbUp extends CommandBase {
 	
 	public ClimbUp() {
     	requires(climb);
+    	requires(lift);
     }
 
 	@Override
@@ -24,11 +25,13 @@ public class ClimbUp extends CommandBase {
     @Override
     protected void execute() {
     	climb.climbUp(WINCH_STRENGTH);
+    	lift.set(-0.5);
     }
 
     @Override
     protected void end() {
     	climb.climbUp(0);
+    	lift.set(0);
     }
 
     @Override

@@ -33,8 +33,8 @@ public class Autonomous_DriveStraight extends CommandBase {
 
         //Get all the magic numbers from the dashboard
         autoTimerDuration = SmartDashboard.getNumber("autoTimerDuration", 2.8);
-        autoLeftDrivePercent = SmartDashboard.getNumber("autoLeftDrivePercent", -0.4);
-        autoRightDrivePercent = SmartDashboard.getNumber("autoRightDrivePercent", -0.4);
+        autoLeftDrivePercent = -0.4;
+        autoRightDrivePercent = -0.4;
 
         // Change encoder distances based on SmartDashboard, or use current values
         double newLeftDistancePerPulse = SmartDashboard.getNumber("autoLeftDistPerPulse", CommandBase.drive.getEncoderLeftDistancePerPulse());
