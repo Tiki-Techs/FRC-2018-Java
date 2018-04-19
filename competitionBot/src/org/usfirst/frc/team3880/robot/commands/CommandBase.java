@@ -26,8 +26,10 @@ public abstract class CommandBase extends Command {
     
     
     public static double OI_MODE;
-    
-    public static void init() {      
+
+    // Static initializer
+    static
+    {
         drive = Drive.getInstance();
         climb = Climb.getInstance();
         intakeArms = IntakeArms.getInstance();
