@@ -35,6 +35,8 @@ public class Gyro extends Subsystem {
 
 	public double getGyroAngle() {
 		double adjAngle = ((2*gyro.getYaw()) % 360) - offset;
+		
+		System.out.println(adjAngle);
 
 		adjAngle = Math.abs(360-adjAngle);
 		

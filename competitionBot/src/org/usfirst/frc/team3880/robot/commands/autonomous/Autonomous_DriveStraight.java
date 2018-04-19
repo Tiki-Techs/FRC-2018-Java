@@ -32,15 +32,18 @@ public class Autonomous_DriveStraight extends CommandBase {
         SmartDashboard.putNumber("Right Encoder distance per pulse", CommandBase.drive.getEncoderRightDistancePerPulse());
 
         //Get all the magic numbers from the dashboard
-        autoTimerDuration = SmartDashboard.getNumber("autoTimerDuration", 2.8);
+        autoTimerDuration = 2.8;
+        System.out.println("autoTimerDuration=" + autoTimerDuration);
         autoLeftDrivePercent = -0.4;
         autoRightDrivePercent = -0.4;
 
         // Change encoder distances based on SmartDashboard, or use current values
-        double newLeftDistancePerPulse = SmartDashboard.getNumber("autoLeftDistPerPulse", CommandBase.drive.getEncoderLeftDistancePerPulse());
-        double newRightDistancePerPulse = SmartDashboard.getNumber("autoRightDistPerPulse", CommandBase.drive.getEncoderRightDistancePerPulse());
-        CommandBase.drive.setEncoderLeftDistancePerPulse(newLeftDistancePerPulse);
-        CommandBase.drive.setEncoderRighttDistancePerPulse(newRightDistancePerPulse);
+//        double newLeftDistancePerPulse = SmartDashboard.getNumber("autoLeftDistPerPulse", CommandBase.drive.getEncoderLeftDistancePerPulse());
+//        double newRightDistancePerPulse = SmartDashboard.getNumber("autoRightDistPerPulse", CommandBase.drive.getEncoderRightDistancePerPulse());
+//	    double newLeftDistancePerPulse = CommandBase.drive.getEncoderLeftDistancePerPulse());
+//	    double newRightDistancePerPulse = SmartDashboard.getNumber("autoLeftDistPerPulse", CommandBase.drive.getEncoderLeftDistancePerPulse());
+//        CommandBase.drive.setEncoderLeftDistancePerPulse(newLeftDistancePerPulse);
+//        CommandBase.drive.setEncoderRighttDistancePerPulse(newRightDistancePerPulse);
 
         timer = new Timer();
         timer.reset();
@@ -51,19 +54,19 @@ public class Autonomous_DriveStraight extends CommandBase {
     @Override
     protected void execute() {
         if (timer.get() < autoTimerDuration) {
-            System.out.println(timer.get());
+//            System.out.println(timer.get());
             CommandBase.drive.set(autoLeftDrivePercent, autoRightDrivePercent);
         } else {
             CommandBase.drive.set(0, 0);
+            System.out.println("auto timer finished");
+            end();
         }
     }
 
     @Override
     protected void end() {
-        drive.backLeftDrive.set(ControlMode.PercentOutput, 0);
-        drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
-        drive.backRightDrive.set(ControlMode.PercentOutput, 0);
-        drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
+    	System.out.println("ending auto drive straight");
+        drive.set(0,0);
 
     }
 

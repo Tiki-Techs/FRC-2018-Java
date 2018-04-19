@@ -9,7 +9,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	Timer timer;
 	
 	int phase;
-
+	boolean left;
 	// Times, in seconds, when the phase changes. These values must be strictly increasing
 	private double stepDownEndTime;
 	private double step0EndCondition;
@@ -70,7 +70,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		step0RighttPct = SmartDashboard.getNumber("autoFTR0RightPct", -0.4);
 
 		// Motor duty-cycle for spin: left is set to `step1DrivePct` right to `-1 * step1DrivePct`
-		step1DrivePct = SmartDashboard.getNumber("autoFTR1DrivePct", 0.4);
+		step1DrivePct = SmartDashboard.getNumber("autoFTR1DrivePct", -0.4);
 //		step1ClockwiseAngle = SmartDashboard.getNumber("autoFTR1ClockwiseAngle", 270.0);
 		step1AngularDeadzone = SmartDashboard.getNumber("autoFTR1AngularDeadzone", 10.0);
 		step1LiftPct = SmartDashboard.getNumber("autoFTR1RLiftPct", 0.7);
@@ -81,7 +81,15 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		// Read the gyro.
 		initialRobotAngle = gyro.getGyroAngle();
 		SmartDashboard.putNumber("auto start gyro", CommandBase.gyro.getGyroAngle());
-		desiredRobotAngle = (initialRobotAngle + step1ClockwiseAngle) % 360;
+		if (step1ClockwiseAngle == 90) {
+			desiredRobotAngle = initialRobotAngle + 90;
+			left = false;
+		}
+		else {
+			desiredRobotAngle = initialRobotAngle - 90;
+			left = true;
+		}
+//		desiredRobotAngle = (initialRobotAngle + step1ClockwiseAngle) % 360;
 	}
 
 	/* Returns the phase for the given time (in seconds). Note that phases start at 0. */
@@ -124,7 +132,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		double leftDistance = drive.getEncoderLeftDist();
 		
 //		return leftDistance > step1EndDistance && rightDistance > step1EndDistance;
-		return time > 5.5;
+		return time > 4.5;
 	}
 
 	/*
@@ -149,7 +157,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	private boolean LiftUp(double time) {
 		lift.set(step1LiftPct);
 
-		if (time > 1) {
+		if (time > 1.25) {
 			lift.set(0);
 		}
 		else {
@@ -162,11 +170,11 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	{
 
         if (!gyro.withinDeadZone(desiredRobotAngle)){
-            if (desiredRobotAngle > 180) {
-            	drive.set(step1DrivePct, -step1DrivePct);
+            if (left) {
+            	drive.set(-step1DrivePct, step1DrivePct);
             }
             else {
-            	drive.set(-step1DrivePct, step1DrivePct);
+            	drive.set(step1DrivePct, -step1DrivePct);
             }
             return false;
         }
@@ -187,7 +195,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		double leftDistance = drive.getEncoderLeftDist();
 		
 //		return leftDistance > step2EndDistance && rightDistance > step2EndDistance;
-		return time > 1.5;
+		return time > 1.75;
 
 	}
 	

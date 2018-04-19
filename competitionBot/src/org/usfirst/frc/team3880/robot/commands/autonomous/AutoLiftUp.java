@@ -143,7 +143,7 @@ public class AutoLiftUp extends CommandBase  {
 		lift.set(0);
 
 //		drive.setHeading(desiredRobotAngle, step2RightPct);
-//		drive.set(step0LeftPct, step0RighttPct);
+		drive.set(0, 0);
 		rightIntakeWheel.spin(-1);
 		leftIntakeWheel.spin(-1);
 	}
@@ -151,17 +151,17 @@ public class AutoLiftUp extends CommandBase  {
 	/* Phase 3 behavior : Shut down motors */
 	private void Stop(double time)
 	{
-		drive.backLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.backRightDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
-
-		end();
-		/* Or:
+//		drive.backLeftDrive.set(ControlMode.PercentOutput, 0);
+//		drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
+//		drive.backRightDrive.set(ControlMode.PercentOutput, 0);
+//		drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
+		
+//		/* Or:
 		drive.set(0.0, 0.0);
 		rightIntakeWheel.spin(0);
 		leftIntakeWheel.spin(0);
-		*/
+//		*/
+		end();
 	}
 
 

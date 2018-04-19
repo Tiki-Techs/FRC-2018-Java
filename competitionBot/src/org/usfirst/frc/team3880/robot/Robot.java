@@ -77,6 +77,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("window motor moved up during match", false);
 		SmartDashboard.putBoolean("window motor moved down during match", false);
 		
+//		CommandBase.gyro.gyro.reset();
+//		CommandBase.gyro.setOffset();
+		
 		autoGyroLog = new ArrayList();
 
 		CommandBase.init();
@@ -139,7 +142,7 @@ public class Robot extends IterativeRobot {
 		CommandBase.gyro.setOffset();
 		CommandBase.drive.resetEncoders();
 		
-		CommandBase.pneumatics.Shift(DoubleSolenoid.Value.kReverse);
+		CommandBase.pneumatics.Shift(DoubleSolenoid.Value.kForward);
 		
 		String gameData = null;
 		Timer autoTimeoutTimer = new Timer();
@@ -189,17 +192,17 @@ public class Robot extends IterativeRobot {
 				else {
 					if (switchPosition == robotPosition) {
 						// robot on correct side: drive forward, turn, and score
-//		                if (switchPosition == 'L') {
-//		                	autonomousCommand = new Autonomous_ForwardGyroForward(90);
-//					        SmartDashboard.putString("auto", "L");
-//
-//		                }
-//		                else if (switchPosition == 'R') {
-//		                	autonomousCommand = new Autonomous_ForwardGyroForward(270);
-//					        SmartDashboard.putString("auto", "R");
-//
-//		                }
-		                autonomousCommand = new AutoLiftUp();
+		                if (switchPosition == 'L') {
+		                	autonomousCommand = new Autonomous_ForwardGyroForward(90);
+					        SmartDashboard.putString("auto", "L");
+
+		                }
+		                else if (switchPosition == 'R') {
+		                	autonomousCommand = new Autonomous_ForwardGyroForward(270);
+					        SmartDashboard.putString("auto", "R");
+
+		                }
+//		                autonomousCommand = new AutoLiftUp();
 
 
 					}
@@ -290,7 +293,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		System.out.println(autoGyroLog);
+		autoGyroLog = new ArrayList();
 		autoStarted = false;
+		CommandBase.gyro.gyro.reset();
 	}
 
 
