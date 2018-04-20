@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team3880.robot.commands.CommandBase;
 
-public class Autonomous_ForwardGyroForward extends CommandBase {
+public class AutoForwardTurnScore extends CommandBase {
 	Timer timer;
 	
 	int phase;
@@ -39,7 +39,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 	// == `(initialRobotAngle + step1ClockwisAngle) modulo 360` (always in range[0 .. 360])
 	private double desiredRobotAngle;
 
-	public Autonomous_ForwardGyroForward(double targetAngle) {
+	public AutoForwardTurnScore(double targetAngle) {
 		requires(drive);
 		requires(lift);
 		requires(gyro);
@@ -207,6 +207,16 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 		
 		return time > 1;
 	}
+	
+	/* Phase 6 behavior: Drive backwards */
+	private boolean BackUp(double time)
+	{
+		drive.set(-step0LeftPct, -step0RighttPct);
+		windowMotor.set(0);
+
+		return time > 1.75;
+
+	}
 
 
 	@Override
@@ -269,8 +279,17 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 				timer.start();
 			}
 			break;
-		
+			
 		case 6:
+			if (BackUp(time)) {
+				phase++;
+				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
+			}
+			break;
+		
+		case 7:
 			end();
 			break;
 		}
@@ -279,10 +298,7 @@ public class Autonomous_ForwardGyroForward extends CommandBase {
 
 	@Override
 	protected void end() {
-		drive.backLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.backRightDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
+		drive.set(0,0);
 
         lift.set(0);
 
