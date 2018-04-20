@@ -55,7 +55,7 @@ public class Robot extends IterativeRobot {
             if (CommandBase.gyro != null) {
                 CommandBase.gyro.gyro.reset();
                 CommandBase.gyro.setOffset();
-            }|
+            }
             autoGyroLog = new ArrayList();
 
             CameraServer.getInstance().startAutomaticCapture(0);
@@ -70,8 +70,8 @@ public class Robot extends IterativeRobot {
             auto_selectable = new SendableChooser<Command>();
             auto_selectable.addDefault("drive straight", new Autonomous_DriveStraight());
             auto_selectable.addObject("straight forward and score", new AutoLiftUp());
-            auto_selectable.addObject("forward, turn left, and score", new AutoDriveForwardTurnScore(270));
-            auto_selectable.addObject("forward, turn right, and score", new AutoDriveForwardTurnScore(90));
+            auto_selectable.addObject("forward, turn left, and score", new AutoForwardTurnScore(270));
+            auto_selectable.addObject("forward, turn right, and score", new AutoForwardTurnScore(90));
             auto_selectable.addObject("center two cube left", new AutoCenterTwoCube(315, 0, 90, 270, 0));
             auto_selectable.addObject("center two cube right", new AutoCenterTwoCube(45, 0, 270, 90, 0));
             SmartDashboard.putData("Test Mode Auto Selector", auto_selectable);
@@ -152,7 +152,7 @@ public class Robot extends IterativeRobot {
 
     }
 
-    private static Command commandForGameDataAndSwitch(string gameData, char robotPosition) {
+    private static Command commandForGameDataAndSwitch(String gameData, char robotPosition) {
         //Defaulting to "LLL" to prevent null pointer
         gameData = gameData == null ? "" : gameData;
 
@@ -171,15 +171,15 @@ public class Robot extends IterativeRobot {
         return commandBasedOnPosition;
     }
 
-    private static void CommandForRobotOnSide(char switchPosition, char localRobotPosition) {
+    private static Command CommandForRobotOnSide(char switchPosition, char localRobotPosition) {
         Command sideCommand = null;
         if (switchPosition == localRobotPosition) {
             // robot on correct side: drive forward, turn, and score
             if (switchPosition == 'L') {
-                sideCommand = new Autonomous_ForwardGyroForward(90);
+                sideCommand = new AutoForwardTurnScore(90);
                 SmartDashboard.putString("auto", "L");
             } else if (switchPosition == 'R') {
-                sideCommand = new Autonomous_ForwardGyroForward(270);
+                sideCommand = new AutoForwardTurnScore(270);
                 SmartDashboard.putString("auto", "R");
             }
         } else {
