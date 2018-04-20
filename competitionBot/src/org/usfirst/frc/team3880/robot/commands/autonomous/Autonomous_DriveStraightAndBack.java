@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3880.robot.commands.autonomous;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team3880.robot.commands.CommandBase;
@@ -79,40 +81,12 @@ public class Autonomous_DriveStraightAndBack extends CommandBase {
 		// Read the gyro.
 		initialRobotAngle = gyro.getGyroAngle();
 		desiredRobotAngle = (initialRobotAngle + step1ClockwiseAngle) % 360;
-	}
-
-	/* Returns the phase for the given time (in seconds). Note that phases start at 0. */
-//	private int phaseFor(double t) {
-//		double left = drive.getEncoderLeftDist();
-//		double right = drive.getEncoderRightDist();
-//		if (t < stepDownEndTime) {
-//			return -1;
-//		}
-//		if ((phase == -1 || phase == 0) && (left < step0EndCondition && right < step0EndCondition)) {
-//			return 0;
-//		}
-//		else if ((phase == 0 || phase == 1) && (gyro.withinDeadZone(step1EndCondition))) {
-//			return 1;
-//		}
-//		else if ((phase == 1 || phase == 2) && (left < step2EndCondition && right < step2EndCondition)) {
-//			return 2;
-//		}
-//		else if ((phase == 2 || phase == 3)) {
-//			return 3;
-//		}
-//		else {
-//			return 4;
-//		}
-//	}
-
-	/*
-	Phase 0 behavior: drive forward
-	*/
-	private boolean WindowDown(double time) {
-		windowMotor.set(-0.5);
 		
-		return time > 1;
+        CommandBase.pneumatics.Shift(DoubleSolenoid.Value.kReverse);
+
 	}
+
+	
 	private boolean ForwardInitial(double time)
 	{
 		drive.set(step0LeftPct, step0RighttPct);
@@ -120,74 +94,17 @@ public class Autonomous_DriveStraightAndBack extends CommandBase {
 		double rightDistance = drive.getEncoderRightDist();
 		double leftDistance = drive.getEncoderLeftDist();
 		
-		return leftDistance > step1EndDistance && rightDistance > step1EndDistance;
+		return time > 2.8;
 	}
 
-	/*
-
-	Phase 1 behavior: raise lift, rotate to `desiredRobotAngle`
-
-	I can imagine a couple of things being wrong with this:
-
-	First, it assumes that the gyro angle never is negative: that it's always in [0 .. 360]
-	(Note that `desiredRobotAngle` is mod 360, so it will always be in that range
-
-	Second, I worry about how frequently this is called, versus how fast the angle (might)
-	be changing. If `step1LeftPct` and `step2LeftPct` are too high, the robot could rotate
-	so fast that this function never runs while the robot is in the `angularDeadZone`. Or,
-	if they are too low, it could be that the duration of `step1FinalTime - step0FinalTime`
-	is not enough time to perform the turn.
-
-	Honestly, this _is_ what you want to use PID control for, but that adds a lot of complexity
-	that I don't think we have time to deal with.
-	 */
-	
-	private boolean LiftUp(double time) {
-		lift.set(step1LiftPct);
-
-		if (time > 1) {
-			lift.set(0);
-		}
-		else {
-			return false;
-		}
-		
-		return true;
-	}
-	private boolean Rotate(double time)
-	{
-
-        if (!gyro.withinDeadZone(desiredRobotAngle)){
-            drive.set(step1DrivePct, -step1DrivePct);
-            return true;
-        }
-        else {
-        	drive.set(0, 0);
-        }
-        
-    	return false;
-        
-	}
-
-	/* Phase 2 behavior: Drive forward, spin intake wheels */
-	private boolean ForwardAgain(double time)
+	private boolean BackUp(double time)
 	{
 		drive.set(step0LeftPct, step0RighttPct);
 		windowMotor.set(0);
 		double rightDistance = drive.getEncoderRightDist();
 		double leftDistance = drive.getEncoderLeftDist();
 		
-		return leftDistance > step2EndDistance && rightDistance > step2EndDistance;
-
-	}
-	
-	private boolean Score(double time) {
-		drive.set(0, 0);
-
-		rightIntakeWheel.spin(-1);
-		leftIntakeWheel.spin(-1);
-		
-		return time > 1;
+		return time > 2.8;
 	}
 
 
@@ -200,15 +117,8 @@ public class Autonomous_DriveStraightAndBack extends CommandBase {
 		// int phase = phaseFor(time);
 		// Call the behavior appropriate for the phase
 		switch (phase) {
+		
 		case 0:
-			if (WindowDown(time)) {
-				phase++;
-				System.out.println("Phase changed to " + phase);
-				timer.reset();
-				timer.start();
-			}
-			break;
-		case 1:
 			if (ForwardInitial(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
@@ -217,42 +127,18 @@ public class Autonomous_DriveStraightAndBack extends CommandBase {
 				drive.resetEncoders();
 			}
 			break;
+			
+		case 1:
+			if (BackUp(time)) {
+				phase++;
+				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
+				drive.resetEncoders();
+			}
+			break;
+			
 		case 2:
-			if (Rotate(time)) {
-				phase++;
-				System.out.println("Phase changed to " + phase);
-				timer.reset();
-				timer.start();
-				drive.resetEncoders();
-			}
-			break;
-		case 3:
-			if (LiftUp(time)) {
-				phase++;
-				System.out.println("Phase changed to " + phase);
-				timer.reset();
-				timer.start();
-			}
-			break;
-		case 4:
-			if (ForwardAgain(time)) {
-				phase++;
-				System.out.println("Phase changed to " + phase);
-				timer.reset();
-				timer.start();
-				drive.resetEncoders();
-			}
-			break;
-		case 5:
-			if (Score(time)) {
-				phase++;
-				System.out.println("Phase changed to " + phase);
-				timer.reset();
-				timer.start();
-			}
-			break;
-		
-		case 6:
 			end();
 			break;
 		}
@@ -261,10 +147,7 @@ public class Autonomous_DriveStraightAndBack extends CommandBase {
 
 	@Override
 	protected void end() {
-		drive.backLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.backRightDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
+		drive.set(0, 0);
 
         lift.set(0);
 
