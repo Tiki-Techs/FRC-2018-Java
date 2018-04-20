@@ -165,9 +165,6 @@ public class Robot extends IterativeRobot {
     }
 
     private static Command commandForSwitchAndScale(char switchPosition, char scalePosition, char robotPosition) {
-        char switchPosition = gameData.charAt(0);
-        char scalePosition = gameData.charAt(1);
-
         SmartDashboard.putString("Switch Position", String.valueOf(switchPosition));
 
         Command commandBasedOnPosition = robotPosition == 'C' ? CommandForRobotInCenter(switchPosition) : CommandForRobotOnSide(switchPosition, robotPosition);
