@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team3880.robot.commands.CommandBase;
 
-public class AutoForwardTurnScore extends CommandBase {
+public class AutoCenterOneCube extends CommandBase {
 	Timer timer;
 	
 	int phase;
@@ -39,7 +39,7 @@ public class AutoForwardTurnScore extends CommandBase {
 	// == `(initialRobotAngle + step1ClockwisAngle) modulo 360` (always in range[0 .. 360])
 	private double desiredRobotAngle;
 
-	public AutoForwardTurnScore(double targetAngle) {
+	public AutoCenterOneCube(double targetAngle) {
 		requires(drive);
 		requires(lift);
 		requires(gyro);
@@ -81,12 +81,12 @@ public class AutoForwardTurnScore extends CommandBase {
 		// Read the gyro.
 		initialRobotAngle = gyro.getGyroAngle();
 		SmartDashboard.putNumber("auto start gyro", CommandBase.gyro.getGyroAngle());
-		if (step1ClockwiseAngle == 90) {
-			desiredRobotAngle = initialRobotAngle + 90;
+		if (step1ClockwiseAngle < 180) {
+			desiredRobotAngle = initialRobotAngle + step1ClockwiseAngle;
 			left = false;
 		}
 		else {
-			desiredRobotAngle = initialRobotAngle - 90;
+			desiredRobotAngle = initialRobotAngle + (step1ClockwiseAngle-360);
 			left = true;
 		}
 		System.out.println("initial angle: "+ initialRobotAngle + ", desired angle: " + desiredRobotAngle);
@@ -102,48 +102,7 @@ public class AutoForwardTurnScore extends CommandBase {
 		
 		return time > 1;
 	}
-	private boolean ForwardInitial(double time)
-	{
-		drive.set(step0LeftPct, step0RighttPct);
-		windowMotor.set(0);
-		double rightDistance = drive.getEncoderRightDist();
-		double leftDistance = drive.getEncoderLeftDist();
-		
-//		return leftDistance > step1EndDistance && rightDistance > step1EndDistance;
-		return time > 4.5;
-	}
-
-	/*
-
-	Phase 1 behavior: raise lift, rotate to `desiredRobotAngle`
-
-	I can imagine a couple of things being wrong with this:
-
-	First, it assumes that the gyro angle never is negative: that it's always in [0 .. 360]
-	(Note that `desiredRobotAngle` is mod 360, so it will always be in that range
-
-	Second, I worry about how frequently this is called, versus how fast the angle (might)
-	be changing. If `step1LeftPct` and `step2LeftPct` are too high, the robot could rotate
-	so fast that this function never runs while the robot is in the `angularDeadZone`. Or,
-	if they are too low, it could be that the duration of `step1FinalTime - step0FinalTime`
-	is not enough time to perform the turn.
-
-	Honestly, this _is_ what you want to use PID control for, but that adds a lot of complexity
-	that I don't think we have time to deal with.
-	 */
 	
-	private boolean LiftUp(double time) {
-		lift.set(step1LiftPct);
-
-		if (time > 1.5) {
-			lift.set(0);
-		}
-		else {
-			return false;
-		}
-		
-		return true;
-	}
 	private boolean Rotate(double time)
 	{
 
@@ -163,6 +122,59 @@ public class AutoForwardTurnScore extends CommandBase {
     	return true;
         
 	}
+	
+	private boolean ForwardInitial(double time)
+	{
+		drive.setHeading(desiredRobotAngle, step0RighttPct);
+		windowMotor.set(0);
+		
+//		return leftDistance > step1EndDistance && rightDistance > step1EndDistance;
+		return time > 1.5;
+	}
+	
+	private boolean ForwardTwo(double time)
+	{
+		drive.set(step0LeftPct, step0RighttPct);
+		windowMotor.set(0);
+		
+//		return leftDistance > step2EndDistance && rightDistance > step2EndDistance;
+		return time > 2;
+
+	}
+
+	
+	private boolean RotateBack(double time)
+	{
+
+        if (!gyro.withinDeadZone(0)){
+            if (left) {
+            	drive.set(step1DrivePct, -step1DrivePct);
+            }
+            else {
+            	drive.set(-step1DrivePct, step1DrivePct);
+            }
+            return false;
+        }
+        else {
+        	drive.set(0, 0);
+        }
+        
+    	return true;
+        
+	}
+	
+	private boolean LiftUp(double time) {
+		lift.set(step1LiftPct);
+
+		if (time > 1.5) {
+			lift.set(0);
+		}
+		else {
+			return false;
+		}
+		
+		return true;
+	}
 
 	/* Phase 2 behavior: Drive forward, spin intake wheels */
 	private boolean ForwardAgain(double time)
@@ -173,7 +185,7 @@ public class AutoForwardTurnScore extends CommandBase {
 		double leftDistance = drive.getEncoderLeftDist();
 		
 //		return leftDistance > step2EndDistance && rightDistance > step2EndDistance;
-		return time > 1.75;
+		return time > 2;
 
 	}
 	
@@ -244,11 +256,12 @@ public class AutoForwardTurnScore extends CommandBase {
 			}
 			break;
 		case 3:
-			if (LiftUp(time)) {
+			if (ForwardTwo(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
 				timer.reset();
 				timer.start();
+				drive.resetEncoders();
 			}
 			break;
 		case 4:
@@ -261,6 +274,32 @@ public class AutoForwardTurnScore extends CommandBase {
 			}
 			break;
 		case 5:
+			if (RotateBack(time)) {
+				phase++;
+				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
+				drive.resetEncoders();
+			}
+			break;
+		case 6:
+			if (LiftUp(time)) {
+				phase++;
+				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
+			}
+			break;
+		case 7:
+			if (ForwardAgain(time)) {
+				phase++;
+				System.out.println("Phase changed to " + phase);
+				timer.reset();
+				timer.start();
+				drive.resetEncoders();
+			}
+			break;
+		case 8:
 			if (Score(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
@@ -269,7 +308,7 @@ public class AutoForwardTurnScore extends CommandBase {
 			}
 			break;
 			
-		case 6:
+		case 9:
 			if (BackUp(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
@@ -278,7 +317,7 @@ public class AutoForwardTurnScore extends CommandBase {
 			}
 			break;
 		
-		case 7:
+		case 10:
 			Stop();
 			break;
 		}

@@ -30,28 +30,30 @@ public class Gyro extends Subsystem {
 		hardware = new RobotMap();
 		gyro = new ADIS16448_IMU();
 		gyro.reset();
-		offset = getGyroAngle();
+		offset = 0;
 	}
-
+//	public double adjustedGyroAngle() {
+//		double offset = SmartDashboard.getNumber("auto start gyro", 0);
+//		double angle = getGyroAngle() - offset;
+//		return angle;
+//	}
 	public double getGyroAngle() {
-		double adjAngle = ((2*gyro.getYaw()) % 360) - offset;
-		
-		System.out.println(adjAngle);
+//		double adjAngle = ((2*gyro.getYaw()) % 360) - offset;
+//		double adjAngle = (gyro.getAngleZ()) % 360 - offset;
 
-		adjAngle = Math.abs(360-adjAngle);
-		
-		if (adjAngle < 0) {
-			adjAngle += 360;
-		}
+//		System.out.println(adjAngle);
 
-		return adjAngle;
+//		adjAngle = Math.abs(360-adjAngle);
+
+//		return adjAngle;
+		return Math.sqrt(2)*gyro.getAngleZ();
 	}
 	
 	public void setOffset() {
 		offset = 0;
 		gyro.reset();
 		offset = getGyroAngle();
-		System.out.println(getGyroAngle());
+		System.out.println("reset offset to " + getGyroAngle());
 	}
 
 	public boolean withinDeadZone(double target) {

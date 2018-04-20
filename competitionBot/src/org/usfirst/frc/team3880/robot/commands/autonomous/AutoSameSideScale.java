@@ -75,7 +75,7 @@ public class AutoSameSideScale extends CommandBase {
 		step1DrivePct = SmartDashboard.getNumber("autoFTR1DrivePct", -0.4);
 //		step1ClockwiseAngle = SmartDashboard.getNumber("autoFTR1ClockwiseAngle", 270.0);
 		step1AngularDeadzone = SmartDashboard.getNumber("autoFTR1AngularDeadzone", 10.0);
-		step1LiftPct = SmartDashboard.getNumber("autoFTR1RLiftPct", 0.7);
+		step1LiftPct = SmartDashboard.getNumber("autoFTR1RLiftPct", 1);
 
 		step2LeftPct = SmartDashboard.getNumber("autoFTR2LeftPct", -0.4);
 		step2RightPct = SmartDashboard.getNumber("autoFTR2RightPct", -0.4);
@@ -112,7 +112,7 @@ public class AutoSameSideScale extends CommandBase {
 		double leftDistance = drive.getEncoderLeftDist();
 		
 //		return leftDistance > step1EndDistance && rightDistance > step1EndDistance;
-		return time > 4.5;
+		return time > 6.5;
 	}
 
 	/*
@@ -137,7 +137,7 @@ public class AutoSameSideScale extends CommandBase {
 	private boolean LiftUp(double time) {
 		lift.set(step1LiftPct);
 
-		if (lift.getUpperLimit()) {
+		if (lift.getUpperLimit() || time > 3.9) {
 			lift.set(0);
 		}
 		else {
@@ -193,6 +193,21 @@ public class AutoSameSideScale extends CommandBase {
 		drive.set(backwardsDrivePercent, backwardsDrivePercent);
 		
 		return time > 1;
+	}
+	
+	private boolean LiftDown(double time) {
+		lift.set(-step1LiftPct);
+
+		if (lift.getLowerLimit() || time > 2) {
+			lift.set(0);
+		}
+		else {
+			return false;
+		}
+		
+		return true;
+		
+		
 	}
 	
 	private void Stop() {

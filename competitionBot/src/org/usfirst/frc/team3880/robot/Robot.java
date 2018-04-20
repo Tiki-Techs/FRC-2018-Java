@@ -41,6 +41,7 @@ public class Robot extends IterativeRobot {
     private SendableChooser<Character> m_chooser;
     private SendableChooser<Boolean> test_mode;
     private SendableChooser<Command> auto_selectable;
+    private SendableChooser<String> auto_sameSideSelectable;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -76,6 +77,12 @@ public class Robot extends IterativeRobot {
             auto_selectable.addObject("center two cube right", new AutoCenterTwoCube(45, 0, 270, 90, 0));
             SmartDashboard.putData("Test Mode Auto Selector", auto_selectable);
 
+//            auto_sameSideSelectable = new SendableChooser<String>();
+//            auto_sameSideSelectable.addDefault("ForwardTurnScore", "FTR");
+//            auto_sameSideSelectable.addObject("DriveStraightAndBack", "StraightAndBack");
+//            auto_sameSideSelectable.addObject("AutoLiftUp", "LiftUp");
+//            SmartDashboard.putData("Select Mode Auto Selector", auto_sameSideSelectable);
+            
             log();
 
             m_chooser.addDefault("Robot on left", 'L');
@@ -114,7 +121,7 @@ public class Robot extends IterativeRobot {
             System.out.println(robotPosition);
 
             CommandBase.gyro.gyro.reset();
-            CommandBase.gyro.setOffset();
+//            CommandBase.gyro.setOffset();
             CommandBase.drive.resetEncoders();
 
             CommandBase.pneumatics.Shift(DoubleSolenoid.Value.kForward);
@@ -175,6 +182,7 @@ public class Robot extends IterativeRobot {
         Command sideCommand = null;
         if (switchPosition == localRobotPosition) {
             // robot on correct side: drive forward, turn, and score
+
             if (switchPosition == 'L') {
                 sideCommand = new AutoForwardTurnScore(90);
                 SmartDashboard.putString("auto", "L");
@@ -194,15 +202,15 @@ public class Robot extends IterativeRobot {
         Command centeredRobotCommand = null;
         // robot in center
         if (switchPosition == 'L') {
-            centeredRobotCommand = new AutoCenterTwoCube(315, 0, 90, 270, 0);
+            centeredRobotCommand = new AutoCenterOneCube(315);
             SmartDashboard.putString("auto", "center two cube left");
 
         } else if (switchPosition == 'R') {
-            centeredRobotCommand = new AutoCenterTwoCube(45, 0, 270, 90, 0);
+            centeredRobotCommand = new AutoCenterOneCube(45);
             SmartDashboard.putString("auto", "center two cube right");
 
         } else {
-            centeredRobotCommand = new Autonomous_DriveStraight();
+            centeredRobotCommand = new Autonomous_DriveStraightAndBack();
             SmartDashboard.putString("auto", "drive straight");
         }
         return centeredRobotCommand;
@@ -218,9 +226,9 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
         log();
 
-        if (!autoStarted) {
-            autonomousInit();
-        }
+//        if (!autoStarted) {
+//            autonomousInit();
+//        }
     }
 
     public void teleopInit() {
@@ -288,11 +296,11 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("liftEncoderVel", CommandBase.lift.getEncoderVelocity());
         SmartDashboard.putNumber("liftEncoderPos", CommandBase.lift.getEncoderPosition());
 
-        SmartDashboard.putNumber("gyroAngleX", CommandBase.gyro.gyro.getAngleX());
-        SmartDashboard.putNumber("gyroAngleY", CommandBase.gyro.gyro.getAngleY());
+        SmartDashboard.putNumber("gyro getYaw", CommandBase.gyro.gyro.getYaw());
+        SmartDashboard.putNumber("gyro getAngle", CommandBase.gyro.gyro.getAngle());
         SmartDashboard.putNumber("gyroAngleZ", CommandBase.gyro.gyro.getAngleZ());
-        SmartDashboard.putNumber("gyro getAngle function", CommandBase.gyro.gyro.getAngle());
-        SmartDashboard.putNumber("Gyro userdefined 'Angle'", CommandBase.gyro.getGyroAngle());
+//        SmartDashboard.putNumber("gyro getAngle function", CommandBase.gyro.gyro.getAngle());
+        SmartDashboard.putNumber("Gyro my getGyroAngle", CommandBase.gyro.getGyroAngle());
 
         SmartDashboard.putBoolean("lift upper limit", CommandBase.lift.getUpperLimit());
         SmartDashboard.putBoolean("lift lower limit", CommandBase.lift.getLowerLimit());
@@ -301,5 +309,6 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putBoolean("window limit", CommandBase.windowMotor.getLimit());
 
         SmartDashboard.putBoolean("auto has been run?", autoStarted);
+//        SmartDashboard.putNumber("brock Gyro Angle", CommandBase.gyro.adjustedGyroAngle());
     }
 }

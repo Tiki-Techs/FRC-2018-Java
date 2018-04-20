@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3880.robot.commands.autonomous;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team3880.robot.commands.CommandBase;
@@ -54,18 +56,30 @@ public class AutoCenterTwoCube extends CommandBase {
 		timer.start();
 
 		phase = 0;
+		
+        CommandBase.pneumatics.Shift(DoubleSolenoid.Value.kReverse);
+
 	}
 
-	private boolean ForwardOne(double time) {
-		return drive.driveDistance(24, 1);
+	/* Phase 2 behavior: Drive forward, spin intake wheels */
+	private boolean ForwardOne(double time)
+	{
+		drive.set(step0LeftPct, step0RighttPct);
+		windowMotor.set(0);
+		double rightDistance = drive.getEncoderRightDist();
+		double leftDistance = drive.getEncoderLeftDist();
+		
+//		return leftDistance > step2EndDistance && rightDistance > step2EndDistance;
+		return time > 1.75;
+
 	}
 
 	private boolean RotateOne(double time) {
-		return drive.turnDegrees(angleOne, 0.5);// 45 degrees or 315
+		return drive.setHeading(angleOne, 0.5);// 45 degrees or 315
 	}
 
 	private boolean ForwardTwo(double time) {
-		return drive.driveDistance(80, 0.5);
+		return drive.driveDistance(25, -0.5);
 	}
 
 	private boolean RotateTwo(double time) {
@@ -76,7 +90,7 @@ public class AutoCenterTwoCube extends CommandBase {
 		windowMotor.set(.3);
 		lift.set(.5);
 		
-		return drive.driveDistance(62, .5);
+		return drive.driveDistance(62, -.5);
 
 	}
 
@@ -109,7 +123,7 @@ public class AutoCenterTwoCube extends CommandBase {
 		rightIntakeWheel.spin(1);
 		leftIntakeWheel.spin(1);
 		
-		return drive.driveDistance(48, .5);
+		return drive.driveDistance(48, -.5);
 	}
 
 	private boolean RotateFour(double time) {
@@ -119,7 +133,7 @@ public class AutoCenterTwoCube extends CommandBase {
 	}
 
 	private boolean ForwardFive(double time) {
-		return drive.driveDistance(48, .5);
+		return drive.driveDistance(48, -.5);
 	}
 
 	private boolean RotateFive(double time) {
@@ -152,12 +166,16 @@ public class AutoCenterTwoCube extends CommandBase {
 			if (ForwardOne(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				drive.resetEncoders();
+
 			}
 			break;
 		case 1:
 			if (RotateOne(time)) {
 				timer.reset();
 				timer.start();
+				drive.resetEncoders();
+
 				phase++;
 				System.out.println("Phase changed to " + phase);
 			}
@@ -166,6 +184,8 @@ public class AutoCenterTwoCube extends CommandBase {
 			if (ForwardTwo(time)) {
 				timer.reset();
 				timer.start();
+				drive.resetEncoders();
+
 				phase++;
 				System.out.println("Phase changed to " + phase);
 			}
@@ -174,14 +194,18 @@ public class AutoCenterTwoCube extends CommandBase {
 			if (RotateTwo(time)) {
 				timer.reset();
 				timer.start();
+				drive.resetEncoders();
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				
 			}
 			break;
 		case 4:
 			if (ForwardThree(time)) {
 				timer.reset();
 				timer.start();
+				drive.resetEncoders();
+
 				phase++;
 				System.out.println("Phase changed to " + phase);
 			}
@@ -190,6 +214,8 @@ public class AutoCenterTwoCube extends CommandBase {
 			if (Score(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				drive.resetEncoders();
+
 				timer.reset();
 				timer.start();
 			}
@@ -198,6 +224,8 @@ public class AutoCenterTwoCube extends CommandBase {
 			if (BackwardOne(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				drive.resetEncoders();
+
 				timer.reset();
 				timer.start();
 			}
@@ -214,6 +242,8 @@ public class AutoCenterTwoCube extends CommandBase {
 			if (ForwardFour(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				drive.resetEncoders();
+
 				timer.reset();
 				timer.start();
 			}
@@ -222,6 +252,8 @@ public class AutoCenterTwoCube extends CommandBase {
 			if (RotateFour(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				drive.resetEncoders();
+
 				timer.reset();
 				timer.start();
 			}
@@ -230,6 +262,8 @@ public class AutoCenterTwoCube extends CommandBase {
 			if (ForwardFive(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				drive.resetEncoders();
+
 				timer.reset();
 				timer.start();
 			}
@@ -238,6 +272,8 @@ public class AutoCenterTwoCube extends CommandBase {
 			if (RotateFive(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				drive.resetEncoders();
+
 				timer.reset();
 				timer.start();
 			}
@@ -246,6 +282,8 @@ public class AutoCenterTwoCube extends CommandBase {
 			if (Score(time)) {
 				phase++;
 				System.out.println("Phase changed to " + phase);
+				drive.resetEncoders();
+
 				timer.reset();
 				timer.start();
 			}

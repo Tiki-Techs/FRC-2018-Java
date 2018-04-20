@@ -153,11 +153,11 @@ public class Drive extends Subsystem {
 	public void setEncoderRighttDistancePerPulse(double d) { driveEncoderRight.setDistancePerPulse(d); }
 
 
-	public void setHeading(double angle, double percent) {
+	public boolean setHeading(double angle, double percent) {
         double left;
         double right;
 
-        double globalGyroDeadzone = SmartDashboard.getNumber("globalGyroDeadzone", 10.0);
+        double globalGyroDeadzone = SmartDashboard.getNumber("globalGyroDeadzone", 5.0);
 
 		double currentAngle = CommandBase.gyro.getGyroAngle();
         System.out.println("Target angle " + angle + ", current angle " + currentAngle);
@@ -169,6 +169,8 @@ public class Drive extends Subsystem {
             // drive straight
             left = 1;
 			right = 1;
+			
+			return true;
         }
         else {
             if (angleOffset > 0) {
@@ -190,29 +192,39 @@ public class Drive extends Subsystem {
 		System.out.println(finalRight);
 
 		set(finalLeft, finalRight);
+		
+		return false;
 
 	}
 	
 	public boolean turnDegrees(double targetAngle, double drivePercent) {
-		double driveValue = drivePercent * ((targetAngle - CommandBase.gyro.getGyroAngle()) /targetAngle);
+//		double driveValue = drivePercent * ((targetAngle - CommandBase.gyro.getGyroAngle()) /targetAngle);
+		boolean left = false;
 		
-		if(CommandBase.gyro.getGyroAngle() < targetAngle - 2.5) {
-			set(-driveValue, driveValue);
+		if (targetAngle > 180) {
+			targetAngle = targetAngle-360;
+			left = true;
+		}
+		
+		targetAngle += CommandBase.gyro.getGyroAngle();
+		
+		if(!CommandBase.gyro.withinDeadZone(targetAngle)) {
+			if(left) {
+				set(drivePercent, -drivePercent);
+			}
+			else {
+				set(-drivePercent, drivePercent);
+			}
 			return false;
+
 		}
-		else if(CommandBase.gyro.getGyroAngle() > targetAngle + 2.5) {
-			set(driveValue, -driveValue);
-			return false;
-		}
-		else {
-			set(0, 0);
-			return true;
-		}
+		
+		return true;
 	}
 	
 	public boolean driveDistance(int distance, double driveValue) {
 		
-		if(getEncoderRightDist() < distance && getEncoderLeftDist() < distance) {
+		if(getEncoderRightDist() < distance || getEncoderLeftDist() < distance) {
 			setHeading(0, driveValue);
 			return false;
 		}
