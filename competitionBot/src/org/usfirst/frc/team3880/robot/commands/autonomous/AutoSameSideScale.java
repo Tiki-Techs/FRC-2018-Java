@@ -194,6 +194,15 @@ public class AutoSameSideScale extends CommandBase {
 		
 		return time > 1;
 	}
+	
+	private void Stop() {
+		drive.set(0,0);
+
+        lift.set(0);
+
+        rightIntakeWheel.spin(0);
+		leftIntakeWheel.spin(0);
+	}
 
 
 	@Override
@@ -267,7 +276,7 @@ public class AutoSameSideScale extends CommandBase {
 			break;
 			
 		case 7:
-			end();
+			Stop();
 			break;
 		}
 
@@ -275,16 +284,7 @@ public class AutoSameSideScale extends CommandBase {
 
 	@Override
 	protected void end() {
-		drive.backLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.backRightDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
-
-        lift.set(0);
-
-        rightIntakeWheel.spin(0);
-		leftIntakeWheel.spin(0);
-
+		Stop();
 	}
 
 	@Override

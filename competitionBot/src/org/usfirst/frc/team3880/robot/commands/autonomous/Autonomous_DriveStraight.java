@@ -15,11 +15,11 @@ public class Autonomous_DriveStraight extends CommandBase {
 
     public Autonomous_DriveStraight() {
         requires(drive);
-        requires(lift);
-        requires(gyro);
-        requires(leftIntakeWheel);
-        requires(rightIntakeWheel);
-        requires(intakeArms);
+        
+    }
+    
+    private void Stop() {
+    	drive.set(0,0);
     }
 
     @Override
@@ -65,9 +65,8 @@ public class Autonomous_DriveStraight extends CommandBase {
 
     @Override
     protected void end() {
+    	Stop();
     	System.out.println("ending auto drive straight");
-        drive.set(0,0);
-
     }
 
     @Override

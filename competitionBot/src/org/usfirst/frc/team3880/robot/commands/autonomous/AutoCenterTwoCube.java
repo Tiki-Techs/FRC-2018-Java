@@ -125,6 +125,20 @@ public class AutoCenterTwoCube extends CommandBase {
 	private boolean RotateFive(double time) {
 		return drive.turnDegrees(angleFive, 0.5); // 0 degrees
 	}
+	
+	private void Stop() {
+		drive.backLeftDrive.set(ControlMode.PercentOutput, 0);
+		drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
+		drive.backRightDrive.set(ControlMode.PercentOutput, 0);
+		drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
+
+		rightIntakeWheel.spin(0);
+		leftIntakeWheel.spin(0);
+
+		lift.set(0);
+
+		windowMotor.set(0);
+	}
 
 	@Override
 	protected void execute() {
@@ -237,7 +251,7 @@ public class AutoCenterTwoCube extends CommandBase {
 			}
 			break;
 		case 13:
-			end();
+			Stop();
 			break;
 		}
 
@@ -245,17 +259,7 @@ public class AutoCenterTwoCube extends CommandBase {
 
 	@Override
 	protected void end() {
-		drive.backLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.backRightDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
-
-		rightIntakeWheel.spin(0);
-		leftIntakeWheel.spin(0);
-
-		lift.set(0);
-
-		windowMotor.set(0);
+		Stop();
 	}
 
 	@Override

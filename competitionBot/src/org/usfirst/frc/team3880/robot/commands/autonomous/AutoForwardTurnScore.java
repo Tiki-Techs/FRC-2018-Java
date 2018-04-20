@@ -92,29 +92,6 @@ public class AutoForwardTurnScore extends CommandBase {
 //		desiredRobotAngle = (initialRobotAngle + step1ClockwiseAngle) % 360;
 	}
 
-	/* Returns the phase for the given time (in seconds). Note that phases start at 0. */
-//	private int phaseFor(double t) {
-//		double left = drive.getEncoderLeftDist();
-//		double right = drive.getEncoderRightDist();
-//		if (t < stepDownEndTime) {
-//			return -1;
-//		}
-//		if ((phase == -1 || phase == 0) && (left < step0EndCondition && right < step0EndCondition)) {
-//			return 0;
-//		}
-//		else if ((phase == 0 || phase == 1) && (gyro.withinDeadZone(step1EndCondition))) {
-//			return 1;
-//		}
-//		else if ((phase == 1 || phase == 2) && (left < step2EndCondition && right < step2EndCondition)) {
-//			return 2;
-//		}
-//		else if ((phase == 2 || phase == 3)) {
-//			return 3;
-//		}
-//		else {
-//			return 4;
-//		}
-//	}
 
 	/*
 	Phase 0 behavior: drive forward
@@ -217,6 +194,17 @@ public class AutoForwardTurnScore extends CommandBase {
 		return time > 1.75;
 
 	}
+	
+	private void Stop() {
+		drive.set(0,0);
+
+		rightIntakeWheel.spin(0);
+		leftIntakeWheel.spin(0);
+
+		lift.set(0);
+
+		windowMotor.set(0);
+	}
 
 
 	@Override
@@ -290,7 +278,7 @@ public class AutoForwardTurnScore extends CommandBase {
 			break;
 		
 		case 7:
-			end();
+			Stop();
 			break;
 		}
 
@@ -298,13 +286,7 @@ public class AutoForwardTurnScore extends CommandBase {
 
 	@Override
 	protected void end() {
-		drive.set(0,0);
-
-        lift.set(0);
-
-        rightIntakeWheel.spin(0);
-		leftIntakeWheel.spin(0);
-
+		Stop();
 	}
 
 	@Override

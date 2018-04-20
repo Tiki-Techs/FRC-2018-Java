@@ -106,6 +106,15 @@ public class Autonomous_DriveStraightAndBack extends CommandBase {
 		
 		return time > 2.8;
 	}
+	
+	private void Stop() {
+		drive.set(0, 0);
+
+        lift.set(0);
+
+        rightIntakeWheel.spin(0);
+		leftIntakeWheel.spin(0);
+	}
 
 
 	@Override
@@ -139,7 +148,7 @@ public class Autonomous_DriveStraightAndBack extends CommandBase {
 			break;
 			
 		case 2:
-			end();
+			Stop();
 			break;
 		}
 
@@ -147,13 +156,7 @@ public class Autonomous_DriveStraightAndBack extends CommandBase {
 
 	@Override
 	protected void end() {
-		drive.set(0, 0);
-
-        lift.set(0);
-
-        rightIntakeWheel.spin(0);
-		leftIntakeWheel.spin(0);
-
+		Stop();
 	}
 
 	@Override

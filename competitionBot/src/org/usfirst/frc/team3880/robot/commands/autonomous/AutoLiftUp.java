@@ -149,19 +149,11 @@ public class AutoLiftUp extends CommandBase  {
 	}
 
 	/* Phase 3 behavior : Shut down motors */
-	private void Stop(double time)
+	private void Stop()
 	{
-//		drive.backLeftDrive.set(ControlMode.PercentOutput, 0);
-//		drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
-//		drive.backRightDrive.set(ControlMode.PercentOutput, 0);
-//		drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
-		
-//		/* Or:
 		drive.set(0.0, 0.0);
 		rightIntakeWheel.spin(0);
 		leftIntakeWheel.spin(0);
-//		*/
-		end();
 	}
 
 
@@ -185,23 +177,14 @@ public class AutoLiftUp extends CommandBase  {
 				ForwardAgain(time);
 				break;
 			case 3:
-				Stop(time);
+				Stop();
 				break;
 		}
 	}
 
 	@Override
 	protected void end() {
-		drive.backLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontLeftDrive.set(ControlMode.PercentOutput, 0);
-		drive.backRightDrive.set(ControlMode.PercentOutput, 0);
-		drive.frontRightDrive.set(ControlMode.PercentOutput, 0);
-
-        lift.set(0);
-
-        rightIntakeWheel.spin(0);
-		leftIntakeWheel.spin(0);
-
+		Stop();
 	}
 
 	@Override
