@@ -48,6 +48,13 @@ public class OI {
 			leftStickButton = new JoystickButton(xbox, 9);
 	private Trigger xboxLeftTrigger = new XboxLeftTrigger();
 	private Trigger xboxRightTrigger = new XboxRightTrigger();
+	
+	public static Joystick ps3 = new Joystick(3);
+	public Button ps3Button1  = new JoystickButton(ps3, 1), ps3Button2 = new JoystickButton(ps3, 2),
+			ps3Button3 = new JoystickButton(ps3, 3), ps3Button4 = new JoystickButton(ps3, 4),
+			ps3Button5 = new JoystickButton(ps3, 5), ps3Button6 = new JoystickButton(ps3, 6),
+			ps3Button7= new JoystickButton(ps3, 7), ps3Button8 = new JoystickButton(ps3, 8),
+			ps3Button9 = new JoystickButton(ps3, 9);
 
 	public OI(double mode) {
 
@@ -145,6 +152,42 @@ public class OI {
 			// controller 1
 
 		}
+		if (mode == 4) {
+
+			// Commands shared between the two controllers and ps3 controller, not xbox
+			LiftDown liftDown = new LiftDown();
+			LiftUp liftUp = new LiftUp();
+			CubeOuttakeWheels cubeOuttakeWheels = new CubeOuttakeWheels();
+			CubeIntakeWheels cubeIntakeWheels = new CubeIntakeWheels();
+			CubeIntakeArms cubeIntakeArms = new CubeIntakeArms();
+			CubeOuttakeArms cubeOuttakeArms = new CubeOuttakeArms();
+
+			AButton.whileHeld(liftDown);
+			YButton.whileHeld(liftUp);
+
+			XButton.whenPressed(new ShiftTorque());
+			BButton.whenPressed(new ShiftSpeed());
+
+			leftButton.whileHeld(cubeOuttakeArms);
+			rightButton.whileHeld(cubeIntakeArms);
+
+			// xboxRightTrigger.whileActive(new WindowMotorUp());
+			// xboxLeftTrigger.whileActive(new WindowMotorDown());
+
+			// controller 2- intake, lift.
+			buttonR1.whileHeld(liftUp);
+			buttonR2.whileHeld(liftDown);
+
+			buttonR3.whileHeld(cubeIntakeWheels);
+			buttonR4.whileHeld(cubeOuttakeWheels);
+
+			buttonR5.whenPressed(cubeIntakeArms);
+			buttonR6.whenPressed(cubeOuttakeArms);
+
+			// climb piston is used by pressing button 9 on controller 2 and left stick on
+			// controller 1
+
+		}
 
 	}
 
@@ -154,6 +197,12 @@ public class OI {
 	double JOY2_DEAD_ZONE_Y = 0.1;
 	double JOY2_DEAD_ZONE_X = 0.1;
 
+	public double getps3LeftY() {
+		return ps3.getRawAxis(1);
+	}
+	public double getps3RightX() {
+		return ps3.getRawAxis(2);
+	}
 	public double getRightY() {
 		if (Math.abs(joy1.getY()) >= DEAD_ZONE_Y) {
 			return joy1.getY();

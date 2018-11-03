@@ -109,7 +109,7 @@ public class Drive extends Subsystem {
 		double leftSide = left - right;
 		double rightSide = left + right;
 		
-		if(CommandBase.OI_MODE == 1 || CommandBase.OI_MODE == 3) {
+		if(CommandBase.OI_MODE == 1 || CommandBase.OI_MODE == 3 || CommandBase.OI_MODE == 4) {
 			backLeftDrive.set(ControlMode.PercentOutput, -leftSide);
 			centerLeftDrive.set(ControlMode.PercentOutput, leftSide);
 			frontLeftDrive.set(ControlMode.PercentOutput, -leftSide);

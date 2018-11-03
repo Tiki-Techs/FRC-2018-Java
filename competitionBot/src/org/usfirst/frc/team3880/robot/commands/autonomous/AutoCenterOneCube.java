@@ -119,6 +119,7 @@ public class AutoCenterOneCube extends CommandBase {
         	drive.set(0, 0);
         }
         
+        System.out.println("finished rotation");
     	return true;
         
 	}
@@ -159,13 +160,13 @@ public class AutoCenterOneCube extends CommandBase {
         	drive.set(0, 0);
         }
         
+        System.out.println("finished second rotation");
     	return true;
         
 	}
 	
 	private boolean LiftUp(double time) {
 		lift.set(step1LiftPct);
-
 		if (time > 1.5) {
 			lift.set(0);
 		}
